@@ -66,6 +66,8 @@
     </div>
   </div>
 
+  <script src="../js/audio-engine.js"></script>
+  <script src="../js/audio-settings.js"></script>
   <script>
 const EXAM_DATA = {
   parts: [
@@ -240,6 +242,10 @@ class ToeicExam {
     const q = this.allQuestions[idx];
     if (!q.audio_script) return;
     this.synth.cancel();
+    if (window.AudioEngine) {
+      window.AudioEngine.play({ key: `toeic:${q.id}`, text: q.audio_script, rate: 0.85, voice: this.voice });
+      return;
+    }
     const utt = new SpeechSynthesisUtterance(q.audio_script);
     utt.voice = this.voice;
     utt.rate = 0.85;

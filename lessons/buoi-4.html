@@ -71,6 +71,8 @@
   </div>
 
   <script src="../js/human-audio.js"></script>
+  <script src="../js/audio-engine.js"></script>
+  <script src="../js/audio-settings.js"></script>
   <script src="../js/word-stats.js"></script>
   <script>
 // === DATA ===
@@ -263,17 +265,22 @@ class DrillEngine {
     return new Promise((resolve) => {
       let done = false;
       const finish = () => { if (!done) { done = true; resolve(); } };
-      const safety = setTimeout(finish, 6000);
+      const safety = setTimeout(finish, 8000);
       const wrapEnd = () => { clearTimeout(safety); finish(); };
+      const audioOptions = {
+        lessonId,
+        key: this.phase === 0 ? text : `drill:phase${this.phase}:${text}`,
+        text,
+        rate: this.rate,
+        voice: this.voice,
+        onend: wrapEnd,
+      };
+      if (window.AudioEngine) {
+        window.AudioEngine.play(audioOptions);
+        return;
+      }
       if (this.phase === 0 && window.HumanAudio) {
-        window.HumanAudio.play({
-          lessonId,
-          key: text,
-          text,
-          rate: this.rate,
-          voice: this.voice,
-          onend: wrapEnd,
-        });
+        window.HumanAudio.play(audioOptions);
         return;
       }
       const u = new SpeechSynthesisUtterance(text);

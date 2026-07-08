@@ -92,14 +92,19 @@
   // --- Listen to the sample ---
   function listen() {
     const word = state.words[state.idx].word;
+    const audioOptions = {
+      lessonId: `buoi-${state.lesson}`,
+      key: word,
+      text: word,
+      rate: 0.85,
+      voice: state.voice,
+    };
+    if (window.AudioEngine) {
+      window.AudioEngine.play(audioOptions);
+      return;
+    }
     if (window.HumanAudio) {
-      window.HumanAudio.play({
-        lessonId: `buoi-${state.lesson}`,
-        key: word,
-        text: word,
-        rate: 0.85,
-        voice: state.voice,
-      });
+      window.HumanAudio.play(audioOptions);
       return;
     }
     if (!synth) return;

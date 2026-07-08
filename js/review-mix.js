@@ -114,14 +114,19 @@
     window.speechSynthesis.onvoiceschanged = set;
   }
   function speak(text, lesson) {
+    var audioOptions = {
+      lessonId: lesson ? ('buoi-' + lesson) : null,
+      key: text,
+      text: text,
+      rate: 0.9,
+      voice: voice,
+    };
+    if (window.AudioEngine) {
+      window.AudioEngine.play(audioOptions);
+      return;
+    }
     if (window.HumanAudio) {
-      window.HumanAudio.play({
-        lessonId: lesson ? ('buoi-' + lesson) : null,
-        key: text,
-        text: text,
-        rate: 0.9,
-        voice: voice,
-      });
+      window.HumanAudio.play(audioOptions);
       return;
     }
     if (!('speechSynthesis' in window)) return;

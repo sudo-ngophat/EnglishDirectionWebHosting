@@ -185,25 +185,22 @@ class DictationEngine {
   playWithHumanAudio(text, rate, onend = null) {
     const lessonId = this.data.lessonId;
     const key = this.getAudioKey();
+    const options = { lessonId, key, text, rate, voice: this.voice, onend };
 
-    if (!lessonId || !key || !window.HumanAudio) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.voice = this.voice;
-      utterance.rate = rate;
-      utterance.pitch = 1;
-      if (typeof onend === 'function') utterance.onend = onend;
-      this.synth.speak(utterance);
+    if (window.AudioEngine && typeof window.AudioEngine.play === 'function') {
+      window.AudioEngine.play(options);
       return;
     }
-
-    window.HumanAudio.play({
-      lessonId,
-      key,
-      text,
-      rate,
-      voice: this.voice,
-      onend,
-    });
+    if (window.HumanAudio) {
+      window.HumanAudio.play(options);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = this.voice;
+    utterance.rate = rate;
+    utterance.pitch = 1;
+    if (typeof onend === 'function') utterance.onend = onend;
+    this.synth.speak(utterance);
   }
 
   autoRepeat() {
@@ -235,11 +232,21 @@ class DictationEngine {
     if (!text) return;
     this.synth.cancel();
     const letters = text.split('').filter(c => c !== ' ').join(', ');
-    const utterance = new SpeechSynthesisUtterance(letters);
-    utterance.voice = this.voice;
-    utterance.rate = 0.5;
-    utterance.pitch = 1;
-    this.synth.speak(utterance);
+    if (window.AudioEngine && typeof window.AudioEngine.play === 'function') {
+      window.AudioEngine.play({
+        lessonId: this.data.lessonId,
+        key: `dictation:spell:${this.getAudioKey() || text}`,
+        text: letters,
+        rate: 0.5,
+        voice: this.voice,
+      });
+    } else {
+      const utterance = new SpeechSynthesisUtterance(letters);
+      utterance.voice = this.voice;
+      utterance.rate = 0.5;
+      utterance.pitch = 1;
+      this.synth.speak(utterance);
+    }
 
     const ipaEl = document.getElementById('ipaHint');
     if (ipaEl) {
@@ -258,6 +265,16 @@ class DictationEngine {
     const item = entry.item;
     if (item.context) {
       this.synth.cancel();
+      if (window.AudioEngine && typeof window.AudioEngine.play === 'function') {
+        window.AudioEngine.play({
+          lessonId: this.data.lessonId,
+          key: `dictation:context:${item.word}`,
+          text: item.context,
+          rate: 0.8,
+          voice: this.voice,
+        });
+        return;
+      }
       const utterance = new SpeechSynthesisUtterance(item.context);
       utterance.voice = this.voice;
       utterance.rate = 0.8;

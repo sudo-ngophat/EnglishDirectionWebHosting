@@ -53,6 +53,9 @@
     <p class="hint" style="margin-top:1.5rem;">Gõ từ vào ô trống hoặc click từ trong Word Bank rồi click ô trống. Bấm "Kiểm tra" để xem kết quả.</p>
   </div>
 
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/audio-engine.js"></script>
+  <script src="../js/audio-settings.js"></script>
   <script>
 const PASSAGE_DATA = {
   words: ["delegate", "supervise", "oversee", "empower", "accountable", "authorize", "mentor", "coordinate", "endorse"],
@@ -220,6 +223,11 @@ class ReadingFill {
     const sentence = this.data.sentences[num];
     if (!sentence) return;
     this.synth.cancel();
+    const lessonId = this.data.lessonId || null;
+    if (window.AudioEngine) {
+      window.AudioEngine.play({ lessonId, key: `reading:sentence:${num}`, text: sentence, rate: 0.8, voice: this.voice });
+      return;
+    }
     const utt = new SpeechSynthesisUtterance(sentence);
     utt.voice = this.voice;
     utt.rate = 0.8;
@@ -232,6 +240,11 @@ class ReadingFill {
       return this.data.answers[num];
     });
     this.synth.cancel();
+    const lessonId = this.data.lessonId || null;
+    if (window.AudioEngine) {
+      window.AudioEngine.play({ lessonId, key: 'reading:passage', text: fullText, rate: 0.85, voice: this.voice });
+      return;
+    }
     const utt = new SpeechSynthesisUtterance(fullText);
     utt.voice = this.voice;
     utt.rate = 0.85;
