@@ -1,9 +1,13 @@
 (() => {
   const STORAGE_KEY = 'audio_engine';
   const DEFAULT_MODE = 'wav';
-  const KOKORO_URL = window.KOKORO_TTS_URL || 'http://127.0.0.1:8000/api/v1/tts/render';
+  const KOKORO_PORT = window.KOKORO_TTS_PORT || 8000;
+  const isLocalHost = /^(localhost|127\.0\.0\.1|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(window.location.hostname);
+  const kokoroHost = window.location.hostname && isLocalHost ? window.location.hostname : '127.0.0.1';
+  const kokoroBase = `http://${kokoroHost}:${KOKORO_PORT}`;
+  const KOKORO_URL = window.KOKORO_TTS_URL || `${kokoroBase}/api/v1/tts/render`;
   const KOKORO_MODE = window.KOKORO_TTS_MODE || 'lesson';
-  const KOKORO_HEALTH_URL = window.KOKORO_HEALTH_URL || 'http://127.0.0.1:8000/api/v1/health';
+  const KOKORO_HEALTH_URL = window.KOKORO_HEALTH_URL || `${kokoroBase}/api/v1/health`;
   const nativeSynth = window.__nativeSpeechSynthesis || window.speechSynthesis;
   const NativeUtterance = window.__NativeSpeechSynthesisUtterance || window.SpeechSynthesisUtterance;
 
