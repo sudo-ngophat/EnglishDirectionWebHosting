@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Kokoro server workspace
+../kokoro-main/.venv/
+../kokoro-main/**/__pycache__/
+../kokoro-main/dist_*
+../kokoro-main/**/*.egg-info/
+
+# Editor / OS
+.claude/
+.playwright-mcp/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local scratch
+scripts/__pycache__/
+tmp/
+*.log
+
+# Large generated audio caches (uncomment if not deploying pre-rendered vocab)
+# audio/vocab/**/*.wav

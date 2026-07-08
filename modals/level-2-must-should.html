@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 2 — Must / Should / Have to</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.9rem;margin:.8rem 0;color:var(--success);line-height:2.2}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 2 — Must / Should / Have to</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Must vs Have to vs Should</h3>
+      <div class="formula">
+        <strong>MUST</strong> — bắt buộc (từ người nói / quy tắc):<br>
+        &nbsp;&nbsp; You <strong>must</strong> wear a seatbelt. (luật) / I <strong>must</strong> finish this today. (tự bắt buộc)<br><br>
+        <strong>HAVE TO</strong> — bắt buộc (từ bên ngoài / hoàn cảnh):<br>
+        &nbsp;&nbsp; I <strong>have to</strong> work tomorrow. (lịch làm việc) / She <strong>has to</strong> wear a uniform.<br><br>
+        <strong>SHOULD</strong> — khuyên nhủ (nên làm, không bắt buộc):<br>
+        &nbsp;&nbsp; You <strong>should</strong> exercise more. / You <strong>shouldn't</strong> eat too much sugar.
+      </div>
+      <div class="note">
+        <strong>Phủ định — nghĩa KHÁC NHAU:</strong><br>
+        • <strong>mustn't</strong> = CẤM, không được phép: You <strong>mustn't</strong> smoke here.<br>
+        • <strong>don't have to</strong> = KHÔNG CẦN, không bắt buộc: You <strong>don't have to</strong> come if you're busy.<br>
+        • <strong>shouldn't</strong> = không nên: You <strong>shouldn't</strong> stay up late.<br><br>
+        <strong>Must vs Have to:</strong><br>
+        • must = tự mình quyết định / quy tắc chung<br>
+        • have to = bị bắt buộc bởi hoàn cảnh / người khác<br>
+        • Quá khứ: must không có quá khứ → dùng <strong>had to</strong>
+      </div>
+    </div>
+
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn must, have to, should, mustn't, don't have to (20 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-3-may-might-will.html" class="btn btn-secondary" style="margin-top:1rem;margin-left:.5rem;">Level 3 →</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-1-can-could.html" class="btn btn-secondary">&larr; Level 1</a>
+      <a href="level-3-may-might-will.html" class="btn btn-play">Level 3 →</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={ex1:[
+  {q:"You ___ wear a helmet when riding a motorcycle. (luật pháp)",options:["must","should","don't have to"],answer:0,explain:"Luật bắt buộc → must"},
+  {q:"You ___ eat more vegetables. It's good for you. (khuyên)",options:["must","should","have to"],answer:1,explain:"Khuyên nhủ → should"},
+  {q:"I ___ go to work tomorrow. My boss expects me there.",options:["must","have to","should"],answer:1,explain:"Bắt buộc bởi hoàn cảnh/người khác → have to"},
+  {q:"You ___ park here. It's a no-parking zone. (cấm)",options:["mustn't","don't have to","shouldn't"],answer:0,explain:"Cấm → mustn't"},
+  {q:"You ___ bring food. We'll provide lunch. (không cần)",options:["mustn't","don't have to","shouldn't"],answer:1,explain:"Không bắt buộc → don't have to"},
+  {q:"She ___ study harder if she wants to pass.",options:["must","should","has to"],answer:1,explain:"Khuyên nhủ → should"},
+  {q:"Students ___ cheat on exams. (cấm)",options:["mustn't","don't have to","shouldn't"],answer:0,explain:"Cấm tuyệt đối → mustn't"},
+  {q:"I ___ finish this report by Friday. My manager set the deadline.",options:["must","have to","should"],answer:1,explain:"Deadline từ manager → have to"},
+  {q:"You ___ be so rude to people. (khuyên không nên)",options:["mustn't","don't have to","shouldn't"],answer:2,explain:"Khuyên không nên → shouldn't"},
+  {q:"You ___ touch that wire! It's dangerous! (cấm)",options:["mustn't","don't have to","shouldn't"],answer:0,explain:"Nguy hiểm, cấm → mustn't"},
+  {q:"It's Sunday. I ___ go to work today. (không cần)",options:["mustn't","don't have to","shouldn't"],answer:1,explain:"Không bắt buộc (Chủ nhật) → don't have to"},
+  {q:"You ___ see a doctor. That cough sounds bad.",options:["must","should","have to"],answer:1,explain:"Khuyên nhủ mạnh → should (hoặc must nếu rất nghiêm trọng)"},
+  {q:"I ___ remember to call Mom tonight. (tự nhắc mình)",options:["must","have to","should"],answer:0,explain:"Tự bắt buộc mình → must"},
+  {q:"She ___ wear glasses. Her eyesight is fine. (không cần)",options:["mustn't","doesn't have to","shouldn't"],answer:1,explain:"Không cần thiết → doesn't have to"},
+  {q:"You ___ tell anyone about this. It's a secret. (cấm)",options:["mustn't","don't have to","shouldn't"],answer:0,explain:"Cấm (bí mật) → mustn't"},
+  {q:"He ___ work overtime yesterday because of the deadline.",options:["must","had to","should"],answer:1,explain:"Quá khứ + bắt buộc → had to (must không có quá khứ)"},
+  {q:"You ___ apologize. It wasn't your fault. (không cần)",options:["mustn't","don't have to","shouldn't"],answer:1,explain:"Không cần thiết → don't have to"},
+  {q:"I think you ___ talk to her about it. (khuyên)",options:["must","should","have to"],answer:1,explain:"Khuyên nhủ → should"},
+  {q:"Passengers ___ fasten their seatbelts during takeoff. (quy định)",options:["must","should","don't have to"],answer:0,explain:"Quy định hàng không → must"},
+  {q:"You ___ stay up so late. You look exhausted. (khuyên không nên)",options:["mustn't","don't have to","shouldn't"],answer:2,explain:"Khuyên không nên → shouldn't"}
+]};
+
+let scores={ex1:0};let totals={ex1:20};let checked={ex1:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});const p=Math.round(correct/totals[s]*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${correct} / ${totals[s]} câu đúng`;}
+
+renderMCSection('ex1');
+  </script>
+</body>
+</html>

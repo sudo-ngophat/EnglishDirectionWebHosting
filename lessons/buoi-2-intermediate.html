@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 2 — Intermediate Dictation</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 2 — Intermediate</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng mở rộng</button>
+      <button class="tab-btn" data-mode="sentences">Câu nâng cao</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 18</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 5%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Mẹo cho mức Intermediate</h4>
+      <ul>
+        <li><strong>Phân biệt từ gần nghĩa</strong> — acquire vs obtain vs attain: cùng nghĩa "có được" nhưng ngữ cảnh khác nhau.</li>
+        <li><strong>Collocations</strong> — acquire knowledge, perform duties, decline an offer, grant permission, draw a comparison.</li>
+        <li><strong>Câu dài hơn</strong> — Nghe cả câu trước, rồi gõ. Không cần gõ từng từ một.</li>
+        <li><strong>Nominalization</strong> — Chú ý cách chuyển: permit → permission, compare → comparison, perform → performance.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/dictation.js"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 2 Intermediate",
+      vocabulary: [
+        { word: "acquaintance", hint: "người quen (không thân)", ipa: "/əˈkweɪn.təns/", syllables: 3, context: "He is just an acquaintance, not a close friend." },
+        { word: "performer", hint: "người biểu diễn", ipa: "/pərˈfɔːr.mər/", syllables: 3, context: "She is a talented performer who captivates every audience." },
+        { word: "outperform", hint: "vượt trội hơn", ipa: "/ˌaʊt.pərˈfɔːrm/", syllables: 3, context: "Small companies often outperform large corporations in innovation." },
+        { word: "underperform", hint: "hoạt động kém hơn kỳ vọng", ipa: "/ˌʌn.dər.pərˈfɔːrm/", syllables: 4, context: "Students who lack sleep tend to underperform on exams." },
+        { word: "impermissible", hint: "không được phép", ipa: "/ˌɪm.pərˈmɪs.ə.bəl/", syllables: 5, context: "Cheating on exams is impermissible under any circumstances." },
+        { word: "permissive", hint: "dễ dãi, cho phép nhiều", ipa: "/pərˈmɪs.ɪv/", syllables: 3, context: "Permissive parenting can lead to undisciplined children." },
+        { word: "incomparable", hint: "không thể so sánh, vượt trội", ipa: "/ɪnˈkɒm.pər.ə.bəl/", syllables: 5, context: "Her talent is incomparable to anyone else in the industry." },
+        { word: "comparatively", hint: "tương đối, so với", ipa: "/kəmˈpær.ə.tɪv.li/", syllables: 5, context: "Vietnam is comparatively cheaper than Japan for tourists." },
+        { word: "indifference", hint: "sự thờ ơ", ipa: "/ɪnˈdɪf.ər.əns/", syllables: 4, context: "Public indifference to climate change is alarming." },
+        { word: "differentiate", hint: "phân biệt", ipa: "/ˌdɪf.əˈren.ʃi.eɪt/", syllables: 5, context: "It is hard to differentiate between the two products." },
+        { word: "obtainable", hint: "có thể đạt được", ipa: "/əbˈteɪ.nə.bəl/", syllables: 4, context: "A perfect score is obtainable with enough practice." },
+        { word: "attainment", hint: "sự đạt được, thành tựu", ipa: "/əˈteɪn.mənt/", syllables: 3, context: "Educational attainment varies greatly across regions." },
+        { word: "unattainable", hint: "không thể đạt được", ipa: "/ˌʌn.əˈteɪ.nə.bəl/", syllables: 5, context: "For many, home ownership has become unattainable." },
+        { word: "consensual", hint: "có sự đồng thuận", ipa: "/kənˈsen.ʃu.əl/", syllables: 4, context: "Any agreement must be consensual to be legally binding." },
+        { word: "comprehensive", hint: "toàn diện, bao quát", ipa: "/ˌkɒm.prɪˈhen.sɪv/", syllables: 4, context: "The report provides a comprehensive overview of the situation." },
+        { word: "comprehension", hint: "sự hiểu biết", ipa: "/ˌkɒm.prɪˈhen.ʃən/", syllables: 4, context: "Reading comprehension is tested in every English exam." },
+        { word: "incomprehensible", hint: "không thể hiểu nổi", ipa: "/ɪnˌkɒm.prɪˈhen.sə.bəl/", syllables: 6, context: "His handwriting is almost incomprehensible." },
+        { word: "internalization", hint: "sự nội tại hóa", ipa: "/ɪnˌtɜː.nəl.aɪˈzeɪ.ʃən/", syllables: 6, context: "The internalization of grammar rules takes months of practice." }
+      ],
+      sentences: [
+        "Students who acquire knowledge through active learning tend to outperform those who rely on passive memorization.",
+        "The company's performance declined sharply after several key performers left the organization.",
+        "Without mutual consent, no agreement can be considered legally binding or enforceable.",
+        "Permissive parents often struggle to differentiate between giving freedom and lacking discipline.",
+        "The attainment of fluency in a foreign language requires years of consistent practice and internalization.",
+        "Her singing ability is incomparable, which is why she consistently outperforms other contestants.",
+        "Public indifference to environmental issues has made sustainable development comparatively harder to achieve.",
+        "The government should not permit companies to exploit workers, as such practices are impermissible in a modern society.",
+        "A comprehensive understanding of grammar is obtainable if students are willing to internalize the rules.",
+        "Many young people find academic papers incomprehensible because they lack reading comprehension skills.",
+        "Drawing a comparison between online and offline education reveals that neither consistently outperforms the other.",
+        "The decline in reading habits among teenagers is partly due to the indifference of schools toward promoting literature.",
+        "It is impermissible to acquire personal data without the explicit consent of the individual.",
+        "His educational attainment is comparable to that of graduates from top universities.",
+        "The performer's ability to comprehend and convey complex emotions is what differentiates her from amateurs.",
+        "Comparatively speaking, obtaining a work permit in Vietnam is less complicated than in many European countries.",
+        "The internalization of cultural values cannot be forced; it must be acquired through lived experience.",
+        "Some goals that seem unattainable at first become obtainable once you develop the right mindset."
+      ],
+      passage: [
+        "The acquisition of a second language is a journey that many people embark on but few truly complete.",
+        "Research shows that learners who actively perform speaking tasks outperform those who only study grammar rules passively.",
+        "This comparison between active and passive learners reveals a fundamental truth about language internalization.",
+        "Simply obtaining a textbook or acquiring study materials is not enough to attain fluency.",
+        "The comprehension of spoken language, in particular, requires consistent exposure and practice.",
+        "Many learners show indifference toward pronunciation, failing to differentiate between similar sounds.",
+        "This indifference often leads to a decline in their overall communicative performance.",
+        "A permissive attitude toward errors in the early stages can be beneficial, as it permits learners to experiment freely.",
+        "However, without comprehensive feedback, bad habits become internalized and comparatively harder to correct later.",
+        "The attainment of native-like pronunciation is often considered unattainable by adult learners.",
+        "Yet recent studies suggest that with sufficient practice, a comparable level of proficiency is obtainable.",
+        "What differentiates successful language learners from others is not talent but persistence.",
+        "They do not decline opportunities to practice, nor do they remain indifferent to their mistakes.",
+        "The key is to acquire not just knowledge but the ability to perform under real-world pressure.",
+        "With mutual support from teachers and peers, and with the consent to make mistakes along the way, fluency becomes an attainable goal."
+      ],
+      fillblank: [
+        { sentence: "Small companies often outperform large corporations in innovation.", display: "Small companies often _____ large corporations in innovation. (perform → vượt trội)", answer: "outperform" },
+        { sentence: "Students who lack sleep tend to underperform on exams.", display: "Students who lack sleep tend to _____ on exams. (perform → kém hơn kỳ vọng)", answer: "underperform" },
+        { sentence: "Cheating on exams is impermissible under any circumstances.", display: "Cheating on exams is _____ under any circumstances. (permit → adj = không được phép)", answer: "impermissible" },
+        { sentence: "Permissive parenting can lead to undisciplined children.", display: "_____ parenting can lead to undisciplined children. (permit → adj = dễ dãi)", answer: "Permissive" },
+        { sentence: "Her talent is incomparable to anyone else.", display: "Her talent is _____ to anyone else. (compare → adj = không thể so sánh)", answer: "incomparable" },
+        { sentence: "Vietnam is comparatively cheaper than Japan for tourists.", display: "Vietnam is _____ cheaper than Japan for tourists. (compare → adv)", answer: "comparatively" },
+        { sentence: "It is hard to differentiate between the two products.", display: "It is hard to _____ between the two products. (different → verb = phân biệt)", answer: "differentiate" },
+        { sentence: "Educational attainment varies greatly across regions.", display: "Educational _____ varies greatly across regions. (attain → noun)", answer: "attainment" },
+        { sentence: "For many, home ownership has become unattainable.", display: "For many, home ownership has become _____. (attain → adj = không thể đạt)", answer: "unattainable" },
+        { sentence: "A perfect score is obtainable with enough practice.", display: "A perfect score is _____ with enough practice. (obtain → adj)", answer: "obtainable" },
+        { sentence: "Any agreement must be consensual to be legally binding.", display: "Any agreement must be _____ to be legally binding. (consent → adj)", answer: "consensual" },
+        { sentence: "The report provides a comprehensive overview of the situation.", display: "The report provides a _____ overview of the situation. (comprehend → adj = toàn diện)", answer: "comprehensive" },
+        { sentence: "Reading comprehension is tested in every English exam.", display: "Reading _____ is tested in every English exam. (comprehend → noun)", answer: "comprehension" },
+        { sentence: "His handwriting is almost incomprehensible.", display: "His handwriting is almost _____. (comprehend → adj = không hiểu nổi)", answer: "incomprehensible" },
+        { sentence: "The internalization of grammar rules takes months of practice.", display: "The _____ of grammar rules takes months of practice. (internalize → noun)", answer: "internalization" },
+        { sentence: "He is just an acquaintance, not a close friend.", display: "He is just an _____, not a close friend. (acquire → noun = người quen)", answer: "acquaintance" },
+        { sentence: "Public indifference to climate change is alarming.", display: "Public _____ to climate change is alarming. (indifferent → noun)", answer: "indifference" },
+        { sentence: "She is a talented performer who captivates every audience.", display: "She is a talented _____ who captivates every audience. (perform → noun = người biểu diễn)", answer: "performer" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

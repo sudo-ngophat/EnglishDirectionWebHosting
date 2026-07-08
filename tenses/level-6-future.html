@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 6 — Future: Will vs Going to</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .compare-table th { background: var(--card); padding: 0.7rem; text-align: left; border: 1px solid var(--border); }
+    .compare-table td { padding: 0.7rem; border: 1px solid var(--border); }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 200px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 6 — Will vs Going to</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Will — Quyết định tức thì, dự đoán, lời hứa</h3>
+      <div class="formula">
+        (+) S + will + V1 &nbsp;&nbsp; → &nbsp; I <strong>will help</strong> you.<br>
+        (-) S + will not (won't) + V1 &nbsp;&nbsp; → &nbsp; I <strong>won't tell</strong> anyone.<br>
+        (?) Will + S + V1? &nbsp;&nbsp; → &nbsp; <strong>Will</strong> you <strong>come</strong>?
+      </div>
+      <p style="font-size:0.9rem; margin-top:0.8rem;">Dùng khi:</p>
+      <ul style="margin: 0.3rem 0 0 1.5rem; font-size: 0.9rem;">
+        <li><strong>Quyết định ngay lúc nói:</strong> It's cold. I'll close the window.</li>
+        <li><strong>Lời hứa / đề nghị:</strong> I'll help you with your homework.</li>
+        <li><strong>Dự đoán (ý kiến cá nhân):</strong> I think it will rain tomorrow.</li>
+        <li><strong>Sự thật tương lai:</strong> She will be 30 next year.</li>
+      </ul>
+    </div>
+
+    <div class="theory-box">
+      <h3>Going to — Kế hoạch đã có, dự đoán có bằng chứng</h3>
+      <div class="formula">
+        (+) S + am/is/are + going to + V1 &nbsp;&nbsp; → &nbsp; I <strong>am going to study</strong> tonight.<br>
+        (-) S + am/is/are + not + going to + V1 &nbsp;&nbsp; → &nbsp; She <strong>isn't going to come</strong>.<br>
+        (?) Am/Is/Are + S + going to + V1? &nbsp;&nbsp; → &nbsp; <strong>Are</strong> you <strong>going to travel</strong>?
+      </div>
+      <p style="font-size:0.9rem; margin-top:0.8rem;">Dùng khi:</p>
+      <ul style="margin: 0.3rem 0 0 1.5rem; font-size: 0.9rem;">
+        <li><strong>Kế hoạch đã quyết định từ trước:</strong> I'm going to visit Japan next month. (đã book vé)</li>
+        <li><strong>Dự đoán có bằng chứng:</strong> Look at those clouds! It's going to rain. (thấy mây đen)</li>
+        <li><strong>Ý định:</strong> I'm going to learn Korean this year.</li>
+      </ul>
+    </div>
+
+    <div class="theory-box">
+      <h3>So sánh nhanh</h3>
+      <table class="compare-table">
+        <thead><tr><th style="color:var(--success)">Will</th><th style="color:orange">Going to</th></tr></thead>
+        <tbody>
+          <tr><td>Quyết định ngay lúc nói<br><em>A: I'm hungry. B: I'll make you a sandwich.</em></td><td>Kế hoạch đã có từ trước<br><em>I'm going to make pasta tonight. (đã mua nguyên liệu)</em></td></tr>
+          <tr><td>Dự đoán = ý kiến<br><em>I think she will pass the exam.</em></td><td>Dự đoán = có bằng chứng<br><em>She studied so hard. She's going to pass.</em></td></tr>
+          <tr><td>Lời hứa / đề nghị<br><em>I'll call you later. / I'll carry that for you.</em></td><td>Ý định đã suy nghĩ<br><em>I'm going to quit smoking.</em></td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <strong>Dấu hiệu:</strong><br>
+        • "I think / I'm sure / probably" → <span style="color:var(--success)">will</span><br>
+        • "Look! / evidence / đã quyết định" → <span style="color:orange">going to</span><br>
+        • Lời hứa, đề nghị tự phát → <span style="color:var(--success)">will</span>
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn Will hay Going to? (15 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chia động từ với will hoặc going to (12 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Phủ định & Nghi vấn (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4 -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Hoàn cảnh — Viết câu phù hợp (8 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-7-present-perfect.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 7 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-5-past-continuous.html" class="btn btn-secondary">&larr; Level 5</a>
+      <a href="level-7-present-perfect.html" class="btn btn-play">Level 7: Present Perfect &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "A: It's hot in here. B: I ___ open the window.", options: ["will", "am going to"], answer: 0, explain: "Quyết định ngay lúc nói → will" },
+    { q: "I've already booked the tickets. We ___ fly to Bangkok next week.", options: ["will", "are going to"], answer: 1, explain: "Kế hoạch đã có (đã book vé) → going to" },
+    { q: "I think Vietnam ___ win the match tonight.", options: ["will", "is going to"], answer: 0, explain: "\"I think\" = dự đoán ý kiến → will" },
+    { q: "Look at those dark clouds! It ___ rain.", options: ["will", "is going to"], answer: 1, explain: "Có bằng chứng (mây đen) → going to" },
+    { q: "A: I don't understand this. B: Don't worry, I ___ explain it to you.", options: ["will", "am going to"], answer: 0, explain: "Đề nghị giúp tự phát → will" },
+    { q: "She has been studying all year. She ___ pass the exam easily.", options: ["will", "is going to"], answer: 1, explain: "Có bằng chứng (học cả năm) → going to" },
+    { q: "I promise I ___ never lie to you again.", options: ["will", "am going to"], answer: 0, explain: "Lời hứa → will" },
+    { q: "We ___ move to a new apartment next month. We've already signed the contract.", options: ["will", "are going to"], answer: 1, explain: "Đã quyết định + ký hợp đồng → going to" },
+    { q: "I'm sure she ___ love the present.", options: ["will", "is going to"], answer: 0, explain: "\"I'm sure\" = dự đoán ý kiến → will" },
+    { q: "He's carrying too many boxes. He ___ drop them!", options: ["will", "is going to"], answer: 1, explain: "Thấy bằng chứng (mang quá nhiều) → going to" },
+    { q: "A: We need milk. B: I ___ go to the store.", options: ["will", "am going to"], answer: 0, explain: "Quyết định ngay lúc nói → will" },
+    { q: "She ___ be 25 next Tuesday.", options: ["will", "is going to"], answer: 0, explain: "Sự thật tương lai → will" },
+    { q: "I ___ start exercising every day. I've made up my mind.", options: ["will", "am going to"], answer: 1, explain: "Ý định đã suy nghĩ → going to" },
+    { q: "Don't worry about the bill. I ___ pay for everyone.", options: ["will", "am going to"], answer: 0, explain: "Đề nghị tự phát → will" },
+    { q: "They ___ build a new shopping mall here. The construction starts next month.", options: ["will", "are going to"], answer: 1, explain: "Kế hoạch đã có (construction starts) → going to" }
+  ],
+  ex2: [
+    { q: "I think it ___ (rain) tomorrow.", answer: "will rain", hint: "I think = ý kiến → will" },
+    { q: "She ___ (visit) her parents this weekend. She already told them.", answer: "is going to visit", hint: "Đã quyết định → going to" },
+    { q: "A: The phone is ringing! B: I ___ (get) it.", answer: "will get", alt: ["'ll get"], hint: "Quyết định tức thì → will" },
+    { q: "We ___ (have) a party next Saturday. We've sent all the invitations.", answer: "are going to have", hint: "Kế hoạch đã có → going to" },
+    { q: "I promise I ___ (be) on time.", answer: "will be", alt: ["'ll be"], hint: "Lời hứa → will" },
+    { q: "Look! That car ___ (crash)!", answer: "is going to crash", hint: "Bằng chứng trước mắt → going to" },
+    { q: "I'm sure he ___ (get) the job.", answer: "will get", alt: ["'ll get"], hint: "I'm sure = ý kiến → will" },
+    { q: "She ___ (study) medicine. She's already been accepted to medical school.", answer: "is going to study", hint: "Đã được nhận → going to" },
+    { q: "A: I'm cold. B: I ___ (turn) on the heater.", answer: "will turn", alt: ["'ll turn"], hint: "Quyết định ngay → will" },
+    { q: "They ___ (not come) to the party. They told me yesterday.", answer: "are not going to come", alt: ["aren't going to come"], hint: "Đã quyết định → going to" },
+    { q: "I ___ (probably / forget) his name by tomorrow.", answer: "will probably forget", hint: "probably = dự đoán → will" },
+    { q: "He ___ (quit) his job. He's already written his resignation letter.", answer: "is going to quit", hint: "Đã viết thư → going to" }
+  ],
+  ex3: [
+    { q: "I will help you. → (phủ định)", answer: "I will not help you.", alt: ["I won't help you."] },
+    { q: "She is going to travel. → (phủ định)", answer: "She is not going to travel.", alt: ["She isn't going to travel.", "She's not going to travel."] },
+    { q: "They will come tomorrow. → (nghi vấn)", answer: "Will they come tomorrow?" },
+    { q: "He is going to buy a car. → (nghi vấn)", answer: "Is he going to buy a car?" },
+    { q: "We will be late. → (phủ định)", answer: "We will not be late.", alt: ["We won't be late."] },
+    { q: "You are going to study abroad. → (nghi vấn)", answer: "Are you going to study abroad?" },
+    { q: "It will snow tonight. → (phủ định)", answer: "It will not snow tonight.", alt: ["It won't snow tonight."] },
+    { q: "She will pass the exam. → (nghi vấn)", answer: "Will she pass the exam?" },
+    { q: "They are going to move. → (phủ định)", answer: "They are not going to move.", alt: ["They aren't going to move.", "They're not going to move."] },
+    { q: "He will call you back. → (nghi vấn)", answer: "Will he call you back?" }
+  ],
+  ex4: [
+    { q: "Bạn thấy bạn mình sắp ngã xe đạp. Bạn hét: \"Watch out! You ___!\"", answer: "are going to fall", hint: "Bằng chứng → going to" },
+    { q: "Ai đó gõ cửa. Bạn nói: \"I ___ the door.\" (get)", answer: "will get", alt: ["'ll get"], hint: "Quyết định tức thì → will" },
+    { q: "Bạn đã lên kế hoạch nghỉ hè: \"I ___ Japan this summer.\" (visit)", answer: "am going to visit", hint: "Kế hoạch đã có → going to" },
+    { q: "Bạn hứa với mẹ: \"I ___ home late, Mom.\" (not be)", answer: "will not be", alt: ["won't be"], hint: "Lời hứa → will" },
+    { q: "Bạn nghĩ về tương lai: \"I think robots ___ most jobs in 50 years.\" (replace)", answer: "will replace", hint: "I think = ý kiến → will" },
+    { q: "Bạn thấy bầu trời rất đẹp: \"Look at the sky! It ___ a beautiful sunset.\" (be)", answer: "is going to be", hint: "Bằng chứng (bầu trời) → going to" },
+    { q: "Bạn quyết định ngay: \"This bag is too heavy. I ___ you carry it.\" (help)", answer: "will help", alt: ["'ll help"], hint: "Đề nghị tức thì → will" },
+    { q: "Bạn đã đăng ký khóa học: \"I ___ English at a language center next month.\" (study)", answer: "am going to study", hint: "Đã đăng ký → going to" }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0 };
+let totals = { ex1: 15, ex2: 12, ex3: 10, ex4: 8 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false };
+
+function renderMC(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="${section}" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked[section]) return;
+    const q = parseInt(btn.dataset.q);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+  });
+}
+
+function renderFill(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    const isWrite = section === 'ex4';
+    const parts = item.q.split('___');
+    if (parts.length > 1) {
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${section}-input-${i}" placeholder="...">${parts[1]}</div><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    } else {
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><input type="text" id="${section}-input-${i}" placeholder="Viết lại câu..." style="width:100%; margin-top:0.5rem;"><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '').replace(/\?$/, function(m){return m;});
+}
+
+function checkMC(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const selected = document.querySelector(`#${section}Questions .mc-btn[data-q="${i}"].selected`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const btns = document.querySelectorAll(`#${section}Questions .mc-btn[data-q="${i}"]`);
+    btns.forEach(b => b.classList.add('disabled'));
+    if (selected && parseInt(selected.dataset.opt) === item.answer) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + item.explain;
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      if (selected) selected.classList.add('wrong');
+      btns[item.answer].classList.add('correct');
+      fb.textContent = '✗ ' + item.explain;
+      fb.className = 'fb wrong-fb';
+    }
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkFill(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      const hint = item.hint ? ` — ${item.hint}` : '';
+      fb.textContent = `✗ Đáp án: ${item.answer}${hint}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderMC('ex1');
+renderFill('ex2');
+renderFill('ex3');
+renderFill('ex4');
+  </script>
+</body>
+</html>

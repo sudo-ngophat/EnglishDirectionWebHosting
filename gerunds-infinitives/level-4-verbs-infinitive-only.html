@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4 — Verbs + Infinitive Only</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.85rem;margin:.8rem 0;color:var(--success);line-height:2.2}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.exercise-item input[type="text"]{width:200px;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;text-align:center;outline:none}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 4 — Verbs + Infinitive Only</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Động từ CHỈ đi với to V (Infinitive)</h3>
+      <div class="formula">
+        <strong>want</strong> to do — muốn làm<br>
+        <strong>need</strong> to do — cần làm<br>
+        <strong>decide</strong> to do — quyết định làm<br>
+        <strong>hope</strong> to do — hy vọng làm<br>
+        <strong>plan</strong> to do — lên kế hoạch làm<br>
+        <strong>promise</strong> to do — hứa làm<br>
+        <strong>refuse</strong> to do — từ chối làm<br>
+        <strong>agree</strong> to do — đồng ý làm<br>
+        <strong>learn</strong> to do — học làm<br>
+        <strong>afford</strong> to do — đủ khả năng làm<br>
+        <strong>offer</strong> to do — đề nghị làm<br>
+        <strong>pretend</strong> to do — giả vờ làm<br>
+        <strong>seem</strong> to do — có vẻ làm<br>
+        <strong>expect</strong> to do — mong đợi làm<br>
+        <strong>manage</strong> to do — xoay sở làm được<br>
+        <strong>fail</strong> to do — thất bại trong việc làm<br>
+        <strong>tend</strong> to do — có xu hướng làm<br>
+        <strong>threaten</strong> to do — đe dọa làm
+      </div>
+      <div class="note">
+        ✗ I want <strong>going</strong> home. → ✓ I want <strong>to go</strong> home.<br>
+        ✗ She decided <strong>leaving</strong>. → ✓ She decided <strong>to leave</strong>.<br><br>
+        <strong>V + Object + to V:</strong> ask/tell/want/expect/allow/advise + someone + to do<br>
+        &nbsp;&nbsp; She asked me <strong>to help</strong>. He told her <strong>to wait</strong>.
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chia động từ trong ngoặc (20 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Sửa lỗi sai (10 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-5-both-different-meaning.html" class="btn btn-secondary" style="margin-top:1rem;margin-left:.5rem;">Level 5 →</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-3-verbs-gerund-only.html" class="btn btn-secondary">&larr; Level 3</a>
+      <a href="level-5-both-different-meaning.html" class="btn btn-play">Level 5: Both &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"I want ___ (go) home now.",answer:"to go"},
+    {q:"She decided ___ (quit) her job.",answer:"to quit"},
+    {q:"He hopes ___ (get) a promotion.",answer:"to get"},
+    {q:"They plan ___ (visit) Japan next year.",answer:"to visit"},
+    {q:"I need ___ (finish) this by Friday.",answer:"to finish"},
+    {q:"She promised ___ (call) me back.",answer:"to call"},
+    {q:"He refused ___ (answer) the question.",answer:"to answer"},
+    {q:"They agreed ___ (share) the cost.",answer:"to share"},
+    {q:"I'm learning ___ (drive).",answer:"to drive"},
+    {q:"We can't afford ___ (buy) a new house.",answer:"to buy"},
+    {q:"She offered ___ (help) me with my bags.",answer:"to help"},
+    {q:"He pretended ___ (be) sick.",answer:"to be"},
+    {q:"She seems ___ (know) everyone here.",answer:"to know"},
+    {q:"I expect ___ (arrive) by 6 PM.",answer:"to arrive"},
+    {q:"He managed ___ (escape) from the building.",answer:"to escape"},
+    {q:"She failed ___ (pass) the driving test.",answer:"to pass"},
+    {q:"People tend ___ (eat) more in winter.",answer:"to eat"},
+    {q:"He threatened ___ (leave) if we didn't agree.",answer:"to leave"},
+    {q:"She asked me ___ (wait) outside.",answer:"to wait"},
+    {q:"The teacher told us ___ (be) quiet.",answer:"to be"}
+  ],
+  ex2:[
+    {q:"I want going home.",answer:"I want to go home.",explain:"want + to V"},
+    {q:"She decided leaving early.",answer:"She decided to leave early.",explain:"decide + to V"},
+    {q:"He hopes getting a good grade.",answer:"He hopes to get a good grade.",explain:"hope + to V"},
+    {q:"They plan traveling next month.",answer:"They plan to travel next month.",explain:"plan + to V"},
+    {q:"I need finishing this report.",answer:"I need to finish this report.",explain:"need + to V"},
+    {q:"She refused helping me.",answer:"She refused to help me.",explain:"refuse + to V"},
+    {q:"He promised coming on time.",answer:"He promised to come on time.",explain:"promise + to V"},
+    {q:"I can't afford buying that car.",answer:"I can't afford to buy that car.",explain:"afford + to V"},
+    {q:"She offered driving me home.",answer:"She offered to drive me home.",explain:"offer + to V"},
+    {q:"He failed passing the exam.",answer:"He failed to pass the exam.",explain:"fail + to V"}
+  ]
+};
+
+let scores={ex1:0,ex2:0};
+let totals={ex1:20,ex2:10};
+let checked={ex1:false,ex2:false};
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{if(item.q.includes('___')){const parts=item.q.split('___');h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${s}-input-${i}" placeholder="to V">${parts[1]||''}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;}else{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> <span style="color:var(--accent);">${item.q}</span></div><input type="text" id="${s}-input-${i}" placeholder="Viết lại câu đúng..." style="width:100%;margin-top:.5rem;"><div class="fb" id="${s}-fb-${i}"></div></div>`;}});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().replace(/['']/g,"'").replace(/\s+/g,' ').trim().replace(/\.$/,'');}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value),cv=normalize(item.answer),alts=(item.alt||[]).map(a=>normalize(a));if(uv===cv||alts.includes(uv)){input.classList.add('correct');fb.textContent='✓ Đúng!';fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer}${item.explain?' — '+item.explain:''}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;}
+
+renderFillSection('ex1');renderFillSection('ex2');
+  </script>
+</body>
+</html>

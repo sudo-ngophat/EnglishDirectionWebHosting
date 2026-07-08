@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4 — Mixed Modals (Boss)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.85rem;margin:.8rem 0;color:var(--success);line-height:2.2}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}.boss-badge{display:inline-block;padding:.3rem .8rem;background:linear-gradient(135deg,var(--accent),var(--success));color:#000;border-radius:20px;font-size:.75rem;font-weight:700;margin-left:.5rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 4 — Mixed Modals <span class="boss-badge">BOSS</span></h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Modal Perfect — Suy luận về quá khứ</h3>
+      <div class="formula">
+        <strong>must have + V3</strong> — chắc chắn đã xảy ra:<br>
+        &nbsp;&nbsp; She <strong>must have forgotten</strong>. (chắc cô ấy đã quên)<br><br>
+        <strong>may/might have + V3</strong> — có thể đã xảy ra:<br>
+        &nbsp;&nbsp; He <strong>might have missed</strong> the bus. (có thể đã lỡ xe)<br><br>
+        <strong>can't have + V3</strong> — chắc chắn không xảy ra:<br>
+        &nbsp;&nbsp; She <strong>can't have said</strong> that! (chắc chắn cô ấy không nói vậy)<br><br>
+        <strong>should have + V3</strong> — lẽ ra nên làm (nhưng không làm):<br>
+        &nbsp;&nbsp; You <strong>should have studied</strong> harder. (lẽ ra nên học chăm hơn)<br><br>
+        <strong>could have + V3</strong> — lẽ ra có thể làm (nhưng không làm):<br>
+        &nbsp;&nbsp; I <strong>could have helped</strong> you. (lẽ ra tôi có thể giúp)
+      </div>
+      <div class="note">
+        <strong>should have = hối tiếc</strong> — dùng khi muốn nói "giá mà đã làm"<br>
+        <strong>shouldn't have = hối tiếc đã làm</strong> — "giá mà đã không làm"<br>
+        I <strong>shouldn't have eaten</strong> so much. (giá mà không ăn nhiều thế)
+      </div>
+    </div>
+
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Tổng hợp tất cả Modals (25 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-play" onclick="location.reload()">Làm lại</button>
+        <a href="index.html" class="btn btn-secondary" style="margin-left:.5rem;">Hoàn thành!</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.9rem;color:var(--success);" id="masterMsg"></p>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-3-may-might-will.html" class="btn btn-secondary">&larr; Level 3</a>
+      <a href="index.html" class="btn btn-play">Hoàn thành!</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={ex1:[
+  {q:"She's not answering. She ___ be asleep. (chắc chắn ~95%)",options:["must","may","can't","should"],answer:0,explain:"Suy luận chắc chắn → must"},
+  {q:"You ___ have told me earlier! Now it's too late. (lẽ ra nên)",options:["must","could","should","might"],answer:2,explain:"Hối tiếc, lẽ ra nên → should have"},
+  {q:"He ___ have passed the exam. He didn't study at all. (chắc chắn không)",options:["must","may","can't","shouldn't"],answer:2,explain:"Chắc chắn không → can't have"},
+  {q:"I ___ swim when I was 5 years old.",options:["can","could","must","should"],answer:1,explain:"Khả năng quá khứ → could"},
+  {q:"You ___ smoke here. It's prohibited. (cấm)",options:["mustn't","don't have to","shouldn't","can't"],answer:0,explain:"Cấm → mustn't"},
+  {q:"She ___ have left already. Her coat is still here. (chắc chắn không)",options:["must","might","can't","shouldn't"],answer:2,explain:"Bằng chứng (áo vẫn ở đây) → can't have"},
+  {q:"You ___ wear a tie. It's optional. (không cần)",options:["mustn't","don't have to","can't","shouldn't"],answer:1,explain:"Không bắt buộc → don't have to"},
+  {q:"I ___ have helped you, but you didn't ask. (lẽ ra có thể)",options:["must","should","could","might"],answer:2,explain:"Có khả năng nhưng không làm → could have"},
+  {q:"___ you mind opening the window? (lịch sự)",options:["Will","Would","Must","Should"],answer:1,explain:"Yêu cầu lịch sự → Would"},
+  {q:"She ___ have taken the wrong train. She's very late. (có thể ~50%)",options:["must","may","can't","should"],answer:1,explain:"Có thể đã xảy ra → may/might have"},
+  {q:"You ___ see a doctor about that cough. (khuyên)",options:["must","should","have to","can"],answer:1,explain:"Khuyên nhủ → should"},
+  {q:"He ___ be the thief. He was with me all night. (chắc chắn không)",options:["mustn't","can't","shouldn't","might not"],answer:1,explain:"Có bằng chứng ngoại phạm → can't"},
+  {q:"I ___ have eaten that seafood. Now I feel sick. (hối tiếc đã làm)",options:["mustn't","shouldn't","couldn't","can't"],answer:1,explain:"Hối tiếc đã ăn → shouldn't have"},
+  {q:"She ___ play the piano beautifully. (khả năng hiện tại)",options:["can","could","must","should"],answer:0,explain:"Khả năng hiện tại → can"},
+  {q:"You ___ be more careful with your money. (khuyên)",options:["must","should","have to","can"],answer:1,explain:"Khuyên nhủ → should"},
+  {q:"It ___ rain tomorrow. The forecast says 80% chance.",options:["will","may","might","could"],answer:0,explain:"Dự báo rất cao (80%) → will"},
+  {q:"He ___ have been very tired. He slept for 12 hours. (chắc chắn)",options:["must","may","can't","should"],answer:0,explain:"Suy luận chắc chắn (bằng chứng: ngủ 12h) → must have"},
+  {q:"___ I borrow your pen? (xin phép)",options:["Must","Should","May","Would"],answer:2,explain:"Xin phép formal → May"},
+  {q:"She ___ to work overtime yesterday. Her boss made her.",options:["must","had","should","could"],answer:1,explain:"Bắt buộc quá khứ → had to"},
+  {q:"You ___ have warned us about the traffic! (lẽ ra nên)",options:["must","could","should","might"],answer:2,explain:"Hối tiếc → should have"},
+  {q:"He ___ be at home. His lights are on. (chắc chắn ~95%)",options:["must","may","can't","will"],answer:0,explain:"Bằng chứng (đèn sáng) → must"},
+  {q:"I ___ rather stay home tonight. (thích hơn)",options:["will","would","should","must"],answer:1,explain:"would rather = thích hơn"},
+  {q:"She ___ not come to the party. She hasn't confirmed. (~30%)",options:["will","may","might","must"],answer:2,explain:"Không chắc → might not"},
+  {q:"You ___ better hurry or you'll miss the train.",options:["would","had","should","must"],answer:1,explain:"had better = nên (mạnh hơn should)"},
+  {q:"They ___ have arrived by now. The flight landed 2 hours ago. (chắc chắn)",options:["must","may","can't","should"],answer:0,explain:"Suy luận chắc chắn → must have"}
+]};
+
+let scores={ex1:0};let totals={ex1:25};let checked={ex1:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});const p=Math.round(correct/totals[s]*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${correct} / ${totals[s]} câu đúng`;const msg=document.getElementById('masterMsg');if(p>=90)msg.textContent='MASTER! Thành thạo Modal Verbs!';else if(p>=70)msg.textContent='Tốt! Ôn lại câu sai.';else{msg.textContent='Cần luyện thêm.';msg.style.color='var(--accent-light)';}}
+
+renderMCSection('ex1');
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 2 — A/An vs The</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.95rem;margin:.8rem 0;color:var(--success)}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.exercise-item input[type="text"]{width:80px;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;text-align:center;outline:none}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 2 — A/An vs The</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>A/An = Không xác định &nbsp;|&nbsp; The = Xác định</h3>
+      <div class="formula">
+        <strong>A/An</strong> — lần đầu nhắc đến, người nghe chưa biết cái nào:<br>
+        &nbsp;&nbsp; I saw <strong>a</strong> cat in the garden. (con mèo nào đó, lần đầu nhắc)<br><br>
+        <strong>The</strong> — cả 2 người đều biết đang nói về cái nào:<br>
+        &nbsp;&nbsp; <strong>The</strong> cat was black. (con mèo vừa nhắc ở trên)
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Khi nào dùng THE?</h3>
+      <ul style="margin:.5rem 0 0 1.5rem;font-size:.9rem;">
+        <li><strong>Đã nhắc trước đó:</strong> I bought a book. <strong>The</strong> book is interesting.</li>
+        <li><strong>Chỉ có 1 (duy nhất):</strong> the sun, the moon, the president, the internet</li>
+        <li><strong>Cả 2 đều biết:</strong> Can you close <strong>the</strong> door? (cửa trong phòng này)</li>
+        <li><strong>Được xác định bởi cụm từ sau:</strong> The man <strong>in the blue shirt</strong>...</li>
+        <li><strong>Superlative:</strong> the best, the tallest, the most expensive</li>
+        <li><strong>Ordinal:</strong> the first, the second, the last</li>
+      </ul>
+      <div class="note">
+        <strong>Mẹo nhanh:</strong><br>
+        • Lần đầu nhắc → a/an. Lần sau nhắc lại → the.<br>
+        • Nếu thay "the" bằng "that/this" mà vẫn hợp lý → dùng the đúng.<br>
+        • Nếu người nghe hỏi "cái nào?" → bạn nên dùng a/an (chưa xác định).
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn a/an hay the? (20 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Điền a/an/the vào đoạn văn (12 câu)</h3>
+      <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">Đọc đoạn văn và điền mạo từ phù hợp.</p>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Giải thích — Tại sao dùng a/an hay the? (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-3-zero-article.html" class="btn btn-secondary" style="margin-top:1rem;margin-left:.5rem;">Level 3 →</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-1-a-an.html" class="btn btn-secondary">&larr; Level 1</a>
+      <a href="level-3-zero-article.html" class="btn btn-play">Level 3: Zero Article &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"I saw ___ dog in the park.",options:["a","the"],answer:0,explain:"Lần đầu nhắc đến (con chó nào đó) → a"},
+    {q:"___ dog was very friendly.",options:["A","The"],answer:1,explain:"Đã nhắc ở câu trước → the"},
+    {q:"Can you pass me ___ salt?",options:["a","the"],answer:1,explain:"Cả 2 đều biết (lọ muối trên bàn) → the"},
+    {q:"She is ___ teacher.",options:["a","the"],answer:0,explain:"Nghề nghiệp (một giáo viên) → a"},
+    {q:"___ sun rises in the east.",options:["A","The"],answer:1,explain:"Chỉ có 1 mặt trời (duy nhất) → the"},
+    {q:"I need ___ new phone.",options:["a","the"],answer:0,explain:"Chưa xác định (điện thoại mới nào đó) → a"},
+    {q:"___ phone I bought yesterday is broken.",options:["A","The"],answer:1,explain:"Được xác định bởi 'I bought yesterday' → the"},
+    {q:"He is ___ best student in the class.",options:["a","the"],answer:1,explain:"Superlative (best) → the"},
+    {q:"I live in ___ apartment near the river.",options:["an","the"],answer:0,explain:"Lần đầu nhắc (một căn hộ nào đó) → an"},
+    {q:"___ apartment has two bedrooms.",options:["An","The"],answer:1,explain:"Đã nhắc ở câu trước → the"},
+    {q:"She wants to be ___ engineer.",options:["an","the"],answer:0,explain:"Nghề nghiệp → an"},
+    {q:"Could you open ___ window?",options:["a","the"],answer:1,explain:"Cả 2 biết cửa sổ nào (trong phòng) → the"},
+    {q:"I read ___ interesting article today.",options:["an","the"],answer:0,explain:"Lần đầu nhắc → an"},
+    {q:"___ article was about climate change.",options:["An","The"],answer:1,explain:"Đã nhắc ở câu trước → the"},
+    {q:"He is ___ first person to arrive.",options:["a","the"],answer:1,explain:"Ordinal (first) → the"},
+    {q:"I'd like ___ cup of coffee, please.",options:["a","the"],answer:0,explain:"Một ly cà phê (chưa xác định) → a"},
+    {q:"She is ___ only child in her family.",options:["an","the"],answer:1,explain:"Only (duy nhất) → the"},
+    {q:"There is ___ hospital near my house.",options:["a","the"],answer:0,explain:"Lần đầu nhắc → a"},
+    {q:"___ Earth goes around ___ Sun.",options:["The, the","A, the"],answer:0,explain:"Duy nhất (chỉ có 1 Trái Đất, 1 Mặt Trời) → the, the"},
+    {q:"I met ___ old friend at ___ supermarket.",options:["an, the","an, a"],answer:0,explain:"old friend = lần đầu nhắc → an; supermarket = cả 2 biết cái nào → the"}
+  ],
+  ex2:[
+    {q:"Yesterday I bought ___ book.",answer:"a",explain:"Lần đầu nhắc"},
+    {q:"___ book is about history.",answer:"The",alt:["the"],explain:"Đã nhắc ở câu trước"},
+    {q:"I read it in ___ hour.",answer:"an",explain:"hour = âm nguyên âm"},
+    {q:"It was ___ most interesting book I've ever read.",answer:"the",explain:"Superlative (most interesting)"},
+    {q:"My sister is ___ nurse.",answer:"a",explain:"Nghề nghiệp"},
+    {q:"She works at ___ hospital in the city center.",answer:"a",alt:["the"],explain:"Lần đầu nhắc (hoặc the nếu cả 2 biết)"},
+    {q:"___ hospital is very modern.",answer:"The",alt:["the"],explain:"Đã nhắc ở câu trước"},
+    {q:"I want to travel around ___ world.",answer:"the",explain:"Duy nhất (the world)"},
+    {q:"Last night, I watched ___ movie on Netflix.",answer:"a",explain:"Lần đầu nhắc"},
+    {q:"___ movie was about ___ astronaut.",answer:"The, an",alt:["the, an"],explain:"Movie đã nhắc → the; astronaut lần đầu → an"},
+    {q:"___ astronaut was ___ first woman on Mars.",answer:"The, the",alt:["the, the"],explain:"Astronaut đã nhắc → the; first (ordinal) → the"},
+    {q:"It was ___ best movie I've seen this year.",answer:"the",explain:"Superlative (best)"}
+  ],
+  ex3:[
+    {q:"\"I saw <u>a</u> man outside.\" — Tại sao dùng 'a'?",options:["Lần đầu nhắc đến","Chỉ có 1 duy nhất","Đã nhắc trước đó"],answer:0,explain:"Người nghe chưa biết man nào → a (lần đầu)"},
+    {q:"\"<u>The</u> man was wearing a hat.\" — Tại sao dùng 'the'?",options:["Lần đầu nhắc đến","Đã nhắc ở câu trước","Nghề nghiệp"],answer:1,explain:"Man đã nhắc ở câu trước → the"},
+    {q:"\"<u>The</u> moon is beautiful tonight.\" — Tại sao dùng 'the'?",options:["Lần đầu nhắc","Chỉ có 1 duy nhất","Superlative"],answer:1,explain:"Chỉ có 1 mặt trăng → the"},
+    {q:"\"She is <u>a</u> doctor.\" — Tại sao dùng 'a'?",options:["Nghề nghiệp","Đã nhắc trước đó","Superlative"],answer:0,explain:"Nói về nghề nghiệp → a/an"},
+    {q:"\"He is <u>the</u> tallest boy in class.\" — Tại sao dùng 'the'?",options:["Lần đầu nhắc","Nghề nghiệp","Superlative"],answer:2,explain:"tallest = superlative → the"},
+    {q:"\"Can you close <u>the</u> door?\" — Tại sao dùng 'the'?",options:["Cả 2 biết cái nào","Lần đầu nhắc","Superlative"],answer:0,explain:"Cả 2 đều biết cửa nào (trong phòng) → the"},
+    {q:"\"I need <u>an</u> umbrella.\" — Tại sao dùng 'an'?",options:["Đã nhắc trước đó","Chưa xác định (cái nào cũng được)","Chỉ có 1"],answer:1,explain:"Bất kỳ cái ô nào → an (chưa xác định)"},
+    {q:"\"<u>The</u> man in the red shirt is my brother.\" — Tại sao dùng 'the'?",options:["Lần đầu nhắc","Được xác định bởi cụm từ sau","Nghề nghiệp"],answer:1,explain:"'in the red shirt' xác định man nào → the"},
+    {q:"\"This is <u>the</u> first time I've been here.\" — Tại sao dùng 'the'?",options:["Ordinal number","Lần đầu nhắc","Nghề nghiệp"],answer:0,explain:"first = ordinal → the"},
+    {q:"\"I bought <u>a</u> new laptop.\" — Tại sao dùng 'a'?",options:["Superlative","Đã nhắc trước đó","Lần đầu nhắc, chưa xác định"],answer:2,explain:"Người nghe chưa biết laptop nào → a"}
+  ]
+};
+
+let scores={ex1:0,ex2:0,ex3:0};
+let totals={ex1:20,ex2:12,ex3:10};
+let checked={ex1:false,ex2:false,ex3:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{const parts=item.q.split('___');h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${s}-input-${i}" placeholder="a/an/the">${parts[1]||''}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().trim();}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});scores[s]=correct;checkAllDone();}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value),cv=normalize(item.answer),alts=(item.alt||[]).map(a=>normalize(a));if(uv===cv||alts.includes(uv)){input.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer} — ${item.explain}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;}
+
+renderMCSection('ex1');renderFillSection('ex2');renderMCSection('ex3');
+  </script>
+</body>
+</html>

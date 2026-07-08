@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 3 — Mixed Comparisons (Boss)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.85rem;margin:.8rem 0;color:var(--success);line-height:2.2}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.exercise-item input[type="text"]{width:250px;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;text-align:center;outline:none}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}.boss-badge{display:inline-block;padding:.3rem .8rem;background:linear-gradient(135deg,var(--accent),var(--success));color:#000;border-radius:20px;font-size:.75rem;font-weight:700;margin-left:.5rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 3 — Mixed <span class="boss-badge">BOSS</span></h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Cấu trúc so sánh đặc biệt</h3>
+      <div class="formula">
+        <strong>as...as</strong> — bằng nhau:<br>
+        &nbsp;&nbsp; She is <strong>as tall as</strong> her mother. / not <strong>as expensive as</strong> I thought.<br><br>
+        <strong>the more...the more</strong> — càng...càng:<br>
+        &nbsp;&nbsp; <strong>The more</strong> you practice, <strong>the better</strong> you get.<br>
+        &nbsp;&nbsp; <strong>The harder</strong> you work, <strong>the more successful</strong> you become.<br><br>
+        <strong>less / fewer</strong> — ít hơn:<br>
+        &nbsp;&nbsp; <strong>less</strong> + không đếm được: less money, less time<br>
+        &nbsp;&nbsp; <strong>fewer</strong> + đếm được: fewer people, fewer books<br><br>
+        <strong>much / far / a lot + comparative</strong> — nhấn mạnh:<br>
+        &nbsp;&nbsp; She is <strong>much taller</strong> than me. / This is <strong>far more expensive</strong>.
+      </div>
+      <div class="note">
+        <strong>Bất quy tắc đầy đủ:</strong><br>
+        good → better → the best<br>
+        bad → worse → the worst<br>
+        far → farther/further → the farthest/furthest<br>
+        little → less → the least<br>
+        many/much → more → the most<br>
+        old → older/elder → the oldest/eldest
+      </div>
+    </div>
+
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Tổng hợp — Comparative, Superlative, as...as (25 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra</button>
+    </div>
+
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Điền dạng đúng (15 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-play" onclick="location.reload()">Làm lại</button>
+        <a href="index.html" class="btn btn-secondary" style="margin-left:.5rem;">Hoàn thành!</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.9rem;color:var(--success);" id="masterMsg"></p>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-2-superlatives.html" class="btn btn-secondary">&larr; Level 2</a>
+      <a href="index.html" class="btn btn-play">Hoàn thành!</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"She is ___ her sister. (cao bằng)",options:["as tall as","taller than","the tallest"],answer:0,explain:"Bằng nhau → as...as"},
+    {q:"This is ___ book I've ever read.",options:["the most interesting","more interesting","as interesting as"],answer:0,explain:"So sánh nhất (ever) → the most interesting"},
+    {q:"He is ___ his father. (cao hơn)",options:["as tall as","taller than","the tallest"],answer:1,explain:"So sánh hơn → taller than"},
+    {q:"___ you study, ___ you learn.",options:["The more, the more","More, more","Most, most"],answer:0,explain:"Càng...càng → The more...the more"},
+    {q:"This phone is not ___ that one.",options:["as expensive as","more expensive","the most expensive"],answer:0,explain:"Không bằng → not as...as"},
+    {q:"She has ___ friends than me.",options:["less","fewer","the fewest"],answer:1,explain:"friends = đếm được → fewer"},
+    {q:"He has ___ money than his brother.",options:["less","fewer","the least"],answer:0,explain:"money = không đếm được → less"},
+    {q:"This is ___ restaurant in town.",options:["the cheapest","cheaper than","as cheap as"],answer:0,explain:"So sánh nhất → the cheapest"},
+    {q:"She is ___ older than me.",options:["much","very","more"],answer:0,explain:"Nhấn mạnh comparative → much older"},
+    {q:"___ harder you work, ___ more successful you become.",options:["The, the","More, more","Much, much"],answer:0,explain:"Càng...càng → The...the"},
+    {q:"My car is ___ yours. (nhanh bằng)",options:["as fast as","faster than","the fastest"],answer:0,explain:"Bằng nhau → as fast as"},
+    {q:"This exam was ___ the last one.",options:["more difficult than","as difficult as","the most difficult"],answer:0,explain:"So sánh hơn → more difficult than"},
+    {q:"He is ___ student in the class.",options:["the best","better than","as good as"],answer:0,explain:"So sánh nhất → the best"},
+    {q:"Today is ___ colder than yesterday.",options:["much","very","more"],answer:0,explain:"Nhấn mạnh comparative → much colder"},
+    {q:"She speaks English ___ a native speaker.",options:["as fluently as","more fluently","the most fluently"],answer:0,explain:"Bằng nhau → as fluently as"},
+    {q:"There are ___ cars on the road today.",options:["less","fewer","the fewest"],answer:1,explain:"cars = đếm được → fewer"},
+    {q:"I have ___ time than usual today.",options:["less","fewer","the least"],answer:0,explain:"time = không đếm được → less"},
+    {q:"___ you eat, ___ you gain weight.",options:["The more, the more","More, more","The most, the most"],answer:0,explain:"Càng ăn nhiều, càng tăng cân → The more...the more"},
+    {q:"This is ___ movie of the year.",options:["the worst","worse than","as bad as"],answer:0,explain:"So sánh nhất → the worst"},
+    {q:"He is ___ more experienced than me.",options:["far","very","most"],answer:0,explain:"Nhấn mạnh comparative → far more"},
+    {q:"She is not ___ her mother. (đẹp bằng)",options:["as beautiful as","more beautiful than","the most beautiful"],answer:0,explain:"Không bằng → not as beautiful as"},
+    {q:"This is ___ building in the city.",options:["the tallest","taller than","as tall as"],answer:0,explain:"So sánh nhất → the tallest"},
+    {q:"He runs ___ than anyone else on the team.",options:["faster","the fastest","as fast as"],answer:0,explain:"So sánh hơn (than) → faster"},
+    {q:"___ sooner we leave, ___ better.",options:["The, the","More, more","Much, much"],answer:0,explain:"Càng sớm càng tốt → The sooner, the better"},
+    {q:"This task is ___ easier than I expected.",options:["much","very","more"],answer:0,explain:"Nhấn mạnh comparative → much easier"}
+  ],
+  ex2:[
+    {q:"She is ___ (good) student in the class.",answer:"the best",explain:"good → the best (superlative)"},
+    {q:"This is ___ (bad) day of my life.",answer:"the worst",explain:"bad → the worst (superlative)"},
+    {q:"He is ___ (tall) as his brother.",answer:"as tall",explain:"Bằng nhau → as tall as"},
+    {q:"The more you read, the ___ (much) you know.",answer:"more",explain:"The more...the more"},
+    {q:"She has ___ (few) mistakes than last time.",answer:"fewer",explain:"mistakes = đếm được → fewer"},
+    {q:"There is ___ (little) traffic today.",answer:"less",explain:"traffic = không đếm được → less"},
+    {q:"He is much ___ (strong) than he looks.",answer:"stronger",explain:"much + comparative → much stronger"},
+    {q:"This is the ___ (far) I've ever run.",answer:"farthest",alt:["furthest"],explain:"far → the farthest/furthest"},
+    {q:"She is ___ (old) of the three sisters.",answer:"the oldest",alt:["the eldest"],explain:"So sánh nhất (3 người) → the oldest"},
+    {q:"The harder you try, the ___ (good) you get.",answer:"better",explain:"The...the + comparative → better"},
+    {q:"This coffee is not ___ (good) as the one yesterday.",answer:"as good",explain:"not as...as → as good as"},
+    {q:"He earns far ___ (much) money than me.",answer:"more",explain:"far + comparative → far more"},
+    {q:"She is the ___ (little) experienced person here.",answer:"least",explain:"little → the least (superlative)"},
+    {q:"The ___ (soon) you start, the ___ (soon) you finish.",answer:"sooner, sooner",explain:"The sooner...the sooner"},
+    {q:"This is ___ (expensive) than I can afford.",answer:"more expensive",explain:"expensive = 3 âm tiết → more expensive"}
+  ]
+};
+
+let scores={ex1:0,ex2:0};let totals={ex1:25,ex2:15};let checked={ex1:false,ex2:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{const parts=item.q.split('___');h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${s}-input-${i}" placeholder="...">${parts[1]||''}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().trim();}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});scores[s]=correct;checkAllDone();}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value),cv=normalize(item.answer),alts=(item.alt||[]).map(a=>normalize(a));if(uv===cv||alts.includes(uv)){input.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer} — ${item.explain}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;const msg=document.getElementById('masterMsg');if(p>=90)msg.textContent='MASTER! Thành thạo Comparatives & Superlatives!';else if(p>=70)msg.textContent='Tốt! Ôn lại câu sai.';else{msg.textContent='Cần luyện thêm.';msg.style.color='var(--accent-light)';}}
+
+renderMCSection('ex1');renderFillSection('ex2');
+  </script>
+</body>
+</html>

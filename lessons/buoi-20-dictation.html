@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 20 — Dictation: Market Expansion & Competition</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 20 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 20: Market Expansion & Competition</h4>
+      <ul>
+        <li><strong>penetrate / segment:</strong> thâm nhập thị trường và xác định phân khúc khách hàng cụ thể.</li>
+        <li><strong>diversify / scalable:</strong> đa dạng hóa để giảm rủi ro và mở rộng quy mô hiệu quả.</li>
+        <li><strong>acquisition / alliance:</strong> mua lại doanh nghiệp khác hoặc lập liên minh chiến lược.</li>
+        <li><strong>saturated / emerging / dominate:</strong> thị trường bão hòa, thị trường mới nổi, và chiếm ưu thế cạnh tranh.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/dictation.js?v=human-audio-v1"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 20",
+      lessonId: 'buoi-20',
+      vocabulary: [
+        { word: "penetrate", hint: "thâm nhập vào một thị trường hoặc nhóm khách hàng", ipa: "/ˈpen.ə.treɪt/", syllables: 3, context: "The company is trying to penetrate the Southeast Asian market." },
+        { word: "diversify", hint: "đa dạng hóa để giảm phụ thuộc vào một nguồn duy nhất", ipa: "/daɪˈvɝː.sə.faɪ/", syllables: 4, context: "The retailer wants to diversify its product range before the holiday season." },
+        { word: "acquisition", hint: "sự mua lại hoặc thâu tóm một công ty khác", ipa: "/ˌæk.wəˈzɪʃ.ən/", syllables: 4, context: "The acquisition will give the company access to new distribution channels." },
+        { word: "alliance", hint: "liên minh hoặc quan hệ hợp tác chiến lược", ipa: "/əˈlaɪ.əns/", syllables: 3, context: "The two brands formed an alliance to share research and logistics costs." },
+        { word: "segment", hint: "phân khúc thị trường hoặc nhóm khách hàng có đặc điểm chung", ipa: "/ˈseɡ.mənt/", syllables: 2, context: "The luxury segment remained strong even during the slowdown." },
+        { word: "saturated", hint: "bão hòa, gần như không còn chỗ tăng trưởng thêm", ipa: "/ˈsætʃ.ə.reɪ.t̬ɪd/", syllables: 4, context: "The domestic market is already saturated, so expansion abroad is necessary." },
+        { word: "emerging", hint: "mới nổi, đang phát triển nhanh", ipa: "/ɪˈmɝː.dʒɪŋ/", syllables: 3, context: "The firm sees strong potential in several emerging markets." },
+        { word: "dominate", hint: "chiếm ưu thế hoặc kiểm soát phần lớn thị trường", ipa: "/ˈdɑː.mə.neɪt/", syllables: 3, context: "A few large platforms dominate the online advertising industry." },
+        { word: "scalable", hint: "có thể mở rộng quy mô hiệu quả mà không tăng chi phí quá nhanh", ipa: "/ˈskeɪ.lə.bəl/", syllables: 3, context: "Investors want a scalable business model, not just short-term growth." }
+      ],
+      sentences: [
+        "The company is trying to penetrate the Southeast Asian market.",
+        "New pricing strategies helped the brand penetrate a younger customer base.",
+        "The retailer wants to diversify its product range before the holiday season.",
+        "Diversifying suppliers can reduce the risk of sudden disruption.",
+        "The acquisition will give the company access to new distribution channels.",
+        "Shareholders approved the acquisition after reviewing the expected synergies.",
+        "The two brands formed an alliance to share research and logistics costs.",
+        "A strong alliance can open doors that one company cannot open alone.",
+        "The luxury segment remained strong even during the slowdown.",
+        "Marketing messages must be adjusted for each customer segment.",
+        "The domestic market is already saturated, so expansion abroad is necessary.",
+        "Growth becomes expensive when a market is close to saturated.",
+        "The firm sees strong potential in several emerging markets.",
+        "Emerging technologies often attract investors before they become stable.",
+        "A few large platforms dominate the online advertising industry.",
+        "Low prices alone will not help a new entrant dominate the market.",
+        "Investors want a scalable business model, not just short-term growth.",
+        "A scalable system can support more users without major redesign."
+      ],
+      passage: [
+        "A company that wants long-term growth must decide where its next customers will come from.",
+        "Sometimes the best move is to penetrate a new region before competitors do.",
+        "At other times, the safer choice is to diversify products so the business depends less on one source of demand.",
+        "Some firms grow by making an acquisition that gives them immediate access to technology or customers.",
+        "Others prefer an alliance, sharing costs and local knowledge with a trusted partner.",
+        "The right strategy often depends on which segment of the market still offers room for growth.",
+        "In a saturated market, even strong companies may struggle to expand without lowering prices too far.",
+        "That is why many brands turn to emerging markets, where demand is growing more quickly.",
+        "The ultimate goal is not only to dominate today but to build a scalable model that can support larger operations tomorrow.",
+        "Companies that expand too quickly without that foundation often create complexity instead of real advantage."
+      ],
+      fillblank: [
+        { sentence: "The company is trying to penetrate the Southeast Asian market.", display: "The company is trying to _____ the Southeast Asian market.", answer: "penetrate" },
+        { sentence: "The retailer wants to diversify its product range.", display: "The retailer wants to _____ its product range.", answer: "diversify" },
+        { sentence: "The acquisition will give the company access to new channels.", display: "The _____ will give the company access to new channels.", answer: "acquisition" },
+        { sentence: "The two brands formed an alliance to share costs.", display: "The two brands formed an _____ to share costs.", answer: "alliance" },
+        { sentence: "The luxury segment remained strong during the slowdown.", display: "The luxury _____ remained strong during the slowdown.", answer: "segment" },
+        { sentence: "The domestic market is already saturated.", display: "The domestic market is already _____.", answer: "saturated" },
+        { sentence: "The firm sees strong potential in several emerging markets.", display: "The firm sees strong potential in several _____ markets.", answer: "emerging" },
+        { sentence: "A few large platforms dominate the industry.", display: "A few large platforms _____ the industry.", answer: "dominate" },
+        { sentence: "Investors want a scalable business model.", display: "Investors want a _____ business model.", answer: "scalable" },
+        { sentence: "New pricing helped the brand penetrate a younger customer base.", display: "New pricing helped the brand _____ a younger customer base.", answer: "penetrate" },
+        { sentence: "Diversifying suppliers can reduce disruption risk.", display: "_____ suppliers can reduce disruption risk.", answer: "Diversifying" },
+        { sentence: "A strong alliance can open doors a company cannot open alone.", display: "A strong _____ can open doors a company cannot open alone.", answer: "alliance" },
+        { sentence: "Growth becomes expensive when a market is saturated.", display: "Growth becomes expensive when a market is _____.", answer: "saturated" },
+        { sentence: "Emerging technologies often attract investors early.", display: "_____ technologies often attract investors early.", answer: "Emerging" },
+        { sentence: "A scalable system can support more users without redesign.", display: "A _____ system can support more users without redesign.", answer: "scalable" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

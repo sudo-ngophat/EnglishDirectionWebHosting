@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 17 — Dictation: Compliance & Governance</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 17 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 17: Compliance & Governance</h4>
+      <ul>
+        <li><strong>adhere / comply (Buổi 4):</strong> adhere là bám sát nguyên tắc; comply là tuân theo yêu cầu chính thức.</li>
+        <li><strong>enforce / mandate:</strong> enforce là thực thi/áp dụng nghiêm; mandate là quy định bắt buộc (danh từ hoặc động từ).</li>
+        <li><strong>audit / disclose:</strong> audit là rà soát chính thức có báo cáo; disclose là công bố thông tin ra ngoài.</li>
+        <li><strong>ethical / transparent / violate / guideline:</strong> đạo đức nghề, minh bạch, vi phạm, và hướng dẫn thực hành.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/dictation.js?v=human-audio-v1"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 17",
+      lessonId: 'buoi-17',
+      vocabulary: [
+        { word: "adhere", hint: "tuân theo chặt chẽ một quy tắc hoặc tiêu chuẩn", ipa: "/ədˈhɪr/", syllables: 2, context: "All employees must adhere to the company's data-security policy." },
+        { word: "enforce", hint: "thực thi hoặc áp dụng nghiêm một quy định", ipa: "/ɪnˈfɔːrs/", syllables: 2, context: "Managers are expected to enforce the new attendance rules consistently." },
+        { word: "audit", hint: "kiểm toán hoặc rà soát chính thức để kiểm tra tính đúng đắn", ipa: "/ˈɔː.dɪt/", syllables: 2, context: "The finance team will audit travel expenses at the end of each quarter." },
+        { word: "disclose", hint: "công bố hoặc tiết lộ thông tin một cách chính thức", ipa: "/dɪsˈkloʊz/", syllables: 2, context: "Public companies must disclose major risks to investors." },
+        { word: "ethical", hint: "phù hợp với chuẩn mực đạo đức nghề nghiệp", ipa: "/ˈeθ.ɪ.kəl/", syllables: 3, context: "Leaders must make ethical decisions even under pressure." },
+        { word: "transparent", hint: "minh bạch, rõ ràng, không che giấu thông tin quan trọng", ipa: "/trænsˈper.ənt/", syllables: 3, context: "A transparent process builds trust inside the company." },
+        { word: "violate", hint: "vi phạm một quy tắc, luật, hoặc thỏa thuận", ipa: "/ˈvaɪ.ə.leɪt/", syllables: 3, context: "Anyone who violates the safety policy will receive a warning." },
+        { word: "mandate", hint: "quy định bắt buộc hoặc lệnh chính thức từ cấp có thẩm quyền", ipa: "/ˈmæn.deɪt/", syllables: 2, context: "The new mandate requires all staff to complete security training." },
+        { word: "guideline", hint: "hướng dẫn hoặc nguyên tắc thực hành", ipa: "/ˈɡaɪd.laɪn/", syllables: 2, context: "The document provides clear guidelines for handling customer data." }
+      ],
+      sentences: [
+        "All employees must adhere to the company's data-security policy.",
+        "The engineers strictly adhere to the safety checklist before every test.",
+        "Managers are expected to enforce the new attendance rules consistently.",
+        "The city government will enforce the new speed limit starting next month.",
+        "The finance team will audit travel expenses at the end of each quarter.",
+        "An external firm was hired to audit the company's financial records.",
+        "Public companies must disclose major risks to investors.",
+        "The report failed to disclose a conflict of interest between the two managers.",
+        "Leaders must make ethical decisions even under pressure.",
+        "The magazine praised the firm for its ethical treatment of workers.",
+        "A transparent process builds trust inside the company.",
+        "Customers prefer businesses that are transparent about pricing.",
+        "Anyone who violates the safety policy will receive a warning.",
+        "The company was fined for repeatedly violating environmental regulations.",
+        "The new mandate requires all staff to complete security training.",
+        "A court mandate suspended the sale of the disputed property.",
+        "The document provides clear guidelines for handling customer data.",
+        "Please follow the official guidelines when preparing the annual report."
+      ],
+      passage: [
+        "Every serious organization needs a set of rules that its people actually adhere to in daily work.",
+        "Written rules are useless if no one is willing to enforce them when they are broken.",
+        "That is why most companies also audit their own records on a regular basis.",
+        "The results of those checks are shared with the board so that leaders can disclose problems early.",
+        "Behind every rule there should be a clear reason, usually connected to an ethical value the company wants to protect.",
+        "Modern employees expect their company to be transparent about salaries, promotions, and important decisions.",
+        "When someone chooses to violate a rule for personal gain, the response must be firm but fair.",
+        "Sometimes the government issues a formal mandate that all businesses in the industry must follow.",
+        "In that case, each team needs a set of practical guidelines that translate the mandate into daily habits.",
+        "In the end, compliance is less about fear of punishment and more about protecting the trust between the company, its workers, and its customers."
+      ],
+      fillblank: [
+        { sentence: "All employees must adhere to the data-security policy.", display: "All employees must _____ to the data-security policy.", answer: "adhere" },
+        { sentence: "Managers are expected to enforce the new attendance rules.", display: "Managers are expected to _____ the new attendance rules.", answer: "enforce" },
+        { sentence: "The finance team will audit travel expenses each quarter.", display: "The finance team will _____ travel expenses each quarter.", answer: "audit" },
+        { sentence: "Public companies must disclose major risks.", display: "Public companies must _____ major risks.", answer: "disclose" },
+        { sentence: "Leaders must make ethical decisions under pressure.", display: "Leaders must make _____ decisions under pressure.", answer: "ethical" },
+        { sentence: "A transparent process builds trust inside the company.", display: "A _____ process builds trust inside the company.", answer: "transparent" },
+        { sentence: "Anyone who violates the safety policy will receive a warning.", display: "Anyone who _____ the safety policy will receive a warning.", answer: "violates" },
+        { sentence: "The new mandate requires all staff to complete security training.", display: "The new _____ requires all staff to complete security training.", answer: "mandate" },
+        { sentence: "The document provides clear guidelines for handling data.", display: "The document provides clear _____ for handling data.", answer: "guidelines" },
+        { sentence: "The engineers adhere to the checklist before every test.", display: "The engineers _____ to the checklist before every test.", answer: "adhere" },
+        { sentence: "An external firm was hired to audit the records.", display: "An external firm was hired to _____ the records.", answer: "audit" },
+        { sentence: "The report failed to disclose a conflict of interest.", display: "The report failed to _____ a conflict of interest.", answer: "disclose" },
+        { sentence: "Customers prefer businesses that are transparent about pricing.", display: "Customers prefer businesses that are _____ about pricing.", answer: "transparent" },
+        { sentence: "The company was fined for violating regulations.", display: "The company was fined for _____ regulations.", answer: "violating" },
+        { sentence: "Please follow the official guidelines when preparing the report.", display: "Please follow the official _____ when preparing the report.", answer: "guidelines" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

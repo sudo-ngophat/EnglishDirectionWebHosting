@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 1 — Dictation</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 1 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 7</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 14%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chiến lược nghe</h4>
+      <ul>
+        <li><strong>Play (3x)</strong> — Tự động đọc 3 lần: chậm → vừa → nhanh. Nghe lần 1 bắt âm chính, lần 2 xác nhận, lần 3 kiểm tra tốc độ thật.</li>
+        <li><strong>Spell</strong> — Đánh vần từng chữ cái + hiện IPA. Dùng khi nghe không rõ âm nào.</li>
+        <li><strong>Ngữ cảnh</strong> — Nghe từ trong 1 câu hoàn chỉnh. Não bắt từ dễ hơn khi có context xung quanh.</li>
+        <li><strong>Replay (0.7x)</strong> — Nghe lại 1 lần ở tốc độ chậm. Tập trung vào âm đầu + âm cuối của từ.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/dictation.js"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 1",
+      vocabulary: [
+        { word: "lack", hint: "thiếu, không đủ", ipa: "/læk/", syllables: 1, context: "He lacks discipline in his daily routine." },
+        { word: "alter", hint: "thay đổi một phần", ipa: "/ˈɔːl.tər/", syllables: 2, context: "Social media has altered the way we communicate." },
+        { word: "consider", hint: "cân nhắc, xem là", ipa: "/kənˈsɪd.ər/", syllables: 3, context: "She is considered the best candidate for the job." },
+        { word: "develop", hint: "phát triển, hình thành", ipa: "/dɪˈvel.əp/", syllables: 3, context: "Children may develop anxiety from overcrowded living." },
+        { word: "require", hint: "yêu cầu (= need)", ipa: "/rɪˈkwaɪər/", syllables: 2, context: "This job requires three years of experience." },
+        { word: "satisfy", hint: "làm hài lòng", ipa: "/ˈsæt.ɪs.faɪ/", syllables: 3, context: "We put effort into satisfying our customers." },
+        { word: "value", hint: "giá trị, trân trọng", ipa: "/ˈvæl.juː/", syllables: 2, context: "Things you value are not always valuable to others." },
+        { word: "alternative", hint: "sự thay thế", ipa: "/ɔːlˈtɜː.nə.tɪv/", syllables: 4, context: "E-books are a popular alternative to traditional books." },
+        { word: "considerate", hint: "biết nghĩ cho người khác", ipa: "/kənˈsɪd.ər.ət/", syllables: 4, context: "A considerate person thinks about others' feelings." },
+        { word: "development", hint: "sự phát triển", ipa: "/dɪˈvel.əp.mənt/", syllables: 4, context: "Social development is a major trend in modern cities." },
+        { word: "requirement", hint: "yêu cầu, điều kiện", ipa: "/rɪˈkwaɪə.mənt/", syllables: 3, context: "The minimum requirement is a five point zero IELTS score." },
+        { word: "satisfaction", hint: "sự hài lòng", ipa: "/ˌsæt.ɪsˈfæk.ʃən/", syllables: 4, context: "Life satisfaction matters more than wealth." },
+        { word: "valuable", hint: "có giá trị", ipa: "/ˈvæl.ju.ə.bəl/", syllables: 4, context: "This painting is extremely valuable." },
+        { word: "invaluable", hint: "vô giá", ipa: "/ɪnˈvæl.ju.ə.bəl/", syllables: 5, context: "Your health is invaluable." },
+        { word: "dissatisfied", hint: "không hài lòng", ipa: "/dɪsˈsæt.ɪs.faɪd/", syllables: 4, context: "Customers are dissatisfied with the service quality." },
+        { word: "reluctant", hint: "ngần ngại", ipa: "/rɪˈlʌk.tənt/", syllables: 3, context: "Many young people are reluctant to get married." },
+        { word: "financial pressure", hint: "áp lực tài chính", ipa: "/faɪˈnæn.ʃəl ˈpreʃ.ər/", syllables: 5, context: "Financial pressure prevents young people from starting families." },
+        { word: "discipline", hint: "kỷ luật", ipa: "/ˈdɪs.ə.plɪn/", syllables: 3, context: "He lacks discipline in his studies." },
+        { word: "substantially", hint: "đáng kể", ipa: "/səbˈstæn.ʃəl.i/", syllables: 5, context: "Online shopping has substantially changed consumer behavior." },
+        { word: "exponential", hint: "theo cấp số nhân", ipa: "/ˌek.spəˈnen.ʃəl/", syllables: 4, context: "The growth becomes exponential after this stage." }
+      ],
+      sentences: [
+        "He lacks discipline.",
+        "Couples who lack communication are often unhappy with their relationship.",
+        "The lack of parental attention is the main cause of children's misbehavior.",
+        "Online shopping sites have substantially altered the way Vietnamese purchase goods.",
+        "Excessive TikTok exposure can alter the way you perceive the world.",
+        "Arnold Schwarzenegger is considered one of the most influential bodybuilders in history.",
+        "A considerate person never asks about someone's past relationships.",
+        "Nguyen Ha Dong developed Flappy Bird, a game that shattered millions of screens.",
+        "Residents of overcrowded apartments may develop mental issues such as social anxiety.",
+        "I developed a preference for Bolero music.",
+        "My university requires students to achieve at least five point zero in order to graduate.",
+        "This situation requires cooperation from both sides.",
+        "As a service provider, we put a lot of effort into satisfying our customers.",
+        "The price of an iPhone is seven hundred dollars but the value depends on each owner.",
+        "Things that you value are not always valuable to others.",
+        "Online friendships do not require much time and energy.",
+        "We lack the time to develop our friendships.",
+        "Some people value their friends more than family.",
+        "Many young people are reluctant to get married due to financial pressure.",
+        "This dissatisfaction shows us how important friendships are for most of us."
+      ],
+      passage: [
+        "It is sad that most people have no more than thirty friends at any given time.",
+        "However, on social networking sites, most users have about one hundred and fifty friends.",
+        "If these numbers are correct, then friendship means different things in different situations.",
+        "Online friendships do not require much time and energy.",
+        "It is easy to accept friendships and keep them forever.",
+        "Even if we feel we don't really know them, the fact that they ask us suggests that they do consider us as a friend.",
+        "However, they may be collectors of online friends and just want to use us to appear more popular.",
+        "Some people would die for their friends and they value them more than family.",
+        "Others say that friends are temporary.",
+        "A friendship might not last when you treat them as important, but they only see you as an alternative.",
+        "Sometimes we simply don't have enough time. We lack the time to develop our friendships.",
+        "This dissatisfaction shows us how important friendships are for most of us.",
+        "We should not think that it could be too late to build friendships.",
+        "Remember what people say: strangers are friends we have not met yet."
+      ],
+      fillblank: [
+        { sentence: "He lacks discipline.", display: "He _____ discipline.", answer: "lacks" },
+        { sentence: "Online shopping has substantially altered the way Vietnamese purchase goods.", display: "Online shopping has substantially _____ the way Vietnamese purchase goods.", answer: "altered" },
+        { sentence: "Arnold Schwarzenegger is considered one of the most influential bodybuilders.", display: "Arnold Schwarzenegger is _____ one of the most influential bodybuilders.", answer: "considered" },
+        { sentence: "Residents may develop mental issues such as social anxiety.", display: "Residents may _____ mental issues such as social anxiety.", answer: "develop" },
+        { sentence: "My university requires students to achieve at least five point zero.", display: "My university _____ students to achieve at least five point zero.", answer: "requires" },
+        { sentence: "We put a lot of effort into satisfying our customers.", display: "We put a lot of effort into _____ our customers.", answer: "satisfying" },
+        { sentence: "Things that you value are not always valuable to others.", display: "Things that you _____ are not always valuable to others.", answer: "value" },
+        { sentence: "E-books are a popular alternative to traditional books.", display: "E-books are a popular _____ to traditional books.", answer: "alternative" },
+        { sentence: "A considerate person never asks about someone's past relationships.", display: "A _____ person never asks about someone's past relationships.", answer: "considerate" },
+        { sentence: "The lack of parental attention is the main cause of misbehavior.", display: "The _____ of parental attention is the main cause of misbehavior.", answer: "lack" },
+        { sentence: "Many young people are reluctant to get married due to financial pressure.", display: "Many young people are _____ to get married due to financial pressure.", answer: "reluctant" },
+        { sentence: "This dissatisfaction shows us how important friendships are.", display: "This _____ shows us how important friendships are.", answer: "dissatisfaction" },
+        { sentence: "Houses and cars can be valuable, but health is invaluable.", display: "Houses and cars can be valuable, but health is _____.", answer: "invaluable" },
+        { sentence: "I developed a preference for Bolero music.", display: "I _____ a preference for Bolero music.", answer: "developed" },
+        { sentence: "This situation requires cooperation from both sides.", display: "This situation _____ cooperation from both sides.", answer: "requires" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

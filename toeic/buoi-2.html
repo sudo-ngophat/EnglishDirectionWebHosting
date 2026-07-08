@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC Practice — Buổi 2 Vocabulary</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .part-btn.done { color: var(--success); border-color: var(--success); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .audio-btn:hover { background: var(--accent-light); }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+    .q-image { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; border: 2px solid var(--border); background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC — Buổi 2</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div class="part-nav" id="partNav"></div>
+
+    <div id="questionArea"></div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 1, name: "Part 1: Photographs", questions: [
+      { id:1, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The student is acquiring knowledge at the library.","The student is declining an invitation.","The student is comparing two books.","The student is performing an experiment."], answer:"A", explanation:"Hình ảnh sinh viên đang học tập (acquire knowledge) tại thư viện.", audio_script:"(A) The student is acquiring knowledge at the library. (B) The student is declining an invitation. (C) The student is comparing two books. (D) The student is performing an experiment.", image:"img2/q1.jpg" },
+      { id:2, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The man is performing on stage in front of an audience.","The man is declining to sing.","The man is comparing musical instruments.","The man is acquiring a new microphone."], answer:"A", explanation:"Hình ảnh ca sĩ đang biểu diễn (perform) trên sân khấu trước khán giả.", audio_script:"(A) The man is performing on stage in front of an audience. (B) The man is declining to sing. (C) The man is comparing musical instruments. (D) The man is acquiring a new microphone.", image:"img2/q2.jpg" },
+      { id:3, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The chart shows a decline in stock prices.","The chart shows an acquisition of a company.","The chart shows comparable performance.","The chart shows permission to trade."], answer:"A", explanation:"Hình ảnh biểu đồ cho thấy sự sụt giảm (decline) giá cổ phiếu.", audio_script:"(A) The chart shows a decline in stock prices. (B) The chart shows an acquisition of a company. (C) The chart shows comparable performance. (D) The chart shows permission to trade.", image:"img2/q3.jpg" },
+      { id:4, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The turnstile only permits authorized personnel to enter.","The turnstile is declining visitors.","The turnstile is comparing ID cards.","The turnstile is performing a security check."], answer:"A", explanation:"Hình ảnh cổng xoay chỉ cho phép (permit) người có thẩm quyền đi qua.", audio_script:"(A) The turnstile only permits authorized personnel to enter. (B) The turnstile is declining visitors. (C) The turnstile is comparing ID cards. (D) The turnstile is performing a security check.", image:"img2/q4.jpg" },
+      { id:5, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The woman is comparing two skincare products.","The woman is acquiring a new perfume.","The woman is declining the offer.","The woman is performing a demonstration."], answer:"A", explanation:"Hình ảnh phụ nữ đang so sánh (compare) hai sản phẩm chăm sóc da.", audio_script:"(A) The woman is comparing two skincare products. (B) The woman is acquiring a new perfume. (C) The woman is declining the offer. (D) The woman is performing a demonstration.", image:"img2/q5.jpg" },
+      { id:6, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The woman appears indifferent to her phone.","The woman is performing a task on her phone.","The woman is acquiring a new device.","The woman is comparing phone models."], answer:"A", explanation:"Hình ảnh phụ nữ có vẻ thờ ơ (indifferent) với chiếc điện thoại.", audio_script:"(A) The woman appears indifferent to her phone. (B) The woman is performing a task on her phone. (C) The woman is acquiring a new device. (D) The woman is comparing phone models.", image:"img2/q6.jpg" }
+    ]},
+    { number: 2, name: "Part 2: Question-Response", questions: [
+      { id:7, text:"How did the company acquire so many new clients last quarter?", choices:["Through an aggressive marketing campaign.","The acquisition was completed yesterday.","I'll acquire it by Friday."], answer:"A", explanation:"Hỏi 'how acquire' → trả lời phương pháp cụ thể.", audio_script:"How did the company acquire so many new clients last quarter? (A) Through an aggressive marketing campaign. (B) The acquisition was completed yesterday. (C) I'll acquire it by Friday." },
+      { id:8, text:"Has the team's performance improved since the new manager arrived?", choices:["Yes, productivity is up by twenty percent.","The performance starts at eight o'clock.","She performed the surgery yesterday."], answer:"A", explanation:"Hỏi về 'performance improved' → trả lời Yes + chi tiết cải thiện.", audio_script:"Has the team's performance improved since the new manager arrived? (A) Yes, productivity is up by twenty percent. (B) The performance starts at eight o'clock. (C) She performed the surgery yesterday." },
+      { id:9, text:"Why did the client decline our proposal?", choices:["They found a more cost-effective solution.","Sales have been declining all year.","I'll decline the invitation."], answer:"A", explanation:"Hỏi 'why decline' → trả lời lý do cụ thể.", audio_script:"Why did the client decline our proposal? (A) They found a more cost-effective solution. (B) Sales have been declining all year. (C) I'll decline the invitation." },
+      { id:10, text:"Do we need permission to access the server room?", choices:["Yes, you'll need a badge from security.","The permit expires next month.","I permitted him to leave early."], answer:"A", explanation:"Hỏi 'need permission' → trả lời Yes + cách lấy permission.", audio_script:"Do we need permission to access the server room? (A) Yes, you'll need a badge from security. (B) The permit expires next month. (C) I permitted him to leave early." },
+      { id:11, text:"How does this year's revenue compare to last year's?", choices:["It's about fifteen percent higher.","The comparison chart is on page three.","They're not comparable at all."], answer:"A", explanation:"Hỏi 'how compare' → trả lời kết quả so sánh cụ thể.", audio_script:"How does this year's revenue compare to last year's? (A) It's about fifteen percent higher. (B) The comparison chart is on page three. (C) They're not comparable at all." },
+      { id:12, text:"Why are customers indifferent to our new product line?", choices:["Because it doesn't offer anything unique.","The indifference is concerning.","I'm indifferent about the color."], answer:"A", explanation:"Hỏi 'why indifferent' → trả lời lý do cụ thể.", audio_script:"Why are customers indifferent to our new product line? (A) Because it doesn't offer anything unique. (B) The indifference is concerning. (C) I'm indifferent about the color." }
+    ]},
+    { number: 5, name: "Part 5: Incomplete Sentences", questions: [
+      { id:13, text:"Students can _______ learning materials online without visiting the library.", choices:["acquire","acquisition","acquired","acquiring"], answer:"A", explanation:"Sau modal 'can' → V nguyên mẫu. 'acquire' = có được." },
+      { id:14, text:"Language _______ in a short time is nearly impossible for most adults.", choices:["acquire","acquired","acquisition","acquiring"], answer:"C", explanation:"Cần danh từ làm chủ ngữ. 'acquisition' = sự tiếp thu." },
+      { id:15, text:"Having to work part-time may negatively affect students' academic _______.", choices:["perform","performance","performing","performed"], answer:"B", explanation:"Cần danh từ sau tính từ 'academic'. 'performance' = thành tích." },
+      { id:16, text:"Public interest in superhero movies is _______ rapidly.", choices:["decline","declining","declined","declines"], answer:"B", explanation:"Present continuous: is + V-ing. 'is declining' = đang giảm." },
+      { id:17, text:"The government should _______ filmmakers to create politically sensitive content.", choices:["permit","permission","permitted","permitting"], answer:"A", explanation:"Sau modal 'should' → V nguyên mẫu. 'permit' = cho phép." },
+      { id:18, text:"You don't need Mr. T's _______ to ask questions in this class.", choices:["permit","permission","permitted","permitting"], answer:"B", explanation:"Cần danh từ sau sở hữu cách. 'permission' = sự cho phép (bằng lời)." },
+      { id:19, text:"Asian parents often _______ their children with the neighbor's kid.", choices:["compare","comparison","comparable","comparing"], answer:"A", explanation:"Cần động từ sau trạng từ 'often'. 'compare' = so sánh." },
+      { id:20, text:"His wealth is _______ to that of Bill Gates.", choices:["compare","comparison","comparable","comparably"], answer:"C", explanation:"'be comparable to' = tương đương với. Tính từ sau 'is'." },
+      { id:21, text:"The more you grow up, the more _______ you become to social media trends.", choices:["indifferent","indifference","indifferently","indiffering"], answer:"A", explanation:"Tính từ sau 'become'. 'indifferent to' = thờ ơ với." },
+      { id:22, text:"The _______ of young people towards traditional art is a growing concern.", choices:["indifferent","indifference","indifferently","indiffering"], answer:"B", explanation:"Cần danh từ sau 'The'. 'indifference' = sự thờ ơ." },
+      { id:23, text:"She worked hard to _______ a perfect IELTS score of nine point zero.", choices:["attain","obtain","acquire","perform"], answer:"A", explanation:"'attain' = đạt được (phải nỗ lực). Dùng cho thành tích, mục tiêu." },
+      { id:24, text:"You can _______ a tourist visa at the embassy without much difficulty.", choices:["attain","obtain","perform","decline"], answer:"B", explanation:"'obtain' = có được (thủ tục hành chính). Dùng cho giấy tờ, tài liệu." },
+      { id:25, text:"Both parties must give their _______ before the contract is signed.", choices:["permit","consent","decline","comparison"], answer:"B", explanation:"'consent' = sự đồng thuận (giữa các bên ngang hàng)." },
+      { id:26, text:"Many foreigners teach English in Vietnam without a valid work _______.", choices:["permit","permission","consent","performance"], answer:"A", explanation:"'work permit' = giấy phép lao động (danh từ ghép, giấy tờ chính thức)." },
+      { id:27, text:"Our company's sales have experienced a significant _______ in the last quarter.", choices:["decline","declining","declined","declines"], answer:"A", explanation:"Cần danh từ sau 'a significant'. 'decline' (n) = sự sụt giảm." },
+      { id:28, text:"The _______ between the two educational systems is unfair.", choices:["compare","comparable","comparison","comparably"], answer:"C", explanation:"Cần danh từ sau 'The'. 'comparison' = sự so sánh." },
+      { id:29, text:"Vietnamese netizens' curiosity about celebrity scandals is _______.", choices:["insatiable","indifferent","comparable","declining"], answer:"A", explanation:"'insatiable' = không thể thỏa mãn. Tính từ sau 'is'." },
+      { id:30, text:"It takes time to fully _______ a complex grammatical concept.", choices:["comprehend","perform","acquire","decline"], answer:"A", explanation:"'comprehend' = hiểu rõ, hiểu thấu đáo (= fully understand)." }
+    ]}
+  ]
+};
+
+class ToeicExam {
+  constructor(data) {
+    this.data = data;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+
+    this.init();
+  }
+
+  init() {
+    this.loadVoice();
+    this.renderPartNav();
+    this.renderAnswerSheet();
+    this.renderQuestion();
+    this.bindEvents();
+    this.startTimer();
+  }
+
+  loadVoice() {
+    const set = () => {
+      const voices = this.synth.getVoices();
+      this.voice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    };
+    set();
+    this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+      const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+      const s = String(elapsed % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    const nav = document.getElementById('partNav');
+    nav.innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i === 0 ? ' active' : ''}" data-part="${i}">${p.name}</button>`
+    ).join('');
+  }
+
+  renderAnswerSheet() {
+    const sheet = document.getElementById('answerSheet');
+    sheet.innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i === 0 ? ' current' : ''}" data-idx="${i}">${q.id}</div>`
+    ).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}</div>`;
+
+    if (q.image) {
+      html += `<img class="q-image" src="${q.image}" alt="Question ${q.id} photograph">`;
+    }
+
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe audio</button>`;
+      html += `<span class="speed-label">TTS 0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div>`;
+    html += `<ul class="choices">`;
+    q.choices.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) {
+        if (letters[i] === q.answer) cls = 'correct';
+        else if (letters[i] === userAns) cls = 'wrong';
+      } else if (letters[i] === userAns) {
+        cls = 'selected';
+      }
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+
+    if (this.submitted) {
+      html += `<div class="explanation show">${q.explanation}</div>`;
+    }
+    html += `</div>`;
+
+    area.innerHTML = html;
+
+    if (!this.submitted) {
+      area.querySelectorAll('.choices li').forEach(li => {
+        li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+      });
+    }
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) {
+    if (this.submitted) return;
+    this.answers[qId] = choice;
+    this.renderQuestion();
+    this.updateSheetCell(qId);
+  }
+
+  updateSheetHighlight() {
+    document.querySelectorAll('.sheet-cell').forEach((cell, i) => {
+      cell.classList.toggle('current', i === this.currentIdx);
+    });
+  }
+
+  updateSheetCell(qId) {
+    const idx = this.allQuestions.findIndex(q => q.id === qId);
+    const cell = document.querySelectorAll('.sheet-cell')[idx];
+    if (cell) cell.classList.add('answered');
+  }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx];
+    if (!q.audio_script) return;
+    this.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(q.audio_script);
+    utt.voice = this.voice;
+    utt.rate = 0.85;
+    this.synth.speak(utt);
+  }
+
+  goTo(idx) {
+    this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1));
+    this.renderQuestion();
+  }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true;
+    clearInterval(this.timerInterval);
+
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === q.answer) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const area = document.getElementById('questionArea');
+    area.innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => {
+          const pqs = p.questions;
+          const pc = pqs.filter(q => this.answers[q.id] === q.answer).length;
+          return `${p.name}: ${pc}/${pqs.length}`;
+        }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+  }
+
+  reviewAll() {
+    this.currentIdx = 0;
+    this.renderQuestion();
+  }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const partIdx = parseInt(e.target.dataset.part);
+      let offset = 0;
+      for (let i = 0; i < partIdx; i++) offset += this.data.parts[i].questions.length;
+      this.goTo(offset);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === partIdx));
+    });
+
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell');
+      if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExam(EXAM_DATA);
+  </script>
+</body>
+</html>

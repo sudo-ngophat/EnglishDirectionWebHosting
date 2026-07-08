@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 9 — Mixed Tenses (Boss Level)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 200px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+    .boss-badge { display: inline-block; padding: 0.3rem 0.8rem; background: linear-gradient(135deg, var(--accent), var(--success)); color: #000; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 9 — Mixed Tenses <span class="boss-badge">BOSS</span></h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Tổng hợp tất cả các thì</h3>
+      <div class="formula" style="font-size:0.8rem; line-height:2;">
+        <strong>Present Simple:</strong> S + V(s/es) — thói quen, sự thật<br>
+        <strong>Present Continuous:</strong> S + am/is/are + V-ing — đang xảy ra<br>
+        <strong>Past Simple:</strong> S + V2 — đã xảy ra, kết thúc<br>
+        <strong>Past Continuous:</strong> S + was/were + V-ing — đang xảy ra trong quá khứ<br>
+        <strong>Future (will):</strong> S + will + V — quyết định tức thì, dự đoán<br>
+        <strong>Future (going to):</strong> S + am/is/are + going to + V — kế hoạch, bằng chứng<br>
+        <strong>Present Perfect:</strong> S + have/has + V3 — đã xảy ra, còn liên quan<br>
+        <strong>Past Perfect:</strong> S + had + V3 — xảy ra trước 1 sự kiện quá khứ khác
+      </div>
+      <div class="note">
+        <strong>Chiến lược chọn thì:</strong><br>
+        1. Xác định thời gian: quá khứ / hiện tại / tương lai?<br>
+        2. Hành động đã hoàn tất hay đang diễn ra?<br>
+        3. Có liên quan đến hiện tại không? (Present Perfect)<br>
+        4. Có 2 hành động? Cái nào trước? (Past Perfect)<br>
+        5. Có dấu hiệu nhận biết nào? (every day, now, yesterday, since, by the time...)
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Chọn thì đúng -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn thì đúng — Tất cả các thì (20 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Chia động từ -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chia động từ — Chọn đúng thì (20 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Sửa lỗi sai -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Sửa lỗi sai — Tìm và sửa lỗi thì (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4: Đoạn văn -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Điền đúng thì trong đoạn văn (10 câu)</h3>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">Đọc đoạn văn và chia động từ trong ngoặc đúng thì.</p>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-play" onclick="location.reload()">Làm lại</button>
+        <a href="index.html" class="btn btn-secondary" style="margin-left:0.5rem;">Về trang chủ</a>
+      </div>
+      <p style="margin-top:1rem; font-size:0.9rem; color:var(--success);" id="masterMsg"></p>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-8-past-perfect.html" class="btn btn-secondary">&larr; Level 8</a>
+      <a href="index.html" class="btn btn-play">Hoàn thành!</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "She ___ to the gym every morning.", options: ["goes", "is going", "went", "has gone"], answer: 0, explain: "\"every morning\" = thói quen → Present Simple" },
+    { q: "Look! It ___ outside.", options: ["rains", "is raining", "rained", "has rained"], answer: 1, explain: "\"Look!\" = đang xảy ra → Present Continuous" },
+    { q: "I ___ my homework before I watched TV.", options: ["finish", "finished", "had finished", "have finished"], answer: 2, explain: "Xảy ra TRƯỚC watched TV → Past Perfect" },
+    { q: "She ___ in this company since 2019.", options: ["works", "worked", "is working", "has worked"], answer: 3, explain: "\"since 2019\" = từ quá khứ đến nay → Present Perfect" },
+    { q: "They ___ football when it started to rain.", options: ["play", "played", "were playing", "had played"], answer: 2, explain: "Đang chơi (dài) + mưa bắt đầu (ngắn) → Past Continuous" },
+    { q: "I think she ___ the exam.", options: ["passes", "will pass", "is passing", "has passed"], answer: 1, explain: "\"I think\" = dự đoán ý kiến → will" },
+    { q: "He ___ three books so far this year.", options: ["reads", "read", "is reading", "has read"], answer: 3, explain: "\"so far this year\" = từ đầu năm đến nay → Present Perfect" },
+    { q: "Water ___ at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "has boiled"], answer: 0, explain: "Sự thật khoa học → Present Simple" },
+    { q: "By the time we arrived, the concert ___.", options: ["started", "has started", "had started", "was starting"], answer: 2, explain: "\"By the time\" = trước khi chúng tôi đến → Past Perfect" },
+    { q: "She ___ dinner at 7 PM yesterday.", options: ["cooks", "cooked", "was cooking", "had cooked"], answer: 2, explain: "Tại 1 thời điểm cụ thể trong quá khứ → Past Continuous" },
+    { q: "We ___ to Paris next month. We've already booked the tickets.", options: ["fly", "will fly", "are going to fly", "have flown"], answer: 2, explain: "Kế hoạch đã có (đã book vé) → going to" },
+    { q: "He ___ English for 10 years now.", options: ["studies", "studied", "is studying", "has studied"], answer: 3, explain: "\"for 10 years\" + vẫn đang học → Present Perfect" },
+    { q: "I ___ him at the party last night.", options: ["see", "saw", "have seen", "had seen"], answer: 1, explain: "\"last night\" = thời gian cụ thể → Past Simple" },
+    { q: "She ___ a new car. Look, it's in the driveway!", options: ["buys", "bought", "has bought", "is buying"], answer: 2, explain: "Kết quả còn ảnh hưởng (xe vẫn ở đó) → Present Perfect" },
+    { q: "The train ___ at 9 AM every day.", options: ["leaves", "is leaving", "will leave", "left"], answer: 0, explain: "Lịch trình cố định → Present Simple" },
+    { q: "I ___ TV when the phone rang.", options: ["watch", "watched", "was watching", "had watched"], answer: 2, explain: "Đang xem (dài) + phone rang (ngắn) → Past Continuous" },
+    { q: "She ___ never ___ abroad before she turned 30.", options: ["has, traveled", "had, traveled", "was, traveling", "did, travel"], answer: 1, explain: "\"before she turned 30\" = trước 1 mốc quá khứ → Past Perfect" },
+    { q: "Don't call me at 8. I ___ dinner.", options: ["have", "will have", "will be having", "am having"], answer: 2, explain: "Sẽ đang làm gì tại thời điểm tương lai → Future Continuous (will be having)" },
+    { q: "He ___ to work every day, but today he ___ the bus.", options: ["drives, is taking", "is driving, takes", "drove, takes", "drives, takes"], answer: 0, explain: "Thói quen (drives) vs hôm nay khác (is taking) → Simple + Continuous" },
+    { q: "I promise I ___ you tomorrow.", options: ["call", "am calling", "will call", "am going to call"], answer: 2, explain: "Lời hứa → will" }
+  ],
+  ex2: [
+    { q: "She ___ (study) English every day.", answer: "studies", explain: "every day = thói quen → Present Simple" },
+    { q: "Right now, they ___ (have) a meeting.", answer: "are having", explain: "right now = đang xảy ra → Present Continuous" },
+    { q: "I ___ (visit) Japan twice in my life.", answer: "have visited", explain: "kinh nghiệm, không nói thời gian cụ thể → Present Perfect" },
+    { q: "She ___ (go) to the store yesterday.", answer: "went", explain: "yesterday = quá khứ → Past Simple" },
+    { q: "While I ___ (cook), the fire alarm went off.", answer: "was cooking", explain: "đang nấu (dài) + alarm went off (ngắn) → Past Continuous" },
+    { q: "By the time he arrived, we ___ (already / leave).", answer: "had already left", explain: "By the time = trước khi → Past Perfect" },
+    { q: "I think it ___ (rain) tomorrow.", answer: "will rain", explain: "I think = dự đoán → will" },
+    { q: "She ___ (live) here since she was born.", answer: "has lived", explain: "since = từ quá khứ đến nay → Present Perfect" },
+    { q: "Look at those clouds! It ___ (rain).", answer: "is going to rain", explain: "bằng chứng (mây đen) → going to" },
+    { q: "He ___ (never / eat) sushi before he went to Japan.", answer: "had never eaten", explain: "before he went = trước 1 mốc quá khứ → Past Perfect" },
+    { q: "The Earth ___ (revolve) around the Sun.", answer: "revolves", explain: "sự thật khoa học → Present Simple" },
+    { q: "She ___ (work) at Google from 2018 to 2022.", answer: "worked", explain: "2018 to 2022 = khoảng thời gian đã kết thúc → Past Simple" },
+    { q: "I ___ (just / finish) my homework. I can play now.", answer: "have just finished", explain: "just = vừa mới, kết quả hiện tại → Present Perfect" },
+    { q: "At 10 PM last night, she ___ (sleep).", answer: "was sleeping", explain: "tại 1 thời điểm trong quá khứ → Past Continuous" },
+    { q: "We ___ (move) to a new house next month. Everything is arranged.", answer: "are moving", alt: ["are going to move"], explain: "kế hoạch đã sắp xếp → Present Continuous / going to" },
+    { q: "He ___ (not know) the answer. He's confused.", answer: "does not know", alt: ["doesn't know"], explain: "know = stative verb, trạng thái hiện tại → Present Simple" },
+    { q: "After she ___ (graduate), she traveled around Europe.", answer: "had graduated", alt: ["graduated"], explain: "After + hành động trước → Past Perfect (hoặc Past Simple vì 'after' đã rõ thứ tự)" },
+    { q: "I ___ (wait) for you for 30 minutes! Where were you?", answer: "have been waiting", alt: ["was waiting"], explain: "từ quá khứ đến hiện tại + nhấn mạnh thời gian → Present Perfect Continuous" },
+    { q: "She ___ (read) that book three times already.", answer: "has read", explain: "already + kinh nghiệm → Present Perfect" },
+    { q: "They ___ (play) football every Sunday when they were kids.", answer: "played", alt: ["used to play"], explain: "thói quen trong quá khứ (không còn) → Past Simple" }
+  ],
+  ex3: [
+    { q: "I have seen him yesterday.", answer: "I saw him yesterday.", explain: "\"yesterday\" = thời gian cụ thể → Past Simple (không dùng Present Perfect)" },
+    { q: "She is knowing the answer.", answer: "She knows the answer.", explain: "know = stative verb → Present Simple" },
+    { q: "When I arrived, she already left.", answer: "When I arrived, she had already left.", explain: "Rời đi TRƯỚC khi tôi đến → Past Perfect" },
+    { q: "He lives here since 2015.", answer: "He has lived here since 2015.", explain: "\"since\" = từ quá khứ đến nay → Present Perfect" },
+    { q: "I was studying when the phone was ringing.", answer: "I was studying when the phone rang.", explain: "phone rang = hành động ngắn → Past Simple" },
+    { q: "She will going to travel next week.", answer: "She is going to travel next week.", explain: "going to = am/is/are + going to (không dùng will + going to)" },
+    { q: "They have went to Paris.", answer: "They have gone to Paris.", explain: "go → gone (V3), không phải went (V2)" },
+    { q: "He didn't saw the movie.", answer: "He didn't see the movie.", explain: "Sau didn't → V1 (see, không phải saw)" },
+    { q: "I am living here for 5 years.", answer: "I have lived here for 5 years.", alt: ["I have been living here for 5 years."], explain: "\"for 5 years\" = khoảng thời gian đến nay → Present Perfect" },
+    { q: "By the time she called, I already left.", answer: "By the time she called, I had already left.", explain: "\"By the time\" = trước khi → Past Perfect" }
+  ],
+  ex4: [
+    { q: "My name is Lan. I ___ (be) a university student.", answer: "am", explain: "trạng thái hiện tại → Present Simple" },
+    { q: "I ___ (study) English since I was 10 years old.", answer: "have studied", alt: ["have been studying"], explain: "since = từ quá khứ đến nay → Present Perfect" },
+    { q: "Last year, I ___ (take) the IELTS exam for the first time.", answer: "took", explain: "last year = quá khứ → Past Simple" },
+    { q: "I was very nervous because I ___ (never / take) a big exam before.", answer: "had never taken", explain: "trước lần thi đó → Past Perfect" },
+    { q: "Right now, I ___ (prepare) for my second attempt.", answer: "am preparing", explain: "right now = đang xảy ra → Present Continuous" },
+    { q: "I ___ (practice) speaking every day this month.", answer: "have been practicing", alt: ["have practiced", "am practicing"], explain: "this month = giai đoạn hiện tại → Present Perfect Continuous" },
+    { q: "My teacher ___ (tell) me that I need to improve my writing.", answer: "told", alt: ["has told", "tells"], explain: "sự kiện đã xảy ra → Past Simple (hoặc Present Perfect nếu vẫn còn liên quan)" },
+    { q: "I ___ (take) the exam again next month.", answer: "am going to take", alt: ["am taking", "will take"], explain: "kế hoạch → going to / Present Continuous" },
+    { q: "I believe I ___ (get) a better score this time.", answer: "will get", explain: "I believe = dự đoán → will" },
+    { q: "After I ___ (pass) the exam, I will apply to study abroad.", answer: "pass", alt: ["have passed"], explain: "After + Present Simple (trong mệnh đề thời gian tương lai)" }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0 };
+let totals = { ex1: 20, ex2: 20, ex3: 10, ex4: 10 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false };
+
+function renderMCSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="${section}" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked[section]) return;
+    const q = parseInt(btn.dataset.q);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+  });
+}
+
+function renderFillSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    const isError = section === 'ex3';
+    if (item.q.includes('___')) {
+      const parts = item.q.split('___');
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${section}-input-${i}" placeholder="...">${parts[1] || ''}</div><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    } else {
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${isError ? `<span style="color:var(--accent);">${item.q}</span>` : item.q}</div><input type="text" id="${section}-input-${i}" placeholder="${isError ? 'Viết lại câu đúng...' : 'Điền đáp án...'}" style="width:100%; margin-top:0.5rem;"><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkMC(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const selected = document.querySelector(`#${section}Questions .mc-btn[data-q="${i}"].selected`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const btns = document.querySelectorAll(`#${section}Questions .mc-btn[data-q="${i}"]`);
+    btns.forEach(b => b.classList.add('disabled'));
+    if (selected && parseInt(selected.dataset.opt) === item.answer) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + item.explain;
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      if (selected) selected.classList.add('wrong');
+      btns[item.answer].classList.add('correct');
+      fb.textContent = '✗ ' + item.explain;
+      fb.className = 'fb wrong-fb';
+    }
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkFill(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      fb.textContent = `✗ Đáp án: ${item.answer} — ${item.explain}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+
+    const msg = document.getElementById('masterMsg');
+    if (pct >= 90) {
+      msg.textContent = 'MASTER! Bạn đã thành thạo tất cả các thì. Xuất sắc!';
+    } else if (pct >= 70) {
+      msg.textContent = 'Tốt lắm! Bạn nắm khá vững. Ôn lại những câu sai để hoàn thiện.';
+    } else if (pct >= 50) {
+      msg.textContent = 'Khá ổn! Nên quay lại ôn các Level trước rồi thử lại.';
+    } else {
+      msg.textContent = 'Cần luyện thêm. Hãy quay lại từ Level 1 và làm lại từng bước.';
+      msg.style.color = 'var(--accent-light)';
+    }
+  }
+}
+
+renderMCSection('ex1');
+renderFillSection('ex2');
+renderFillSection('ex3');
+renderFillSection('ex4');
+  </script>
+</body>
+</html>

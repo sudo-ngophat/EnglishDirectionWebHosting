@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC Practice — Buổi 3 Vocabulary</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .part-btn.done { color: var(--success); border-color: var(--success); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .audio-btn:hover { background: var(--accent-light); }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC — Buổi 3</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div class="part-nav" id="partNav"></div>
+
+    <div id="questionArea"></div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 2, name: "Part 2: Question-Response", questions: [
+      { id:1, text:"What is your perspective on the new company policy?", choices:["From my perspective, it will improve efficiency.","The perspective is on the top shelf.","I'll perspective it tomorrow."], answer:"A", explanation:"Hỏi 'what is your perspective' (quan điểm) → trả lời ý kiến cụ thể.", audio_script:"What is your perspective on the new company policy? (A) From my perspective, it will improve efficiency. (B) The perspective is on the top shelf. (C) I'll perspective it tomorrow." },
+      { id:2, text:"Has public awareness of climate change increased?", choices:["Yes, more people are conscious of the issue now.","The awareness is in the meeting room.","I'll be aware of it later."], answer:"A", explanation:"Hỏi 'has awareness increased' → trả lời Yes + chi tiết.", audio_script:"Has public awareness of climate change increased? (A) Yes, more people are conscious of the issue now. (B) The awareness is in the meeting room. (C) I'll be aware of it later." },
+      { id:3, text:"Why did the patient lose consciousness?", choices:["Because of a severe head injury.","The consciousness starts at nine.","I'm conscious of the deadline."], answer:"A", explanation:"Hỏi 'why lose consciousness' → trả lời nguyên nhân cụ thể.", audio_script:"Why did the patient lose consciousness? (A) Because of a severe head injury. (B) The consciousness starts at nine. (C) I'm conscious of the deadline." },
+      { id:4, text:"Does this job require thorough knowledge of the software?", choices:["Yes, you need to understand every feature in detail.","The thorough is on the second floor.","I'll be thorough about it next week."], answer:"A", explanation:"Hỏi 'require thorough knowledge' → trả lời Yes + giải thích.", audio_script:"Does this job require thorough knowledge of the software? (A) Yes, you need to understand every feature in detail. (B) The thorough is on the second floor. (C) I'll be thorough about it next week." },
+      { id:5, text:"How can we gain mutual understanding with the client?", choices:["By scheduling regular face-to-face meetings.","The mutual fund performed well.","I'll mutually agree later."], answer:"A", explanation:"Hỏi 'how gain mutual understanding' → trả lời phương pháp cụ thể.", audio_script:"How can we gain mutual understanding with the client? (A) By scheduling regular face-to-face meetings. (B) The mutual fund performed well. (C) I'll mutually agree later." },
+      { id:6, text:"Are you willing to sacrifice your weekend for this project?", choices:["Only if it's absolutely necessary for the deadline.","The sacrifice was made yesterday.","I'll sacrifice the document."], answer:"A", explanation:"Hỏi 'willing to sacrifice' → trả lời điều kiện.", audio_script:"Are you willing to sacrifice your weekend for this project? (A) Only if it's absolutely necessary for the deadline. (B) The sacrifice was made yesterday. (C) I'll sacrifice the document." }
+    ]},
+    { number: 3, name: "Part 3: Short Conversations", questions: [
+      { id:7, text:"Man: I think social media is changing how young people perceive the world.\nWoman: I agree. Their perception of reality is completely distorted.\nMan: We should raise awareness about this issue.\n\nWhat are the speakers discussing?", choices:["The effect of social media on young people's perception","A new social media marketing campaign","How to increase sales through online advertising","The company's new awareness training program"], answer:"A", explanation:"Họ nói về 'perception of reality is distorted' do social media → ảnh hưởng của mạng xã hội lên nhận thức giới trẻ.", audio_script:"Man: I think social media is changing how young people perceive the world. Woman: I agree. Their perception of reality is completely distorted. Man: We should raise awareness about this issue." },
+      { id:8, text:"Woman: The research shows that outdoor activities improve children's cognitive development.\nMan: So we should allow more time for physical education?\nWoman: Exactly. The cognitive benefits are well-documented.\n\nWhat does the woman suggest?", choices:["Increasing time for physical education","Reducing homework assignments","Hiring more teachers","Buying new computers for the school"], answer:"A", explanation:"Woman nói 'outdoor activities improve cognitive development' và đồng ý 'more time for physical education'.", audio_script:"Woman: The research shows that outdoor activities improve children's cognitive development. Man: So we should allow more time for physical education? Woman: Exactly. The cognitive benefits are well-documented." },
+      { id:9, text:"Man: Many employees are willing to sacrifice work-life balance for recognition.\nWoman: That's concerning. We need to change that perspective.\nMan: Perhaps mutual respect between managers and staff would help.\n\nWhat problem are they discussing?", choices:["Employees sacrificing well-being for recognition","A decline in company profits","The need for new office equipment","Customer complaints about service"], answer:"A", explanation:"Man nói 'sacrifice work-life balance for recognition' → vấn đề nhân viên hy sinh sức khỏe vì sự công nhận.", audio_script:"Man: Many employees are willing to sacrifice work-life balance for recognition. Woman: That's concerning. We need to change that perspective. Man: Perhaps mutual respect between managers and staff would help." },
+      { id:10, text:"Woman: Regardless of the training we provide, some staff remain indifferent to safety protocols.\nMan: Maybe we need to raise their awareness through real-life examples.\nWoman: Good idea. A thorough review of past incidents might help.\n\nWhat does the man suggest?", choices:["Using real-life examples to raise awareness","Firing indifferent employees","Reducing the number of safety protocols","Hiring a new safety officer"], answer:"A", explanation:"Man đề nghị 'raise awareness through real-life examples'.", audio_script:"Woman: Regardless of the training we provide, some staff remain indifferent to safety protocols. Man: Maybe we need to raise their awareness through real-life examples. Woman: Good idea. A thorough review of past incidents might help." }
+    ]},
+    { number: 5, name: "Part 5: Incomplete Sentences", questions: [
+      { id:11, text:"From my _______, the new policy will benefit everyone in the long run.", choices:["perspective","perception","consciousness","cognition"], answer:"A", explanation:"'From my perspective' = theo quan điểm của tôi. Cụm cố định." },
+      { id:12, text:"Designers must have a _______ understanding of photo editing software.", choices:["thorough","thoroughly","thoroughness","more thorough"], answer:"A", explanation:"Cần tính từ bổ nghĩa cho danh từ 'understanding'. 'thorough' = kỹ lưỡng." },
+      { id:13, text:"Social media can distort your _______ of reality.", choices:["perspective","perception","awareness","recognition"], answer:"B", explanation:"'perception of reality' = nhận thức về thực tại. Perception = cách bạn nhìn nhận thế giới xung quanh." },
+      { id:14, text:"The government launched a campaign to raise public _______ of the dangers of smoking.", choices:["awareness","consciousness","cognition","perception"], answer:"A", explanation:"'raise public awareness' = nâng cao nhận thức cộng đồng. Cụm cố định." },
+      { id:15, text:"After the accident, the patient regained _______ within a few hours.", choices:["awareness","consciousness","cognition","perception"], answer:"B", explanation:"'regain consciousness' = tỉnh lại (sau bất tỉnh). Consciousness = trạng thái tỉnh táo." },
+      { id:16, text:"The head injury severely affected his _______, making it difficult to learn new things.", choices:["cognition","recognition","consciousness","perspective"], answer:"A", explanation:"'cognition' = khả năng tư duy/nhận thức của não bộ. Liên quan đến học tập." },
+      { id:17, text:"Outdoor activities provide significant _______ benefits for children's brain development.", choices:["cognitive","cognition","conscious","recognized"], answer:"A", explanation:"Cần tính từ trước danh từ 'benefits'. 'cognitive' = thuộc về nhận thức/tư duy." },
+      { id:18, text:"Many youngsters sacrifice their health for social _______.", choices:["recognition","cognition","consciousness","perception"], answer:"A", explanation:"'social recognition' = sự công nhận của xã hội." },
+      { id:19, text:"Without _______ understanding, relationships cannot be maintained.", choices:["mutual","thorough","cognitive","conscious"], answer:"A", explanation:"'mutual understanding' = sự hiểu biết lẫn nhau." },
+      { id:20, text:"She is willing to _______ her free time to help the community.", choices:["sacrifice","desire","recognize","perceive"], answer:"A", explanation:"'sacrifice' = hy sinh, đánh đổi. Sacrifice + danh từ." },
+      { id:21, text:"His _______ for success drove him to work 16 hours a day.", choices:["desire","sacrifice","awareness","perception"], answer:"A", explanation:"'desire for' = mong muốn, khao khát. Desire + for + danh từ." },
+      { id:22, text:"_______ of the risks involved, she decided to invest in the startup.", choices:["Regardless","Despite","Although","However"], answer:"A", explanation:"'Regardless of' = bất chấp. Regardless of + danh từ." },
+      { id:23, text:"Spending hours scrolling through social media is a _______ activity.", choices:["mind-numbing","mind-numb","mind-numbered","mind-number"], answer:"A", explanation:"'mind-numbing' = tê liệt tinh thần, nhàm chán cực độ. Tính từ ghép." },
+      { id:24, text:"As people mature, their _______ grows and they understand themselves better.", choices:["self-consciousness","self-conscious","consciousness","unconsciousness"], answer:"A", explanation:"Cần danh từ làm chủ ngữ. 'self-consciousness' = sự tự ý thức về bản thân." },
+      { id:25, text:"The company conducted a _______ investigation into the data breach.", choices:["thorough","thoroughly","thoroughness","thoroughs"], answer:"A", explanation:"Cần tính từ trước danh từ 'investigation'. 'thorough' = kỹ lưỡng, toàn diện." },
+      { id:26, text:"Due to the _______ benefits of reading, parents should encourage children to read daily.", choices:["cognitive","conscious","mutual","regardless"], answer:"A", explanation:"'cognitive benefits' = lợi ích về mặt nhận thức/tư duy." },
+      { id:27, text:"The _______ that social media distorts reality is becoming more widespread.", choices:["awareness","perception","desire","sacrifice"], answer:"A", explanation:"'The awareness that...' = sự nhận thức rằng... Awareness + that clause." },
+      { id:28, text:"From a different _______, the problem might actually be an opportunity.", choices:["perspective","perception","consciousness","recognition"], answer:"A", explanation:"'From a different perspective' = từ một góc nhìn khác." },
+      { id:29, text:"The employees showed complete _______ to the new safety regulations.", choices:["indifference","awareness","consciousness","recognition"], answer:"A", explanation:"'showed indifference to' = thể hiện sự thờ ơ với. Indifference = sự thờ ơ (từ Buổi 2, ôn lại)." },
+      { id:30, text:"I am more mature now due to my better _______.", choices:["self-consciousness","self-conscious","consciousness","unconscious"], answer:"A", explanation:"Cần danh từ sau 'better'. 'self-consciousness' = sự tự ý thức. Câu gốc từ bài giảng Buổi 3." }
+    ]}
+  ]
+};
+
+class ToeicExam {
+  constructor(data) {
+    this.data = data;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+    this.init();
+  }
+
+  init() {
+    this.loadVoice();
+    this.renderPartNav();
+    this.renderAnswerSheet();
+    this.renderQuestion();
+    this.bindEvents();
+    this.startTimer();
+  }
+
+  loadVoice() {
+    const set = () => {
+      const voices = this.synth.getVoices();
+      this.voice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    };
+    set();
+    this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+      const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+      const s = String(elapsed % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    const nav = document.getElementById('partNav');
+    nav.innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i === 0 ? ' active' : ''}" data-part="${i}">${p.name}</button>`
+    ).join('');
+  }
+
+  renderAnswerSheet() {
+    const sheet = document.getElementById('answerSheet');
+    sheet.innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i === 0 ? ' current' : ''}" data-idx="${i}">${q.id}</div>`
+    ).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}</div>`;
+
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe audio</button>`;
+      html += `<span class="speed-label">TTS 0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div>`;
+    html += `<ul class="choices">`;
+    q.choices.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) {
+        if (letters[i] === q.answer) cls = 'correct';
+        else if (letters[i] === userAns) cls = 'wrong';
+      } else if (letters[i] === userAns) {
+        cls = 'selected';
+      }
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+
+    if (this.submitted) {
+      html += `<div class="explanation show">${q.explanation}</div>`;
+    }
+    html += `</div>`;
+
+    area.innerHTML = html;
+
+    if (!this.submitted) {
+      area.querySelectorAll('.choices li').forEach(li => {
+        li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+      });
+    }
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) {
+    if (this.submitted) return;
+    this.answers[qId] = choice;
+    this.renderQuestion();
+    this.updateSheetCell(qId);
+  }
+
+  updateSheetHighlight() {
+    document.querySelectorAll('.sheet-cell').forEach((cell, i) => {
+      cell.classList.toggle('current', i === this.currentIdx);
+    });
+  }
+
+  updateSheetCell(qId) {
+    const idx = this.allQuestions.findIndex(q => q.id === qId);
+    const cell = document.querySelectorAll('.sheet-cell')[idx];
+    if (cell) cell.classList.add('answered');
+  }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx];
+    if (!q.audio_script) return;
+    this.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(q.audio_script);
+    utt.voice = this.voice;
+    utt.rate = 0.85;
+    this.synth.speak(utt);
+  }
+
+  goTo(idx) {
+    this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1));
+    this.renderQuestion();
+  }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true;
+    clearInterval(this.timerInterval);
+
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === q.answer) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const area = document.getElementById('questionArea');
+    area.innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => {
+          const pqs = p.questions;
+          const pc = pqs.filter(q => this.answers[q.id] === q.answer).length;
+          return `${p.name}: ${pc}/${pqs.length}`;
+        }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+  }
+
+  reviewAll() {
+    this.currentIdx = 0;
+    this.renderQuestion();
+  }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const partIdx = parseInt(e.target.dataset.part);
+      let offset = 0;
+      for (let i = 0; i < partIdx; i++) offset += this.data.parts[i].questions.length;
+      this.goTo(offset);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === partIdx));
+    });
+
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell');
+      if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExam(EXAM_DATA);
+  </script>
+</body>
+</html>

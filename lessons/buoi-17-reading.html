@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 17 — Reading Fill-in-the-Blank</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .passage { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; line-height: 2.2; font-size: 1.05rem; }
+    .blank-input { width: 140px; padding: 0.3rem 0.6rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 6px; color: var(--text); font-size: 1rem; text-align: center; outline: none; transition: border-color 0.2s; }
+    .blank-input:focus { border-color: var(--accent); }
+    .blank-input.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .blank-input.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .blank-number { font-size: 0.7rem; color: var(--accent); vertical-align: super; margin-right: 2px; }
+    .word-bank { margin-top: 1.5rem; padding: 1rem; background: var(--card); border-radius: var(--radius); }
+    .word-bank h3 { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+    .word-bank-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .word-chip { padding: 0.4rem 0.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .word-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .word-chip.used { opacity: 0.4; text-decoration: line-through; }
+    .check-section { margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .result-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; font-size: 0.9rem; }
+    .result-msg.success { background: rgba(0,210,211,0.1); color: var(--success); }
+    .result-msg.partial { background: rgba(233,69,96,0.1); color: var(--accent-light); }
+    .listen-btn { padding: 0.3rem 0.6rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); cursor: pointer; font-size: 0.75rem; margin-left: 0.3rem; }
+    .listen-btn:hover { border-color: var(--accent); color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 17 — Reading: Fill in the Blanks</h1>
+    </div>
+    <p class="hint">Chủ đề Buổi 17: Compliance & Governance — adhere, enforce, audit, disclose, ethical, transparent, violate, mandate, guideline.</p>
+
+    <div class="word-bank">
+      <h3>Word Bank (kéo hoặc gõ vào chỗ trống)</h3>
+      <div class="word-bank-items" id="wordBank"></div>
+    </div>
+
+    <div class="passage" id="passage"></div>
+
+    <div class="check-section">
+      <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+      <button class="btn btn-secondary" id="btnShowAll">Hiện đáp án</button>
+      <button class="btn btn-secondary" id="btnReset">Làm lại</button>
+      <button class="btn btn-secondary" id="btnListen">&#9654; Nghe toàn bài</button>
+    </div>
+
+    <div id="resultMsg"></div>
+
+    <p class="hint" style="margin-top:1.5rem;">Gõ từ vào ô trống hoặc click từ trong Word Bank rồi click ô trống. Bấm "Kiểm tra" để xem kết quả.</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const PASSAGE_DATA = {
+  words: ["adhere", "enforce", "audit", "disclose", "ethical", "transparent", "violate", "mandate", "guideline"],
+  passage: [
+    "Every serious organization needs rules that employees actually {1} to in daily work.",
+    "Those rules mean little if nobody is willing to {2} them when they are broken.",
+    "That is why many companies regularly {3} their records, processes, and reports.",
+    "The results of those checks help leaders {4} problems before they become public scandals.",
+    "Behind every rule there should be an {5} principle that explains why the rule exists.",
+    "Employees are more likely to cooperate when the decision-making process is {6} and fair.",
+    "When someone chooses to {7} a rule for personal gain, the response must be firm and fair.",
+    "Sometimes the government issues a formal {8} that all businesses in the industry must follow.",
+    "In that case, each department needs a practical {9} that turns the mandate into daily habits."
+  ],
+  answers: {
+    1: "adhere",
+    2: "enforce",
+    3: "audit",
+    4: "disclose",
+    5: "ethical",
+    6: "transparent",
+    7: "violate",
+    8: "mandate",
+    9: "guideline"
+  },
+  sentences: {
+    1: "Employees must adhere to the rules in daily work.",
+    2: "Someone must enforce the rules when they are broken.",
+    3: "Many companies audit their records and reports.",
+    4: "Leaders disclose problems before they become scandals.",
+    5: "Every rule should reflect an ethical principle.",
+    6: "The decision-making process should be transparent and fair.",
+    7: "Some people violate rules for personal gain.",
+    8: "The government may issue a formal mandate.",
+    9: "Each department needs a practical guideline."
+  }
+};
+
+class ReadingFill {
+  constructor(data) {
+    this.data = data;
+    this.selectedWord = null;
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.init();
+  }
+
+  init() {
+    this.loadVoice();
+    this.renderWordBank();
+    this.renderPassage();
+    this.bindEvents();
+  }
+
+  loadVoice() {
+    const set = () => {
+      const voices = this.synth.getVoices();
+      this.voice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    };
+    set();
+    this.synth.onvoiceschanged = set;
+  }
+
+  renderWordBank() {
+    const bank = document.getElementById('wordBank');
+    const shuffled = [...this.data.words].sort(() => Math.random() - 0.5);
+    bank.innerHTML = shuffled.map(w =>
+      `<span class="word-chip" data-word="${w}">${w}</span>`
+    ).join('');
+  }
+
+  renderPassage() {
+    const el = document.getElementById('passage');
+    let html = '';
+    this.data.passage.forEach(line => {
+      if (line === '') { html += '<br>'; return; }
+      html += line.replace(/\{(\d+)\}/g, (_, num) => {
+        return `<span class="blank-number">(${num})</span><input type="text" class="blank-input" data-num="${num}" placeholder="..." autocomplete="off" spellcheck="false"><button class="listen-btn" data-num="${num}" title="Nghe câu chứa từ này">&#128264;</button>`;
+      });
+      html += ' ';
+    });
+    el.innerHTML = html;
+  }
+
+  bindEvents() {
+    document.getElementById('btnCheck').addEventListener('click', () => this.check());
+    document.getElementById('btnShowAll').addEventListener('click', () => this.showAll());
+    document.getElementById('btnReset').addEventListener('click', () => this.reset());
+    document.getElementById('btnListen').addEventListener('click', () => this.listenAll());
+
+    document.getElementById('wordBank').addEventListener('click', (e) => {
+      const chip = e.target.closest('.word-chip');
+      if (!chip || chip.classList.contains('used')) return;
+      document.querySelectorAll('.word-chip').forEach(c => c.style.outline = '');
+      chip.style.outline = '2px solid var(--accent)';
+      this.selectedWord = chip.dataset.word;
+    });
+
+    document.getElementById('passage').addEventListener('click', (e) => {
+      if (e.target.classList.contains('blank-input') && this.selectedWord) {
+        e.target.value = this.selectedWord;
+        const chip = document.querySelector(`.word-chip[data-word="${this.selectedWord}"]`);
+        if (chip) chip.classList.add('used');
+        this.selectedWord = null;
+        document.querySelectorAll('.word-chip').forEach(c => c.style.outline = '');
+      }
+      if (e.target.classList.contains('listen-btn')) {
+        const num = e.target.dataset.num;
+        this.listenSentence(num);
+      }
+    });
+
+    document.querySelectorAll('.blank-input').forEach(input => {
+      input.addEventListener('input', () => {
+        input.classList.remove('correct', 'wrong');
+      });
+    });
+  }
+
+  check() {
+    let correct = 0;
+    const total = Object.keys(this.data.answers).length;
+    document.querySelectorAll('.blank-input').forEach(input => {
+      const num = input.dataset.num;
+      const answer = this.data.answers[num];
+      const userVal = input.value.trim().toLowerCase();
+      if (userVal === answer.toLowerCase()) {
+        input.classList.add('correct'); input.classList.remove('wrong'); correct++;
+      } else if (userVal) {
+        input.classList.add('wrong'); input.classList.remove('correct');
+      }
+    });
+    const msg = document.getElementById('resultMsg');
+    if (correct === total) {
+      msg.innerHTML = `<div class="result-msg success">Tuyệt vời! ${correct}/${total} câu đúng!</div>`;
+    } else {
+      msg.innerHTML = `<div class="result-msg partial">${correct}/${total} câu đúng. Thử lại những ô đỏ.</div>`;
+    }
+  }
+
+  showAll() {
+    document.querySelectorAll('.blank-input').forEach(input => {
+      const num = input.dataset.num;
+      input.value = this.data.answers[num];
+      input.classList.add('correct');
+      input.classList.remove('wrong');
+    });
+    document.getElementById('resultMsg').innerHTML = '<div class="result-msg success">Đáp án đã hiện.</div>';
+  }
+
+  reset() {
+    document.querySelectorAll('.blank-input').forEach(input => {
+      input.value = '';
+      input.classList.remove('correct', 'wrong');
+    });
+    document.querySelectorAll('.word-chip').forEach(c => {
+      c.classList.remove('used');
+      c.style.outline = '';
+    });
+    this.selectedWord = null;
+    document.getElementById('resultMsg').innerHTML = '';
+  }
+
+  listenSentence(num) {
+    const sentence = this.data.sentences[num];
+    if (!sentence) return;
+    this.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(sentence);
+    utt.voice = this.voice;
+    utt.rate = 0.8;
+    this.synth.speak(utt);
+  }
+
+  listenAll() {
+    const fullText = this.data.passage.filter(l => l !== '').join(' ').replace(/\{\d+\}/g, (m) => {
+      const num = m.replace(/[{}]/g, '');
+      return this.data.answers[num];
+    });
+    this.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(fullText);
+    utt.voice = this.voice;
+    utt.rate = 0.85;
+    this.synth.speak(utt);
+  }
+}
+
+const app = new ReadingFill(PASSAGE_DATA);
+  </script>
+</body>
+</html>

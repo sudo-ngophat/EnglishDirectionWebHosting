@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentence Structure — English Teacher Tung</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .level-grid { display: grid; gap: 1rem; }
+    .level-card { display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; color: var(--text); transition: all 0.2s; }
+    .level-card:hover { background: var(--card); border-color: var(--accent); transform: translateY(-2px); }
+    .level-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; flex-shrink: 0; }
+    .level-num.beginner { background: rgba(0,210,211,0.2); color: var(--success); }
+    .level-num.intermediate { background: rgba(255,165,0,0.2); color: orange; }
+    .level-num.advanced { background: rgba(233,69,96,0.2); color: var(--accent); }
+    .level-info { flex: 1; }
+    .level-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .level-desc { font-size: 0.85rem; color: var(--text-dim); }
+    .level-badge { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 12px; font-weight: 600; text-transform: uppercase; }
+    .level-badge.beginner { background: rgba(0,210,211,0.15); color: var(--success); }
+    .level-badge.intermediate { background: rgba(255,165,0,0.15); color: orange; }
+    .level-badge.advanced { background: rgba(233,69,96,0.15); color: var(--accent); }
+    .section-title { font-size: 1rem; color: var(--text-dim); margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Sentence Structure</h1>
+    </div>
+    <h2>Cấu trúc câu — Từ câu đơn đến câu phức</h2>
+
+    <div class="section-title">Beginner — Nền tảng câu</div>
+    <div class="level-grid">
+      <a href="level-1-simple-sentences.html" class="level-card">
+        <div class="level-num beginner">1</div>
+        <div class="level-info">
+          <div class="level-title">Simple Sentences</div>
+          <div class="level-desc">Câu đơn: S + V + O. Thành phần câu cơ bản. "She reads books."</div>
+        </div>
+        <span class="level-badge beginner">Beginner</span>
+      </a>
+      <a href="level-2-compound-sentences.html" class="level-card">
+        <div class="level-num beginner">2</div>
+        <div class="level-info">
+          <div class="level-title">Compound Sentences</div>
+          <div class="level-desc">Câu ghép: nối 2 câu đơn bằng and, but, or, so, yet, for</div>
+        </div>
+        <span class="level-badge beginner">Beginner</span>
+      </a>
+    </div>
+
+    <div class="section-title">Intermediate — Câu phức</div>
+    <div class="level-grid">
+      <a href="level-3-complex-sentences.html" class="level-card">
+        <div class="level-num intermediate">3</div>
+        <div class="level-info">
+          <div class="level-title">Complex Sentences</div>
+          <div class="level-desc">Câu phức: because, although, when, while, if, after, before, since, unless</div>
+        </div>
+        <span class="level-badge intermediate">Intermediate</span>
+      </a>
+      <a href="level-4-relative-clauses.html" class="level-card">
+        <div class="level-num intermediate">4</div>
+        <div class="level-info">
+          <div class="level-title">Relative Clauses</div>
+          <div class="level-desc">Mệnh đề quan hệ: who, which, that, where, whose, whom</div>
+        </div>
+        <span class="level-badge intermediate">Intermediate</span>
+      </a>
+      <a href="level-5-passive-voice.html" class="level-card">
+        <div class="level-num intermediate">5</div>
+        <div class="level-info">
+          <div class="level-title">Passive Voice</div>
+          <div class="level-desc">Câu bị động: "The book was written by him." — khi nào dùng, cách chuyển</div>
+        </div>
+        <span class="level-badge intermediate">Intermediate</span>
+      </a>
+    </div>
+
+    <div class="section-title">Advanced — Câu nâng cao</div>
+    <div class="level-grid">
+      <a href="level-6-conditionals.html" class="level-card">
+        <div class="level-num advanced">6</div>
+        <div class="level-info">
+          <div class="level-title">Conditionals</div>
+          <div class="level-desc">Câu điều kiện: Type 0, 1, 2, 3 — If I were..., If I had known...</div>
+        </div>
+        <span class="level-badge advanced">Advanced</span>
+      </a>
+      <a href="level-7-reported-speech.html" class="level-card">
+        <div class="level-num advanced">7</div>
+        <div class="level-info">
+          <div class="level-title">Reported Speech</div>
+          <div class="level-desc">Câu tường thuật: He said that..., She told me that...</div>
+        </div>
+        <span class="level-badge advanced">Advanced</span>
+      </a>
+      <a href="level-8-mixed-structures.html" class="level-card">
+        <div class="level-num advanced">8</div>
+        <div class="level-info">
+          <div class="level-title">Mixed Structures — Boss Level</div>
+          <div class="level-desc">Tổng hợp: kết hợp tất cả cấu trúc trong 1 đoạn văn hoàn chỉnh</div>
+        </div>
+        <span class="level-badge advanced">Advanced</span>
+      </a>
+    </div>
+
+    <p class="hint" style="margin-top:2rem;">Mỗi level có: Lý thuyết → Nhận diện → Nối câu → Sửa lỗi → Viết câu. Làm tuần tự từ Level 1.</p>
+  </div>
+</body>
+</html>

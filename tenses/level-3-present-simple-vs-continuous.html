@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 3 — Present Simple vs Continuous</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .compare-table th { background: var(--card); padding: 0.7rem; text-align: left; border: 1px solid var(--border); }
+    .compare-table td { padding: 0.7rem; border: 1px solid var(--border); }
+    .compare-table .col-simple { color: var(--success); }
+    .compare-table .col-cont { color: orange; }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 200px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 3 — Simple vs Continuous</h1>
+    </div>
+
+    <!-- THEORY -->
+    <div class="theory-box">
+      <h3>Khi nào dùng Present Simple, khi nào dùng Present Continuous?</h3>
+      <table class="compare-table">
+        <thead>
+          <tr><th class="col-simple">Present Simple</th><th class="col-cont">Present Continuous</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Thói quen, lặp lại<br><em>I drink coffee every morning.</em></td><td>Đang xảy ra ngay bây giờ<br><em>I am drinking coffee right now.</em></td></tr>
+          <tr><td>Sự thật luôn đúng<br><em>The Earth goes around the Sun.</em></td><td>Tình huống tạm thời<br><em>She is living with her parents this month.</em></td></tr>
+          <tr><td>Lịch trình cố định<br><em>The train leaves at 9 PM.</em></td><td>Kế hoạch đã sắp xếp<br><em>I am meeting John tomorrow.</em></td></tr>
+          <tr><td>Trạng thái (stative verbs)<br><em>I know the answer.</em></td><td>Sự thay đổi đang diễn ra<br><em>The city is growing fast.</em></td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Mẹo phân biệt nhanh:</strong><br>
+        • Có "every day, always, usually, never" → <span style="color:var(--success)">Simple</span><br>
+        • Có "now, right now, at the moment, Look!, Listen!" → <span style="color:orange">Continuous</span><br>
+        • Stative verbs (know, want, love, believe, own...) → luôn dùng <span style="color:var(--success)">Simple</span><br>
+        • "This week/month" (tạm thời) → <span style="color:orange">Continuous</span>
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Chọn thì đúng -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn thì đúng (15 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Chia động từ đúng thì -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chia động từ — chọn đúng thì (15 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Sửa lỗi sai -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Sửa lỗi sai — dùng sai thì (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4: Điền cả 2 thì trong 1 đoạn -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Điền đúng thì trong đoạn văn (10 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-4-past-simple.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 4 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-2-present-continuous.html" class="btn btn-secondary">&larr; Level 2</a>
+      <a href="level-4-past-simple.html" class="btn btn-play">Level 4: Past Simple &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "She ___ (drink) tea every morning.", options: ["drinks", "is drinking"], answer: 0, explain: "\"every morning\" = thói quen → Present Simple" },
+    { q: "Look! The children ___ (play) in the garden.", options: ["play", "are playing"], answer: 1, explain: "\"Look!\" = đang xảy ra → Present Continuous" },
+    { q: "Water ___ (boil) at 100 degrees.", options: ["boils", "is boiling"], answer: 0, explain: "Sự thật khoa học → Present Simple" },
+    { q: "He ___ (work) from home this week.", options: ["works", "is working"], answer: 1, explain: "\"this week\" = tạm thời → Present Continuous" },
+    { q: "I ___ (not understand) this question.", options: ["don't understand", "am not understanding"], answer: 0, explain: "understand = stative verb → Present Simple" },
+    { q: "The bus ___ (leave) at 6:30 every day.", options: ["leaves", "is leaving"], answer: 0, explain: "Lịch trình cố định → Present Simple" },
+    { q: "She ___ (study) for her exam at the moment.", options: ["studies", "is studying"], answer: 1, explain: "\"at the moment\" = đang xảy ra → Present Continuous" },
+    { q: "My father ___ (own) two cars.", options: ["owns", "is owning"], answer: 0, explain: "own = stative verb → Present Simple" },
+    { q: "The weather ___ (get) colder and colder.", options: ["gets", "is getting"], answer: 1, explain: "Sự thay đổi đang diễn ra → Present Continuous" },
+    { q: "She usually ___ (take) the bus to work.", options: ["takes", "is taking"], answer: 0, explain: "\"usually\" = thói quen → Present Simple" },
+    { q: "I ___ (meet) my dentist tomorrow at 3.", options: ["meet", "am meeting"], answer: 1, explain: "Kế hoạch đã sắp xếp → Present Continuous" },
+    { q: "He ___ (believe) in ghosts.", options: ["believes", "is believing"], answer: 0, explain: "believe = stative verb → Present Simple" },
+    { q: "More and more people ___ (use) electric cars.", options: ["use", "are using"], answer: 1, explain: "Xu hướng đang thay đổi → Present Continuous" },
+    { q: "She ___ (speak) three languages.", options: ["speaks", "is speaking"], answer: 0, explain: "Khả năng lâu dài → Present Simple" },
+    { q: "Shh! The baby ___ (sleep).", options: ["sleeps", "is sleeping"], answer: 1, explain: "\"Shh!\" = đang xảy ra → Present Continuous" }
+  ],
+  ex2: [
+    { q: "I usually ___ (walk) to work, but today I ___ (drive).", answer: "walk, am driving", alt: ["walk, 'm driving"] },
+    { q: "She ___ (not eat) meat. She is vegetarian.", answer: "does not eat", alt: ["doesn't eat"] },
+    { q: "What ___ you ___ (do) right now?", answer: "are, doing", alt: ["are you doing"] },
+    { q: "He ___ (teach) math, but this semester he ___ (teach) physics.", answer: "teaches, is teaching" },
+    { q: "The sun ___ (shine) brightly today.", answer: "is shining" },
+    { q: "My brother ___ (live) in London. He ___ (work) for a bank.", answer: "lives, works" },
+    { q: "Listen! Someone ___ (knock) on the door.", answer: "is knocking" },
+    { q: "She ___ (always complain) about the food here.", answer: "is always complaining", alt: ["'s always complaining"] },
+    { q: "I ___ (think) this is a bad idea.", answer: "think" },
+    { q: "They ___ (build) a new hospital near my house.", answer: "are building" },
+    { q: "He ___ (not know) the answer.", answer: "does not know", alt: ["doesn't know"] },
+    { q: "We ___ (fly) to Paris next Monday.", answer: "are flying" },
+    { q: "She ___ (seem) tired today.", answer: "seems" },
+    { q: "I ___ (read) a really good book at the moment.", answer: "am reading", alt: ["'m reading"] },
+    { q: "The Earth ___ (revolve) around the Sun.", answer: "revolves" }
+  ],
+  ex3: [
+    { q: "I am knowing the answer to this question.", answer: "I know the answer to this question.", explain: "know = stative verb → không dùng Continuous" },
+    { q: "She is going to the gym every Monday.", answer: "She goes to the gym every Monday.", explain: "\"every Monday\" = thói quen → Present Simple" },
+    { q: "He works from home today because he is sick.", answer: "He is working from home today because he is sick.", explain: "\"today\" = tạm thời → Present Continuous" },
+    { q: "Look! It snows outside.", answer: "Look! It is snowing outside.", explain: "\"Look!\" = đang xảy ra → Present Continuous" },
+    { q: "I am wanting a cup of coffee.", answer: "I want a cup of coffee.", explain: "want = stative verb → không dùng Continuous" },
+    { q: "She is owning a beautiful house.", answer: "She owns a beautiful house.", explain: "own = stative verb → không dùng Continuous" },
+    { q: "The train is leaving at 7 AM every day.", answer: "The train leaves at 7 AM every day.", explain: "\"every day\" + lịch trình → Present Simple" },
+    { q: "He usually is eating lunch at noon.", answer: "He usually eats lunch at noon.", explain: "\"usually\" = thói quen → Present Simple" },
+    { q: "I am believing you are right.", answer: "I believe you are right.", explain: "believe = stative verb → không dùng Continuous" },
+    { q: "They have a meeting tomorrow at 3 PM.", answer: "They are having a meeting tomorrow at 3 PM.", explain: "Kế hoạch đã sắp xếp → Present Continuous (have = 'tổ chức', không phải 'sở hữu')" }
+  ],
+  ex4: [
+    { q: "My name ___ (be) Lan. I ___ (be) a student.", answer: "is, am" },
+    { q: "I ___ (study) English every day, but right now I ___ (watch) TV.", answer: "study, am watching" },
+    { q: "She ___ (work) as a nurse. She ___ (love) her job.", answer: "works, loves" },
+    { q: "Today is Sunday. He ___ (not work). He ___ (relax) at home.", answer: "is not working, is relaxing", alt: ["isn't working, is relaxing", "is not working, 's relaxing"] },
+    { q: "I ___ (not like) coffee, but I ___ (drink) it today because I'm tired.", answer: "do not like, am drinking", alt: ["don't like, am drinking", "don't like, 'm drinking"] },
+    { q: "She usually ___ (drive) to work, but this week she ___ (take) the bus.", answer: "drives, is taking" },
+    { q: "He ___ (speak) English and French. Right now he ___ (speak) French on the phone.", answer: "speaks, is speaking" },
+    { q: "The shop ___ (open) at 9 AM and ___ (close) at 6 PM.", answer: "opens, closes" },
+    { q: "I ___ (think) about changing my job. I ___ (not enjoy) it anymore.", answer: "am thinking, do not enjoy", alt: ["am thinking, don't enjoy", "'m thinking, don't enjoy"] },
+    { q: "She ___ (seem) happy. She ___ (smile) at everyone.", answer: "seems, is smiling" }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0 };
+let totals = { ex1: 15, ex2: 15, ex3: 10, ex4: 10 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false };
+
+function renderEx1() {
+  const container = document.getElementById('ex1Questions');
+  let html = '';
+  DATA.ex1.forEach((item, i) => {
+    html += `<div class="exercise-item" data-idx="${i}">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="ex1" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="ex1-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', handleMC);
+}
+
+function renderEx2() {
+  const container = document.getElementById('ex2Questions');
+  let html = '';
+  DATA.ex2.forEach((item, i) => {
+    const parts = item.q.split('___');
+    let inputHtml = parts[0] + `<input type="text" id="ex2-input-${i}" placeholder="...">`;
+    for (let p = 1; p < parts.length; p++) {
+      if (p < parts.length - 1) {
+        inputHtml += parts[p] + `<input type="text" id="ex2-input-${i}-${p}" placeholder="...">`;
+      } else {
+        inputHtml += parts[p];
+      }
+    }
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${inputHtml}</div>
+      <div class="fb" id="ex2-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderEx3() {
+  const container = document.getElementById('ex3Questions');
+  let html = '';
+  DATA.ex3.forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> <span style="color:var(--accent);">${item.q}</span></div>
+      <input type="text" id="ex3-input-${i}" placeholder="Viết lại câu đúng..." style="width:100%; margin-top:0.5rem;">
+      <div class="fb" id="ex3-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderEx4() {
+  const container = document.getElementById('ex4Questions');
+  let html = '';
+  DATA.ex4.forEach((item, i) => {
+    const parts = item.q.split('___');
+    let inputHtml = parts[0] + `<input type="text" id="ex4-input-${i}" placeholder="...">`;
+    for (let p = 1; p < parts.length; p++) {
+      if (p < parts.length - 1) {
+        inputHtml += parts[p] + `<input type="text" id="ex4-input-${i}-${p}" placeholder="...">`;
+      } else {
+        inputHtml += parts[p];
+      }
+    }
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${inputHtml}</div>
+      <div class="fb" id="ex4-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function handleMC(e) {
+  const btn = e.target.closest('.mc-btn');
+  if (!btn) return;
+  const section = btn.dataset.section;
+  if (checked[section]) return;
+  const q = parseInt(btn.dataset.q);
+  const container = e.currentTarget;
+  const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+  siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+  btn.classList.add('selected');
+  btn.style.outline = '2px solid var(--accent)';
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkSection(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+
+  if (section === 'ex1') {
+    DATA.ex1.forEach((item, i) => {
+      const selected = document.querySelector(`#ex1Questions .mc-btn[data-q="${i}"].selected`);
+      const fb = document.getElementById(`ex1-fb-${i}`);
+      const btns = document.querySelectorAll(`#ex1Questions .mc-btn[data-q="${i}"]`);
+      btns.forEach(b => b.classList.add('disabled'));
+      if (selected && parseInt(selected.dataset.opt) === item.answer) {
+        selected.classList.add('correct');
+        fb.textContent = '✓ ' + item.explain;
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        if (selected) selected.classList.add('wrong');
+        btns[item.answer].classList.add('correct');
+        fb.textContent = '✗ ' + item.explain;
+        fb.className = 'fb wrong-fb';
+      }
+    });
+  }
+
+  if (section === 'ex2') {
+    DATA.ex2.forEach((item, i) => {
+      const fb = document.getElementById(`ex2-fb-${i}`);
+      const answers = item.answer.split(', ');
+      const alts = (item.alt || []).map(a => a.split(', '));
+      let userAnswers = [];
+      const input0 = document.getElementById(`ex2-input-${i}`);
+      userAnswers.push(input0 ? input0.value.trim() : '');
+      let p = 1;
+      while (document.getElementById(`ex2-input-${i}-${p}`)) {
+        userAnswers.push(document.getElementById(`ex2-input-${i}-${p}`).value.trim());
+        p++;
+      }
+      const userJoined = normalize(userAnswers.join(', '));
+      const correctJoined = normalize(answers.join(', '));
+      const altJoined = alts.map(a => normalize(a.join(', ')));
+
+      if (userJoined === correctJoined || altJoined.includes(userJoined)) {
+        if (input0) input0.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        if (input0) input0.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer}`;
+        fb.className = 'fb wrong-fb';
+      }
+      if (input0) input0.disabled = true;
+    });
+  }
+
+  if (section === 'ex3') {
+    DATA.ex3.forEach((item, i) => {
+      const input = document.getElementById(`ex3-input-${i}`);
+      const fb = document.getElementById(`ex3-fb-${i}`);
+      const userVal = normalize(input.value);
+      const correctVal = normalize(item.answer);
+      const alts = (item.alt || []).map(a => normalize(a));
+      if (userVal === correctVal || alts.includes(userVal)) {
+        input.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        input.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer} — ${item.explain}`;
+        fb.className = 'fb wrong-fb';
+      }
+      input.disabled = true;
+    });
+  }
+
+  if (section === 'ex4') {
+    DATA.ex4.forEach((item, i) => {
+      const fb = document.getElementById(`ex4-fb-${i}`);
+      const answers = item.answer.split(', ');
+      const alts = (item.alt || []).map(a => a.split(', '));
+      let userAnswers = [];
+      const input0 = document.getElementById(`ex4-input-${i}`);
+      userAnswers.push(input0 ? input0.value.trim() : '');
+      let p = 1;
+      while (document.getElementById(`ex4-input-${i}-${p}`)) {
+        userAnswers.push(document.getElementById(`ex4-input-${i}-${p}`).value.trim());
+        p++;
+      }
+      const userJoined = normalize(userAnswers.join(', '));
+      const correctJoined = normalize(answers.join(', '));
+      const altJoined = alts.map(a => normalize(a.join(', ')));
+
+      if (userJoined === correctJoined || altJoined.includes(userJoined)) {
+        if (input0) input0.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        if (input0) input0.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer}`;
+        fb.className = 'fb wrong-fb';
+      }
+      if (input0) input0.disabled = true;
+    });
+  }
+
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderEx1();
+renderEx2();
+renderEx3();
+renderEx4();
+  </script>
+</body>
+</html>

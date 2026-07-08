@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 1 — Advanced Dictation</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 1 — Advanced</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng nâng cao</button>
+      <button class="tab-btn" data-mode="sentences">Câu Academic</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn IELTS</button>
+      <button class="tab-btn" data-mode="fillblank">Word Forms</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 20</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 5%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7">0.7x</option>
+          <option value="0.8" selected>0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Mẹo cho bài nâng cao</h4>
+      <ul>
+        <li><strong>Word Forms</strong> — Chú ý đuôi từ: -tion, -ment, -able, -ive, -ly. Nghe kỹ âm cuối để phân biệt satisfy / satisfaction / satisfactory.</li>
+        <li><strong>Collocations</strong> — Nhiều từ đi theo cặp cố định: lack of, require + to V, consider + as, develop + into.</li>
+        <li><strong>Academic tone</strong> — Câu dài hơn, nhiều mệnh đề. Nghe từ nối: however, consequently, regardless of.</li>
+        <li><strong>Nominalization</strong> — Chuyển động từ → danh từ: develop → development, satisfy → satisfaction. Đây là kỹ năng IELTS Writing Band 7+.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Tốc độ mặc định 0.8x (khó hơn)</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/dictation.js"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 1 Advanced",
+      vocabulary: [
+        { word: "alteration", hint: "sự thay đổi (danh từ của alter)", ipa: "/ˌɔːl.təˈreɪ.ʃən/", syllables: 4, context: "The alteration of social norms has led to new family structures." },
+        { word: "unalterable", hint: "không thể thay đổi", ipa: "/ʌnˈɔːl.tər.ə.bəl/", syllables: 5, context: "Death is an unalterable fact of life." },
+        { word: "considerable", hint: "đáng kể (khác considerate)", ipa: "/kənˈsɪd.ər.ə.bəl/", syllables: 5, context: "A considerable amount of research supports this claim." },
+        { word: "considerably", hint: "một cách đáng kể", ipa: "/kənˈsɪd.ər.ə.bli/", syllables: 5, context: "Living costs have increased considerably over the past decade." },
+        { word: "consideration", hint: "sự cân nhắc / sự quan tâm", ipa: "/kənˌsɪd.əˈreɪ.ʃən/", syllables: 5, context: "Environmental considerations should guide urban planning." },
+        { word: "developmental", hint: "thuộc về phát triển", ipa: "/dɪˌvel.əpˈmen.təl/", syllables: 5, context: "Early childhood is a critical developmental stage." },
+        { word: "underdeveloped", hint: "kém phát triển", ipa: "/ˌʌn.dər.dɪˈvel.əpt/", syllables: 4, context: "Infrastructure in underdeveloped regions remains inadequate." },
+        { word: "prerequisite", hint: "điều kiện tiên quyết", ipa: "/priːˈrek.wɪ.zɪt/", syllables: 4, context: "Critical thinking is a prerequisite for academic success." },
+        { word: "satisfactory", hint: "đạt yêu cầu (không xuất sắc)", ipa: "/ˌsæt.ɪsˈfæk.tər.i/", syllables: 5, context: "His performance was satisfactory but not outstanding." },
+        { word: "unsatisfactory", hint: "không đạt yêu cầu", ipa: "/ˌʌn.sæt.ɪsˈfæk.tər.i/", syllables: 6, context: "The government's response to the crisis was unsatisfactory." },
+        { word: "overvalue", hint: "đánh giá quá cao", ipa: "/ˌəʊ.vərˈvæl.juː/", syllables: 3, context: "Society tends to overvalue material possessions." },
+        { word: "undervalue", hint: "đánh giá thấp", ipa: "/ˌʌn.dərˈvæl.juː/", syllables: 3, context: "Teachers are often undervalued despite their crucial role." },
+        { word: "devaluation", hint: "sự mất giá / sự hạ thấp", ipa: "/diːˌvæl.juˈeɪ.ʃən/", syllables: 5, context: "The devaluation of traditional skills is a modern concern." },
+        { word: "indiscipline", hint: "sự vô kỷ luật", ipa: "/ɪnˈdɪs.ə.plɪn/", syllables: 4, context: "Indiscipline among students has become a growing issue." },
+        { word: "self-discipline", hint: "tự kỷ luật", ipa: "/ˌself ˈdɪs.ə.plɪn/", syllables: 4, context: "Self-discipline is more effective than external punishment." },
+        { word: "exponentially", hint: "theo cấp số nhân (trạng từ)", ipa: "/ˌek.spəˈnen.ʃəl.i/", syllables: 6, context: "The cost of healthcare has risen exponentially." },
+        { word: "reluctance", hint: "sự ngần ngại (danh từ)", ipa: "/rɪˈlʌk.təns/", syllables: 3, context: "Their reluctance to invest stems from economic uncertainty." },
+        { word: "insufficiency", hint: "sự thiếu hụt, không đủ", ipa: "/ˌɪn.səˈfɪʃ.ən.si/", syllables: 5, context: "The insufficiency of public transport forces people to buy cars." },
+        { word: "disproportionate", hint: "không cân xứng, quá mức", ipa: "/ˌdɪs.prəˈpɔː.ʃən.ət/", syllables: 5, context: "Women bear a disproportionate share of household responsibilities." },
+        { word: "unprecedented", hint: "chưa từng có tiền lệ", ipa: "/ʌnˈpres.ɪ.den.tɪd/", syllables: 5, context: "The pandemic caused unprecedented disruption to global education." }
+      ],
+      sentences: [
+        "The alteration of traditional family structures has considerably impacted children's developmental outcomes.",
+        "A considerable number of young professionals are reluctant to commit to long-term relationships due to financial pressure.",
+        "Environmental considerations should be a prerequisite for any urban development project.",
+        "The government's unsatisfactory response to the housing crisis has led to unprecedented levels of dissatisfaction among citizens.",
+        "Society tends to overvalue academic qualifications while undervaluing practical skills and self-discipline.",
+        "The exponential growth of social media has altered the way we develop and maintain interpersonal relationships.",
+        "Students who lack self-discipline often produce unsatisfactory results regardless of their intellectual capacity.",
+        "The devaluation of manual labor in modern economies has created a disproportionate demand for white-collar workers.",
+        "Their reluctance to consider alternative approaches substantially hindered the development of innovative solutions.",
+        "It requires considerable self-discipline to satisfy the demanding requirements of postgraduate research.",
+        "The insufficiency of affordable housing has forced many families to alter their living arrangements considerably.",
+        "Underdeveloped regions require substantial investment before they can achieve satisfactory levels of infrastructure.",
+        "The unprecedented pace of technological development has made certain traditional skills virtually invaluable.",
+        "A considerate leader takes into consideration the developmental needs of every team member.",
+        "The lack of discipline in financial management can lead to exponentially growing debt.",
+        "Many educators argue that standardized testing provides an unsatisfactory measure of a student's true value.",
+        "The considerable reluctance of older generations to adopt new technology is often disproportionately criticized.",
+        "Developing nations face the prerequisite challenge of building basic infrastructure before they can satisfy citizens' demands.",
+        "The alteration of immigration policies has had unprecedented consequences for workforce development.",
+        "Without considerable investment in self-discipline, students cannot be expected to develop the skills required for academic satisfaction."
+      ],
+      passage: [
+        "The relationship between education and social development has undergone considerable alteration in recent decades.",
+        "Traditionally, academic institutions required students to demonstrate self-discipline and satisfy predetermined standards.",
+        "However, the unprecedented expansion of digital technology has substantially altered these expectations.",
+        "A considerable body of research suggests that the developmental needs of modern learners differ disproportionately from those of previous generations.",
+        "Many educators express reluctance to abandon traditional methods, arguing that such alterations may lead to unsatisfactory outcomes.",
+        "Yet the insufficiency of conventional approaches in addressing contemporary challenges is becoming increasingly apparent.",
+        "Students who lack exposure to technology during critical developmental stages may find themselves considerably disadvantaged.",
+        "The prerequisite for success in the modern economy is no longer merely academic knowledge but rather the ability to adapt.",
+        "This requires a fundamental reconsideration of what we value in education.",
+        "The devaluation of rote memorization in favor of critical thinking represents an unprecedented shift.",
+        "Nevertheless, self-discipline remains an invaluable quality that no technological advancement can replace.",
+        "Educational institutions must develop curricula that satisfy both traditional requirements and modern demands.",
+        "The considerable challenge lies in achieving this balance without producing disproportionate stress on either students or teachers.",
+        "Only through careful consideration of all stakeholders can we hope to build a satisfactory educational framework for the future."
+      ],
+      fillblank: [
+        { sentence: "The alteration of social norms has led to new family structures.", display: "The _____ of social norms has led to new family structures. (alter → noun)", answer: "alteration" },
+        { sentence: "A considerable amount of research supports this claim.", display: "A _____ amount of research supports this claim. (consider → adj = đáng kể)", answer: "considerable" },
+        { sentence: "A considerate person thinks about others' feelings.", display: "A _____ person thinks about others' feelings. (consider → adj = biết nghĩ cho người khác)", answer: "considerate" },
+        { sentence: "Living costs have increased considerably over the past decade.", display: "Living costs have increased _____ over the past decade. (consider → adv)", answer: "considerably" },
+        { sentence: "Environmental considerations should guide urban planning.", display: "Environmental _____ should guide urban planning. (consider → noun)", answer: "considerations" },
+        { sentence: "Early childhood is a critical developmental stage.", display: "Early childhood is a critical _____ stage. (develop → adj)", answer: "developmental" },
+        { sentence: "Infrastructure in underdeveloped regions remains inadequate.", display: "Infrastructure in _____ regions remains inadequate. (develop → adj = kém)", answer: "underdeveloped" },
+        { sentence: "Critical thinking is a prerequisite for academic success.", display: "Critical thinking is a _____ for academic success. (require → noun = điều kiện tiên quyết)", answer: "prerequisite" },
+        { sentence: "His performance was satisfactory but not outstanding.", display: "His performance was _____ but not outstanding. (satisfy → adj = đạt yêu cầu)", answer: "satisfactory" },
+        { sentence: "The response to the crisis was unsatisfactory.", display: "The response to the crisis was _____. (satisfy → adj = không đạt)", answer: "unsatisfactory" },
+        { sentence: "Society tends to overvalue material possessions.", display: "Society tends to _____ material possessions. (value → verb = đánh giá quá cao)", answer: "overvalue" },
+        { sentence: "Teachers are often undervalued despite their crucial role.", display: "Teachers are often _____ despite their crucial role. (value → verb = đánh giá thấp)", answer: "undervalued" },
+        { sentence: "The devaluation of traditional skills is a modern concern.", display: "The _____ of traditional skills is a modern concern. (value → noun = sự mất giá)", answer: "devaluation" },
+        { sentence: "Self-discipline is more effective than external punishment.", display: "_____ is more effective than external punishment. (discipline → noun = tự kỷ luật)", answer: "Self-discipline" },
+        { sentence: "The cost of healthcare has risen exponentially.", display: "The cost of healthcare has risen _____. (exponential → adv)", answer: "exponentially" },
+        { sentence: "Their reluctance to invest stems from economic uncertainty.", display: "Their _____ to invest stems from economic uncertainty. (reluctant → noun)", answer: "reluctance" },
+        { sentence: "The insufficiency of public transport forces people to buy cars.", display: "The _____ of public transport forces people to buy cars. (sufficient → noun = sự thiếu)", answer: "insufficiency" },
+        { sentence: "Women bear a disproportionate share of household responsibilities.", display: "Women bear a _____ share of household responsibilities. (proportion → adj = không cân xứng)", answer: "disproportionate" },
+        { sentence: "The pandemic caused unprecedented disruption to education.", display: "The pandemic caused _____ disruption to education. (precedent → adj = chưa từng có)", answer: "unprecedented" },
+        { sentence: "Death is an unalterable fact of life.", display: "Death is an _____ fact of life. (alter → adj = không thể thay đổi)", answer: "unalterable" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

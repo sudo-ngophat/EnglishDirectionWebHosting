@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC V2 — Buổi 3: Mastery Mix</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+    .review-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.7rem; background: rgba(0,210,211,0.15); color: var(--success); margin-left: 0.5rem; }
+    .review-tag.b2 { background: rgba(255,193,7,0.15); color: #ffc107; }
+    .vocab-tracker { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-tracker h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .word-family { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+    .word-family .root { font-weight: 700; color: var(--accent); min-width: 100px; }
+    .word-chip { padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; }
+    .word-chip.hit { background: rgba(0,210,211,0.15); color: var(--success); border: 1px solid var(--success); }
+    .word-chip.miss { background: rgba(233,69,96,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .word-chip.untested { background: var(--input-bg); color: var(--text-dim); border: 1px solid var(--border); }
+    .vocab-review-section { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-review-section h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .confusing-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1rem; }
+    .confusing-table th, .confusing-table td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+    .confusing-table th { background: var(--card); color: var(--accent); }
+    .collocation-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.9rem; flex-wrap: wrap; }
+    .collocation-item select { padding: 0.3rem 0.5rem; border-radius: 4px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); font-size: 0.85rem; }
+    .collocation-item.correct select { border-color: var(--success); }
+    .collocation-item.wrong select { border-color: var(--accent); }
+    .check-vocab-btn { margin-top: 1rem; padding: 0.6rem 1.2rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC V2 — Buổi 3</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+    <div class="part-nav" id="partNav"></div>
+    <div id="questionArea"></div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+    <div class="vocab-tracker" id="vocabTracker" style="display:none;"></div>
+    <div class="vocab-review-section" id="vocabReview" style="display:none;"></div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 5, name: "Part 5: Confusing Pairs (10 câu)", questions: [
+      { id:1, text:"From my _______, the merger will benefit both companies in the long run.", choices:["perspective","perception","awareness","consciousness"], answer:"A", explanation:"'From my perspective' = theo quan điểm của tôi. Perspective = góc nhìn chủ quan, ý kiến cá nhân.", wordFamily:"perspective", session:3 },
+      { id:2, text:"Public _______ of the brand improved after the charity campaign.", choices:["perspective","perception","awareness","cognition"], answer:"B", explanation:"'perception of' = cách mọi người nhìn nhận/đánh giá. Perception = ấn tượng, hình ảnh trong mắt người khác.", wordFamily:"perception", session:3 },
+      { id:3, text:"The government launched a campaign to raise _______ about mental health.", choices:["awareness","consciousness","perception","cognition"], answer:"A", explanation:"'raise awareness about' = nâng cao nhận thức (cộng đồng biết đến vấn đề). Cụm cố định.", wordFamily:"awareness", session:3 },
+      { id:4, text:"The patient regained _______ after being unconscious for two hours.", choices:["awareness","consciousness","perception","cognition"], answer:"B", explanation:"'regain consciousness' = tỉnh lại (trạng thái tỉnh/mê). Consciousness = trạng thái tỉnh táo sinh học.", wordFamily:"consciousness", session:3 },
+      { id:5, text:"Regular exercise has been shown to improve _______ function in elderly adults.", choices:["cognitive","conscious","perceptive","aware"], answer:"A", explanation:"'cognitive function' = chức năng nhận thức/tư duy của não. Cognition = khả năng xử lý thông tin.", wordFamily:"cognition", session:3 },
+      { id:6, text:"The employee received _______ for her outstanding contribution to the project.", choices:["recognition","cognition","consciousness","perspective"], answer:"A", explanation:"'receive recognition for' = được công nhận vì. Recognition = sự công nhận, ghi nhận.", wordFamily:"recognition", session:3 },
+      { id:7, text:"Both parties must show _______ respect to maintain a healthy working relationship.", choices:["mutual","thorough","cognitive","conscious"], answer:"A", explanation:"'mutual respect' = sự tôn trọng lẫn nhau. Mutual = hai chiều, cả hai bên.", wordFamily:"mutual", session:3 },
+      { id:8, text:"The auditor conducted a _______ investigation of the company's financial records.", choices:["thorough","mutual","cognitive","conscious"], answer:"A", explanation:"'thorough investigation' = cuộc điều tra kỹ lưỡng, toàn diện.", wordFamily:"thorough", session:3 },
+      { id:9, text:"The company _______ a new subsidiary to handle its overseas operations.", choices:["acquired","developed","performed","declined"], answer:"A", explanation:"'acquired a subsidiary' = mua lại công ty con. [Ôn Buổi 2: acquire]", wordFamily:"acquire", session:2 },
+      { id:10, text:"Customer _______ has been declining due to frequent service interruptions.", choices:["satisfaction","performance","acquisition","permission"], answer:"A", explanation:"'customer satisfaction' = sự hài lòng khách hàng. [Ôn Buổi 1: satisfy]", wordFamily:"satisfy", session:1 }
+    ]},
+    { number: 6, name: "Part 6: Text Completion — All Sessions (8 câu)", questions: [
+      { id:11, passage:"INTERNAL MEMO\nSubject: Employee Wellness Program\n\nRecent research confirms that physical activity provides significant (11)_______ benefits, including improved memory and concentration. From management's (12)_______, investing in employee wellness is not just ethical — it's good business.\n\nWe have (13)_______ a partnership with FitLife Gym to offer discounted memberships. All employees are (14)_______ to sign up by the end of this month.", text:"Question 11:", choices:["cognitive","cognition","conscious","recognized"], answer:"A", explanation:"Cần tính từ trước 'benefits'. 'cognitive benefits' = lợi ích về nhận thức/tư duy.", wordFamily:"cognition", session:3 },
+      { id:12, passage:"(same passage as Q11)", text:"Question 12:", choices:["perspective","perception","awareness","consciousness"], answer:"A", explanation:"'From management's perspective' = theo quan điểm của ban lãnh đạo.", wordFamily:"perspective", session:3 },
+      { id:13, passage:"(same passage as Q11)", text:"Question 13:", choices:["acquired","developed","performed","considered"], answer:"B", explanation:"'developed a partnership' = xây dựng mối quan hệ đối tác (từ đầu). [Ôn Buổi 1]", wordFamily:"develop", session:1 },
+      { id:14, passage:"(same passage as Q11)", text:"Question 14:", choices:["permitted","required","declined","compared"], answer:"A", explanation:"'are permitted to' = được phép. [Ôn Buổi 2: permit]", wordFamily:"permit", session:2 },
+      { id:15, passage:"Dear Valued Customers,\n\nWe are (15)_______ of the recent service disruptions and sincerely apologize for any inconvenience. After a (16)_______ review of our systems, we identified the root cause.\n\nOur technical team has (17)_______ considerable effort into resolving the issue. We value your loyalty and want to assure you that such problems will not recur. As (18)_______ of our commitment, we are offering a 20% discount on your next purchase.", text:"Question 15:", choices:["aware","conscious","cognitive","perceptive"], answer:"A", explanation:"'are aware of' = nhận biết, biết về. Awareness = biết đến sự tồn tại của vấn đề.", wordFamily:"awareness", session:3 },
+      { id:16, passage:"(same passage as Q15)", text:"Question 16:", choices:["thorough","mutual","considerable","comparable"], answer:"A", explanation:"'thorough review' = đánh giá kỹ lưỡng, toàn diện.", wordFamily:"thorough", session:3 },
+      { id:17, passage:"(same passage as Q15)", text:"Question 17:", choices:["invested","developed","acquired","performed"], answer:"A", explanation:"'invested considerable effort into' = đầu tư nỗ lực đáng kể vào. [Mix: considerable từ Buổi 1]", wordFamily:"consider", session:1 },
+      { id:18, passage:"(same passage as Q15)", text:"Question 18:", choices:["recognition","perception","awareness","cognition"], answer:"A", explanation:"'as recognition of' = để ghi nhận, thể hiện sự công nhận.", wordFamily:"recognition", session:3 }
+    ]},
+    { number: 3, name: "Part 3: Conversations — Mix (6 câu)", questions: [
+      { id:19, text:"Woman: From my perspective, the new training program lacks practical content.\nMan: I share that perception. The cognitive exercises are good, but there's no real-world application.\nWoman: We should raise awareness about this with HR.\n\nWhat do both speakers think about the training?", choices:["It lacks practical application despite good theory","It is too expensive for the company","It should be canceled immediately","It needs more cognitive exercises"], answer:"A", explanation:"Cả hai đồng ý: 'lacks practical content' + 'no real-world application'. Dùng 3 từ: perspective, perception, cognitive, awareness.", audio_script:"Woman: From my perspective, the new training program lacks practical content. Man: I share that perception. The cognitive exercises are good, but there's no real-world application. Woman: We should raise awareness about this with HR.", wordFamily:"perspective", session:3 },
+      { id:20, text:"Man: The board has acquired a new AI company. Do you think it will alter our workflow?\nWoman: Considerably. We'll need to develop new skills to work with their technology.\nMan: At least the acquisition should satisfy the shareholders.\n\nWhat does the woman expect?", choices:["Significant changes requiring new skill development","No changes to current operations","The acquisition will fail","Shareholders will be dissatisfied"], answer:"A", explanation:"Woman nói 'Considerably' + 'develop new skills' → thay đổi lớn. Mix: acquire (B2), alter (B1), develop (B1), satisfy (B1).", audio_script:"Man: The board has acquired a new AI company. Do you think it will alter our workflow? Woman: Considerably. We'll need to develop new skills to work with their technology. Man: At least the acquisition should satisfy the shareholders.", wordFamily:"acquire", session:"mix" },
+      { id:21, text:"Woman: I'm conscious that our team's performance has declined this quarter.\nMan: The mutual understanding between departments has broken down.\nWoman: We need a thorough review of our communication processes.\n\nWhat does the woman suggest as a solution?", choices:["A thorough review of communication processes","Firing underperforming employees","Hiring a new manager","Reducing the workload"], answer:"A", explanation:"Woman đề nghị 'a thorough review of our communication processes'. Mix: conscious (B3), performance/decline (B2), mutual/thorough (B3).", audio_script:"Woman: I'm conscious that our team's performance has declined this quarter. Man: The mutual understanding between departments has broken down. Woman: We need a thorough review of our communication processes.", wordFamily:"thorough", session:3 },
+      { id:22, text:"Man: Public perception of our brand has improved since we raised awareness about our sustainability efforts.\nWoman: Yes, and the recognition we received at the industry awards helped too.\nMan: It's comparable to the turnaround that GreenCorp achieved last year.\n\nWhat contributed to the brand improvement?", choices:["Sustainability awareness campaigns and industry recognition","A new advertising agency","Lower prices","Acquiring a competitor"], answer:"A", explanation:"Man nói 'raised awareness about sustainability' + Woman nói 'recognition at awards'. Mix: perception, awareness, recognition (B3), comparable (B2).", audio_script:"Man: Public perception of our brand has improved since we raised awareness about our sustainability efforts. Woman: Yes, and the recognition we received at the industry awards helped too. Man: It's comparable to the turnaround that GreenCorp achieved last year.", wordFamily:"perception", session:"mix" },
+      { id:23, text:"Woman: Are employees permitted to work remotely on Fridays?\nMan: Yes, but it requires manager approval. Some teams lack the infrastructure.\nWoman: We should develop a standard policy that satisfies everyone.\n\nWhat is currently required for remote work?", choices:["Manager approval","CEO permission","A written application","IT department clearance"], answer:"A", explanation:"Man nói 'it requires manager approval'. Mix: permit (B2), require (B1), lack (B1), develop (B1), satisfy (B1).", audio_script:"Woman: Are employees permitted to work remotely on Fridays? Man: Yes, but it requires manager approval. Some teams lack the infrastructure. Woman: We should develop a standard policy that satisfies everyone.", wordFamily:"require", session:"mix" },
+      { id:24, text:"Man: From a cognitive perspective, multitasking actually decreases performance.\nWoman: I wasn't aware of that. So our perception that busy people are productive is wrong?\nMan: Exactly. There's growing recognition that focused work is more valuable.\n\nWhat does the man claim about multitasking?", choices:["It decreases cognitive performance","It improves efficiency","It is required for modern jobs","It has no effect on work quality"], answer:"A", explanation:"Man nói 'multitasking actually decreases performance' từ 'cognitive perspective'. Mix: cognitive, perspective, performance (B2), awareness, perception, recognition, valuable (B1).", audio_script:"Man: From a cognitive perspective, multitasking actually decreases performance. Woman: I wasn't aware of that. So our perception that busy people are productive is wrong? Man: Exactly. There's growing recognition that focused work is more valuable.", wordFamily:"cognition", session:"mix" }
+    ]},
+    { number: 7, name: "Part 7: Reading — Vocabulary in Context (6 câu)", questions: [
+      { id:25, passage:"The Rise of Mindful Leadership\n\nIn recent years, there has been growing recognition that traditional management styles are no longer effective. From the perspective of modern organizational psychology, leaders must develop a thorough understanding of their team's cognitive and emotional needs.\n\nDr. Sarah Chen, whose research on workplace consciousness has gained considerable attention, argues that mutual respect between managers and employees is the foundation of high performance. \"When leaders raise awareness about mental health and show genuine consideration for their staff, the perception of the workplace shifts dramatically,\" she explains.\n\nHer latest study, which acquired data from over 500 companies, found that organizations lacking emotional intelligence training experienced a 30% decline in employee satisfaction. Conversely, companies that developed comprehensive wellness programs saw comparable improvements in both performance and retention.\n\nThe findings suggest that cognitive empathy — the ability to consciously recognize and understand others' perspectives — is not just valuable but invaluable for modern leadership.", text:"According to the passage, what does Dr. Chen consider the foundation of high performance?", choices:["Mutual respect between managers and employees","Higher salaries and better benefits","Strict management and clear rules","Advanced technology and automation"], answer:"A", explanation:"Đoạn 2: 'mutual respect between managers and employees is the foundation of high performance'.", wordFamily:"mutual", session:3 },
+      { id:26, passage:"(same passage as Q25)", text:"What happened to organizations lacking emotional intelligence training?", choices:["A 30% decline in employee satisfaction","A 30% increase in profits","No significant change","Improved team communication"], answer:"A", explanation:"Đoạn 3: 'organizations lacking emotional intelligence training experienced a 30% decline in employee satisfaction'. Mix: lack (B1), decline (B2), satisfaction (B1).", wordFamily:"lack", session:1 },
+      { id:27, passage:"(same passage as Q25)", text:"The word 'acquired' in paragraph 3 is closest in meaning to:", choices:["collected","purchased","developed","required"], answer:"A", explanation:"'acquired data' = thu thập dữ liệu. Ở đây acquire = obtain/collect, không phải mua.", wordFamily:"acquire", session:2 },
+      { id:28, passage:"(same passage as Q25)", text:"What does 'cognitive empathy' refer to in the final paragraph?", choices:["The ability to consciously recognize others' perspectives","A type of medical treatment","A management software tool","Physical exercise for the brain"], answer:"A", explanation:"Câu cuối định nghĩa: 'the ability to consciously recognize and understand others' perspectives'. Mix: cognitive (B3), conscious (B3), perspective (B3).", wordFamily:"cognition", session:3 },
+      { id:29, passage:"(same passage as Q25)", text:"Which word best describes the author's view of mindful leadership?", choices:["Invaluable — essential for modern organizations","Unnecessary — a passing trend","Comparable — similar to traditional methods","Declining — losing popularity"], answer:"A", explanation:"Câu cuối: 'not just valuable but invaluable for modern leadership' → tác giả đánh giá rất cao. Mix: invaluable (B1), comparable (B2), declining (B2).", wordFamily:"value", session:1 },
+      { id:30, passage:"(same passage as Q25)", text:"What can be inferred about companies with wellness programs?", choices:["They saw improvements comparable to the decline others experienced","They had no change in performance","They lost employees to competitors","They required government funding"], answer:"A", explanation:"Đoạn 3: 'companies that developed comprehensive wellness programs saw comparable improvements in both performance and retention'. Mix: develop (B1), comparable (B2), performance (B2).", wordFamily:"compare", session:2 }
+    ]}
+  ]
+};
+
+const VOCAB_REVIEW_DATA = {
+  confusingPairs: [
+    { word: "perspective", meaning: "Góc nhìn, quan điểm CÁ NHÂN", example: "From my perspective...", usage: "Ý kiến chủ quan" },
+    { word: "perception", meaning: "Cách NGƯỜI KHÁC nhìn nhận", example: "Public perception of the brand", usage: "Hình ảnh, ấn tượng" },
+    { word: "awareness", meaning: "Biết đến SỰ TỒN TẠI của vấn đề", example: "Raise awareness about...", usage: "Nhận thức cộng đồng" },
+    { word: "consciousness", meaning: "Trạng thái TỈNH TÁO sinh học", example: "Regain consciousness", usage: "Y tế, triết học" },
+    { word: "cognition", meaning: "Khả năng TƯ DUY của não", example: "Cognitive function", usage: "Khoa học, giáo dục" },
+    { word: "recognition", meaning: "Sự CÔNG NHẬN, ghi nhận", example: "Receive recognition for...", usage: "Thành tích, khen thưởng" }
+  ],
+  collocations: [
+    { stem: "from my ___", options: ["perspective","perception","awareness","cognition"], answer: "perspective", hint: "quan điểm cá nhân" },
+    { stem: "raise public ___", options: ["awareness","consciousness","perception","recognition"], answer: "awareness", hint: "nâng cao nhận thức cộng đồng" },
+    { stem: "regain ___", options: ["consciousness","awareness","perception","cognition"], answer: "consciousness", hint: "tỉnh lại sau bất tỉnh" },
+    { stem: "___ function/development", options: ["cognitive","conscious","aware","recognized"], answer: "cognitive", hint: "chức năng tư duy" },
+    { stem: "receive ___ for", options: ["recognition","awareness","perception","consciousness"], answer: "recognition", hint: "được công nhận vì" },
+    { stem: "___ respect/understanding", options: ["mutual","thorough","cognitive","considerable"], answer: "mutual", hint: "lẫn nhau, hai chiều" },
+    { stem: "a ___ investigation", options: ["thorough","mutual","cognitive","conscious"], answer: "thorough", hint: "kỹ lưỡng, toàn diện" },
+    { stem: "public ___ of the brand", options: ["perception","perspective","awareness","cognition"], answer: "perception", hint: "hình ảnh trong mắt công chúng" },
+    { stem: "acquire vs develop:", options: ["acquire = get existing","acquire = build new","same meaning","develop = buy"], answer: "acquire = get existing", hint: "[Ôn B2] acquire = lấy cái có sẵn" },
+    { stem: "valuable vs invaluable:", options: ["invaluable = priceless","invaluable = worthless","same meaning","valuable > invaluable"], answer: "invaluable = priceless", hint: "[Ôn B1] invaluable = vô giá" }
+  ],
+  wordFamilies: {
+    "perspective": ["perspective (n)"],
+    "perception": ["perception (n)", "perceive (v)", "perceptive (adj)"],
+    "awareness": ["awareness (n)", "aware (adj)", "unaware (adj)"],
+    "consciousness": ["consciousness (n)", "conscious (adj)", "unconscious (adj)", "self-consciousness (n)"],
+    "cognition": ["cognition (n)", "cognitive (adj)"],
+    "recognition": ["recognition (n)", "recognize (v)", "recognizable (adj)"],
+    "mutual": ["mutual (adj)", "mutually (adv)"],
+    "thorough": ["thorough (adj)", "thoroughly (adv)", "thoroughness (n)"],
+    "acquire [Ôn B2]": ["acquire (v)", "acquisition (n)"],
+    "satisfy [Ôn B1]": ["satisfy (v)", "satisfaction (n)", "dissatisfied (adj)"]
+  }
+};
+
+class ToeicExamV2 {
+  constructor(data, vocabData) {
+    this.data = data;
+    this.vocabData = vocabData;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.shuffleMap = this.buildShuffleMap();
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+    this.init();
+  }
+
+  buildShuffleMap() {
+    const map = {};
+    this.allQuestions.forEach(q => {
+      const indices = q.choices.map((_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      map[q.id] = indices;
+    });
+    return map;
+  }
+
+  getShuffledChoices(q) { return this.shuffleMap[q.id].map(i => q.choices[i]); }
+  getShuffledAnswer(q) {
+    const letters = ['A','B','C','D'];
+    const origIdx = letters.indexOf(q.answer);
+    return letters[this.shuffleMap[q.id].indexOf(origIdx)];
+  }
+
+  init() { this.loadVoice(); this.renderPartNav(); this.renderAnswerSheet(); this.renderQuestion(); this.bindEvents(); this.startTimer(); }
+
+  loadVoice() {
+    const set = () => { const v = this.synth.getVoices(); this.voice = v.find(x => x.lang.startsWith('en-US')) || v.find(x => x.lang.startsWith('en')) || v[0]; };
+    set(); this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const e = Math.floor((Date.now() - this.startTime) / 1000);
+      document.getElementById('timer').textContent = `${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    document.getElementById('partNav').innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i===0?' active':''}" data-part="${i}">${p.name}</button>`).join('');
+  }
+
+  renderAnswerSheet() {
+    document.getElementById('answerSheet').innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i===0?' current':''}" data-idx="${i}">${q.id}</div>`).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const shuffled = this.getShuffledChoices(q);
+    const correctLetter = this.getShuffledAnswer(q);
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}`;
+    if (q.session === 1) html += `<span class="review-tag">Ôn B1</span>`;
+    else if (q.session === 2) html += `<span class="review-tag b2">Ôn B2</span>`;
+    html += `</div>`;
+
+    if (q.passage && !q.passage.startsWith('(same')) html += `<div class="q-passage">${q.passage}</div>`;
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe</button>`;
+      html += `<span class="speed-label">0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div><ul class="choices">`;
+    shuffled.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) { if (letters[i] === correctLetter) cls = 'correct'; else if (letters[i] === userAns) cls = 'wrong'; }
+      else if (letters[i] === userAns) cls = 'selected';
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+    if (this.submitted) html += `<div class="explanation show">${q.explanation}</div>`;
+    html += `</div>`;
+    area.innerHTML = html;
+
+    if (!this.submitted) area.querySelectorAll('.choices li').forEach(li => {
+      li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+    });
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) { if (this.submitted) return; this.answers[qId] = choice; this.renderQuestion(); this.updateSheetCell(qId); }
+  updateSheetHighlight() { document.querySelectorAll('.sheet-cell').forEach((c, i) => c.classList.toggle('current', i === this.currentIdx)); }
+  updateSheetCell(qId) { const idx = this.allQuestions.findIndex(q => q.id === qId); const c = document.querySelectorAll('.sheet-cell')[idx]; if (c) c.classList.add('answered'); }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx]; if (!q.audio_script) return;
+    this.synth.cancel();
+    const u = new SpeechSynthesisUtterance(q.audio_script); u.voice = this.voice; u.rate = 0.85; this.synth.speak(u);
+  }
+
+  goTo(idx) { this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1)); this.renderQuestion(); }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true; clearInterval(this.timerInterval);
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === this.getShuffledAnswer(q)) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const b1Qs = this.allQuestions.filter(q => q.session === 1);
+    const b2Qs = this.allQuestions.filter(q => q.session === 2);
+    const b1c = b1Qs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+    const b2c = b2Qs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+
+    document.getElementById('questionArea').innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:0.5rem;">Ôn Buổi 1: ${b1c}/${b1Qs.length} | Ôn Buổi 2: ${b2c}/${b2Qs.length}</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => { const pqs = p.questions; const pc = pqs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length; return `${p.name}: ${pc}/${pqs.length}`; }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+    this.renderWordFamilyTracker();
+    this.renderVocabReview();
+  }
+
+  renderWordFamilyTracker() {
+    const tracker = document.getElementById('vocabTracker'); tracker.style.display = 'block';
+    let html = `<h3>Word Family Tracker</h3>`;
+    for (const [root, members] of Object.entries(this.vocabData.wordFamilies)) {
+      const baseRoot = root.replace(/ \[.*\]/, '');
+      const relatedQs = this.allQuestions.filter(q => q.wordFamily === baseRoot);
+      const cc = relatedQs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+      html += `<div class="word-family"><span class="root">${root.toUpperCase()}</span>`;
+      html += `<span class="word-chip ${cc === relatedQs.length ? 'hit' : cc > 0 ? 'hit' : 'miss'}">${cc}/${relatedQs.length}</span>`;
+      members.forEach(m => { html += `<span class="word-chip untested">${m}</span>`; });
+      html += `</div>`;
+    }
+    tracker.innerHTML = html;
+  }
+
+  renderVocabReview() {
+    const section = document.getElementById('vocabReview'); section.style.display = 'block';
+    const pairs = this.vocabData.confusingPairs;
+    const colls = this.vocabData.collocations;
+
+    let html = `<h3>Confusing Pairs — 6 từ "nhận thức"</h3>`;
+    html += `<table class="confusing-table"><tr><th>Từ</th><th>Nghĩa</th><th>Ví dụ</th><th>Ngữ cảnh</th></tr>`;
+    pairs.forEach(p => { html += `<tr><td><strong>${p.word}</strong></td><td>${p.meaning}</td><td>${p.example}</td><td>${p.usage}</td></tr>`; });
+    html += `</table>`;
+
+    html += `<h3 style="margin-top:1.5rem;">Collocations Quiz</h3><div id="collocationList">`;
+    colls.forEach((c, i) => {
+      html += `<div class="collocation-item" data-idx="${i}"><span>${c.stem}</span>
+        <select data-idx="${i}"><option value="">-- chọn --</option>${c.options.map(o => `<option value="${o}">${o}</option>`).join('')}</select></div>`;
+    });
+    html += `</div><button class="check-vocab-btn" onclick="exam.checkVocabReview()">Kiểm tra</button>`;
+    html += `<div id="vocabScore" style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);"></div>`;
+    section.innerHTML = html;
+  }
+
+  checkVocabReview() {
+    let correct = 0;
+    document.querySelectorAll('.collocation-item').forEach((item, i) => {
+      const val = item.querySelector('select').value;
+      item.classList.remove('correct', 'wrong');
+      item.classList.add(val === this.vocabData.collocations[i].answer ? 'correct' : 'wrong');
+      if (val === this.vocabData.collocations[i].answer) correct++;
+    });
+    document.getElementById('vocabScore').textContent = `${correct}/${this.vocabData.collocations.length} đúng`;
+  }
+
+  reviewAll() { this.currentIdx = 0; this.renderQuestion(); }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const pi = parseInt(e.target.dataset.part); let off = 0;
+      for (let i = 0; i < pi; i++) off += this.data.parts[i].questions.length;
+      this.goTo(off);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === pi));
+    });
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell'); if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExamV2(EXAM_DATA, VOCAB_REVIEW_DATA);
+  </script>
+</body>
+</html>

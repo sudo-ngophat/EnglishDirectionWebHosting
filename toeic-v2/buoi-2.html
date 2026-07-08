@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC V2 — Buổi 2: Expansion + Review</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .part-btn.done { color: var(--success); border-color: var(--success); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .audio-btn:hover { background: var(--accent-light); }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+    .review-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.7rem; background: rgba(0,210,211,0.15); color: var(--success); margin-left: 0.5rem; }
+    .vocab-tracker { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-tracker h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .word-family { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+    .word-family .root { font-weight: 700; color: var(--accent); min-width: 80px; }
+    .word-chip { padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; }
+    .word-chip.hit { background: rgba(0,210,211,0.15); color: var(--success); border: 1px solid var(--success); }
+    .word-chip.miss { background: rgba(233,69,96,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .word-chip.untested { background: var(--input-bg); color: var(--text-dim); border: 1px solid var(--border); }
+    .vocab-review-section { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-review-section h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .collocation-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.9rem; flex-wrap: wrap; }
+    .collocation-item select { padding: 0.3rem 0.5rem; border-radius: 4px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); font-size: 0.85rem; }
+    .collocation-item.correct select { border-color: var(--success); }
+    .collocation-item.wrong select { border-color: var(--accent); }
+    .check-vocab-btn { margin-top: 1rem; padding: 0.6rem 1.2rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC V2 — Buổi 2</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+    <div class="part-nav" id="partNav"></div>
+    <div id="questionArea"></div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+    <div class="vocab-tracker" id="vocabTracker" style="display:none;"></div>
+    <div class="vocab-review-section" id="vocabReview" style="display:none;"></div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 5, name: "Part 5: Word Families (12 câu)", questions: [
+      { id:1, text:"The company recently _______ a smaller competitor to expand its market share.", choices:["acquired","acquisition","acquiring","acquires"], answer:"A", explanation:"Past simple: 'recently' + V2. 'acquired' = đã mua lại.", wordFamily:"acquire", session:2 },
+      { id:2, text:"The _______ of the new software license cost over two million dollars.", choices:["acquire","acquired","acquisition","acquiring"], answer:"C", explanation:"Cần danh từ làm chủ ngữ. 'acquisition' = sự mua lại, thâu tóm.", wordFamily:"acquire", session:2 },
+      { id:3, text:"She _______ exceptionally well during the quarterly presentation.", choices:["performed","performance","performing","performer"], answer:"A", explanation:"Past simple. 'performed well' = thể hiện tốt.", wordFamily:"perform", session:2 },
+      { id:4, text:"His outstanding _______ earned him a promotion within six months.", choices:["perform","performance","performed","performer"], answer:"B", explanation:"Cần danh từ sau 'outstanding'. 'performance' = thành tích, hiệu suất.", wordFamily:"perform", session:2 },
+      { id:5, text:"Sales have _______ steadily over the past three quarters.", choices:["declined","decline","declining","declination"], answer:"A", explanation:"Present perfect: have + V3. 'declined' = đã giảm.", wordFamily:"decline", session:2 },
+      { id:6, text:"The manager politely _______ the invitation to the conference.", choices:["declined","decline","declining","declination"], answer:"A", explanation:"'declined the invitation' = từ chối lời mời (lịch sự). Past simple.", wordFamily:"decline", session:2 },
+      { id:7, text:"Employees are not _______ to use personal devices on the company network.", choices:["permitted","permission","permit","permitting"], answer:"A", explanation:"Passive: are not permitted to = không được phép.", wordFamily:"permit", session:2 },
+      { id:8, text:"You must obtain written _______ before accessing the restricted area.", choices:["permit","permitted","permission","permitting"], answer:"C", explanation:"Cần danh từ sau 'written'. 'permission' = sự cho phép.", wordFamily:"permit", session:2 },
+      { id:9, text:"The report _______ this year's revenue with last year's figures.", choices:["compares","comparable","comparison","comparatively"], answer:"A", explanation:"Cần động từ chia số ít. 'compares A with B' = so sánh.", wordFamily:"compare", session:2 },
+      { id:10, text:"Our prices are _______ to those of our main competitors.", choices:["comparable","compare","comparison","comparatively"], answer:"A", explanation:"'comparable to' = tương đương với. Tính từ sau 'are'.", wordFamily:"compare", session:2 },
+      { id:11, text:"The new system has _______ improved the efficiency of our operations.", choices:["consider","considerable","considerably","considerate"], answer:"C", explanation:"Cần trạng từ bổ nghĩa cho 'improved'. 'considerably' = đáng kể. [Ôn Buổi 1]", wordFamily:"consider", session:1 },
+      { id:12, text:"The training program was designed to _______ employees' leadership skills.", choices:["develop","development","developing","developer"], answer:"A", explanation:"Sau 'to' cần V nguyên mẫu. 'develop skills' = phát triển kỹ năng. [Ôn Buổi 1]", wordFamily:"develop", session:1 }
+    ]},
+    { number: 6, name: "Part 6: Text Completion — Mix (8 câu)", questions: [
+      { id:13, passage:"Dear Mr. Thompson,\n\nThank you for your interest in the Marketing Director position. After reviewing your application, we are pleased to inform you that your qualifications are (13)_______ to those of our ideal candidate.\n\nHowever, this role (14)_______ at least ten years of experience in digital marketing. We noticed that your background primarily involves traditional media.\n\nWe would like to offer you an (15)_______ position as Senior Marketing Specialist, which may better match your expertise. Please let us know if you would (16)_______ this opportunity.", text:"Question 13:", choices:["comparable","comparison","compare","comparatively"], answer:"A", explanation:"'qualifications are comparable to' = trình độ tương đương với. Tính từ.", wordFamily:"compare", session:2 },
+      { id:14, passage:"(same passage as Q13)", text:"Question 14:", choices:["requires","requirement","required","requiring"], answer:"A", explanation:"Chủ ngữ số ít 'this role' → requires. [Ôn Buổi 1: require]", wordFamily:"require", session:1 },
+      { id:15, passage:"(same passage as Q13)", text:"Question 15:", choices:["alter","alternative","alteration","alternatively"], answer:"B", explanation:"'an alternative position' = một vị trí thay thế. Tính từ. [Ôn Buổi 1: alter]", wordFamily:"alter", session:1 },
+      { id:16, passage:"(same passage as Q13)", text:"Question 16:", choices:["consider","considerable","consideration","considerate"], answer:"A", explanation:"Sau 'would' cần V nguyên mẫu. 'consider this opportunity' = cân nhắc cơ hội này.", wordFamily:"consider", session:1 },
+      { id:17, passage:"NOTICE TO ALL STAFF\n\nDue to the recent (17)_______ in quarterly revenue, management has decided to implement cost-saving measures. All departments must reduce spending by 15%.\n\nEmployees who (18)_______ well during this period will be recognized at the annual awards ceremony. Those who have already (19)_______ new cost-saving methods are encouraged to share their approaches.\n\nWe appreciate your cooperation. Customer (20)_______ remains our top priority despite these changes.", text:"Question 17:", choices:["decline","declined","declining","declination"], answer:"A", explanation:"Sau 'recent' cần danh từ. 'decline in revenue' = sự sụt giảm doanh thu.", wordFamily:"decline", session:2 },
+      { id:18, passage:"(same passage as Q17)", text:"Question 18:", choices:["perform","performance","performed","performer"], answer:"A", explanation:"Mệnh đề quan hệ: 'who perform well' = những ai thể hiện tốt.", wordFamily:"perform", session:2 },
+      { id:19, passage:"(same passage as Q17)", text:"Question 19:", choices:["develop","developed","development","developing"], answer:"B", explanation:"Present perfect: have + V3. 'have developed' = đã phát triển. [Ôn Buổi 1]", wordFamily:"develop", session:1 },
+      { id:20, passage:"(same passage as Q17)", text:"Question 20:", choices:["satisfy","satisfaction","satisfactory","dissatisfied"], answer:"B", explanation:"Cần danh từ. 'Customer satisfaction' = sự hài lòng của khách hàng. [Ôn Buổi 1]", wordFamily:"satisfy", session:1 }
+    ]},
+    { number: 3, name: "Part 3: Conversations (4 câu)", questions: [
+      { id:21, text:"Woman: Have you heard? The board has acquired that tech startup in Singapore.\nMan: Really? I hope the acquisition doesn't affect our department's budget.\nWoman: Actually, it might. They're comparing our team's performance with the new company's metrics.\n\nWhat concerns the man?", choices:["The acquisition may impact his department's budget","The startup's technology is outdated","He might be transferred to Singapore","The comparison is unfair"], answer:"A", explanation:"Man nói 'I hope the acquisition doesn't affect our department's budget' → lo ngại về ngân sách.", audio_script:"Woman: Have you heard? The board has acquired that tech startup in Singapore. Man: Really? I hope the acquisition doesn't affect our department's budget. Woman: Actually, it might. They're comparing our team's performance with the new company's metrics.", wordFamily:"acquire", session:2 },
+      { id:22, text:"Man: I'm not permitted to approve expenses over five thousand dollars.\nWoman: Then we need to get the director's permission for this purchase.\nMan: Right. And we should develop a proposal that satisfies the budget requirements.\n\nWhat do the speakers need to do?", choices:["Get the director's permission for the purchase","Cancel the purchase entirely","Find a cheaper alternative","Ask for a budget increase"], answer:"A", explanation:"Woman nói 'we need to get the director's permission' → cần xin phép giám đốc.", audio_script:"Man: I'm not permitted to approve expenses over five thousand dollars. Woman: Then we need to get the director's permission for this purchase. Man: Right. And we should develop a proposal that satisfies the budget requirements.", wordFamily:"permit", session:2 },
+      { id:23, text:"Woman: Sales have declined for three consecutive months. What's your analysis?\nMan: I think we need to alter our pricing strategy. The current prices lack competitiveness.\nWoman: Agreed. Let's consider a 10% reduction for the next quarter.\n\nWhat solution does the man suggest?", choices:["Altering the pricing strategy","Hiring more sales staff","Launching a new product","Expanding to new markets"], answer:"A", explanation:"Man nói 'we need to alter our pricing strategy' → thay đổi chiến lược giá.", audio_script:"Woman: Sales have declined for three consecutive months. What's your analysis? Man: I think we need to alter our pricing strategy. The current prices lack competitiveness. Woman: Agreed. Let's consider a 10% reduction for the next quarter.", wordFamily:"alter", session:"mix" },
+      { id:24, text:"Man: The new intern's performance has been comparable to that of our senior analysts.\nWoman: That's impressive. Should we consider offering her a permanent position?\nMan: Absolutely. We shouldn't let such valuable talent go.\n\nWhat do the speakers agree about the intern?", choices:["She performs as well as senior analysts and should be kept","She needs more training before a permanent role","Her performance has declined recently","She should be transferred to another department"], answer:"A", explanation:"Cả hai đồng ý intern giỏi ('comparable to senior analysts') và nên giữ lại ('valuable talent').", audio_script:"Man: The new intern's performance has been comparable to that of our senior analysts. Woman: That's impressive. Should we consider offering her a permanent position? Man: Absolutely. We shouldn't let such valuable talent go.", wordFamily:"compare", session:"mix" }
+    ]},
+    { number: 2, name: "Part 2: Question-Response (6 câu)", questions: [
+      { id:25, text:"When did the company acquire the new warehouse?", choices:["Last month, right after the board meeting.","The acquisition team is on the second floor.","Yes, they acquired it successfully."], answer:"A", explanation:"Hỏi 'when acquire' → trả lời thời gian cụ thể.", audio_script:"When did the company acquire the new warehouse? (A) Last month, right after the board meeting. (B) The acquisition team is on the second floor. (C) Yes, they acquired it successfully.", wordFamily:"acquire", session:2 },
+      { id:26, text:"How would you compare our service to the competition?", choices:["Ours is faster but slightly more expensive.","The comparison chart is in the report.","I'll compare them tomorrow."], answer:"A", explanation:"Hỏi 'how compare' → trả lời nội dung so sánh cụ thể.", audio_script:"How would you compare our service to the competition? (A) Ours is faster but slightly more expensive. (B) The comparison chart is in the report. (C) I'll compare them tomorrow.", wordFamily:"compare", session:2 },
+      { id:27, text:"Is parking permitted in the visitor area after 6 PM?", choices:["No, you'll need a special permit for evening access.","The permission form is online.","I permitted it yesterday."], answer:"A", explanation:"Yes/No question. 'No + cần permit' = trả lời đúng ngữ cảnh.", audio_script:"Is parking permitted in the visitor area after 6 PM? (A) No, you'll need a special permit for evening access. (B) The permission form is online. (C) I permitted it yesterday.", wordFamily:"permit", session:2 },
+      { id:28, text:"Why has employee performance declined this quarter?", choices:["Mostly due to the transition to the new system.","The performance review is next week.","Yes, it declined significantly."], answer:"A", explanation:"Hỏi 'why declined' → trả lời nguyên nhân.", audio_script:"Why has employee performance declined this quarter? (A) Mostly due to the transition to the new system. (B) The performance review is next week. (C) Yes, it declined significantly.", wordFamily:"perform", session:2 },
+      { id:29, text:"Does this project require any additional funding?", choices:["Yes, we'll need about fifty thousand more.","The requirement document is ready.","I required it last week."], answer:"A", explanation:"Yes/No → trả lời Yes + chi tiết số tiền. [Ôn Buổi 1: require]", audio_script:"Does this project require any additional funding? (A) Yes, we'll need about fifty thousand more. (B) The requirement document is ready. (C) I required it last week.", wordFamily:"require", session:1 },
+      { id:30, text:"Are you satisfied with the contractor's work so far?", choices:["Not entirely — the quality lacks consistency.","The satisfaction survey closes Friday.","I'll satisfy the client tomorrow."], answer:"A", explanation:"Trả lời 'Not entirely' + lý do dùng 'lacks'. Mix 2 từ: satisfy + lack. [Ôn Buổi 1]", audio_script:"Are you satisfied with the contractor's work so far? (A) Not entirely — the quality lacks consistency. (B) The satisfaction survey closes Friday. (C) I'll satisfy the client tomorrow.", wordFamily:"satisfy", session:1 }
+    ]}
+  ]
+};
+
+const VOCAB_REVIEW_DATA = {
+  collocations: [
+    { stem: "acquire → noun form:", options: ["acquisition","acquiring","acquirement","acquirer"], answer: "acquisition", hint: "the acquisition of a company" },
+    { stem: "perform → noun form:", options: ["performance","performer","performing","performed"], answer: "performance", hint: "outstanding performance" },
+    { stem: "decline vs refuse:", options: ["decline = polite","decline = rude","same meaning","decline = stronger"], answer: "decline = polite", hint: "decline = từ chối lịch sự, refuse = từ chối thẳng" },
+    { stem: "permit vs allow:", options: ["permit = formal","permit = informal","same register","allow = formal"], answer: "permit = formal", hint: "permit dùng trong văn bản chính thức" },
+    { stem: "comparable ___", options: ["to","with","for","at"], answer: "to", hint: "comparable TO = tương đương với" },
+    { stem: "acquire vs develop:", options: ["acquire = get existing, develop = build new","same meaning","acquire = slow, develop = fast","develop = buy"], answer: "acquire = get existing, develop = build new", hint: "acquire = mua/lấy cái có sẵn; develop = xây dựng từ đầu" },
+    { stem: "a sharp ___ in sales", options: ["decline","perform","acquire","permit"], answer: "decline", hint: "a decline in = sự sụt giảm" },
+    { stem: "require vs request:", options: ["require = mandatory","request = mandatory","same meaning","require = optional"], answer: "require = mandatory", hint: "require = bắt buộc; request = yêu cầu lịch sự [Ôn Buổi 1]" },
+    { stem: "lack vs decline:", options: ["lack = not have, decline = decrease","same meaning","lack = decrease","decline = not have"], answer: "lack = not have, decline = decrease", hint: "lack = thiếu (trạng thái); decline = giảm (xu hướng)" },
+    { stem: "considerable vs considerate:", options: ["considerable = large amount, considerate = caring","same meaning","considerable = caring","considerate = large"], answer: "considerable = large amount, considerate = caring", hint: "[Ôn Buổi 1] considerable = đáng kể; considerate = chu đáo" }
+  ],
+  wordFamilies: {
+    "acquire": ["acquire (v)", "acquisition (n)", "acquired (adj)"],
+    "perform": ["perform (v)", "performance (n)", "performer (n)"],
+    "decline": ["decline (v/n)", "declining (adj)"],
+    "permit": ["permit (v/n)", "permission (n)", "permitted (adj)", "permissible (adj)"],
+    "compare": ["compare (v)", "comparison (n)", "comparable (adj)", "comparatively (adv)"],
+    "consider [Ôn B1]": ["consider (v)", "consideration (n)", "considerable (adj)", "considerably (adv)", "considerate (adj)"],
+    "develop [Ôn B1]": ["develop (v)", "development (n)", "developer (n)"]
+  }
+};
+class ToeicExamV2 {
+  constructor(data, vocabData) {
+    this.data = data;
+    this.vocabData = vocabData;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.shuffleMap = this.buildShuffleMap();
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+    this.init();
+  }
+
+  buildShuffleMap() {
+    const map = {};
+    this.allQuestions.forEach(q => {
+      const indices = q.choices.map((_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      map[q.id] = indices;
+    });
+    return map;
+  }
+
+  getShuffledChoices(q) { return this.shuffleMap[q.id].map(i => q.choices[i]); }
+  getShuffledAnswer(q) {
+    const letters = ['A','B','C','D'];
+    const origIdx = letters.indexOf(q.answer);
+    return letters[this.shuffleMap[q.id].indexOf(origIdx)];
+  }
+
+  init() {
+    this.loadVoice(); this.renderPartNav(); this.renderAnswerSheet();
+    this.renderQuestion(); this.bindEvents(); this.startTimer();
+  }
+
+  loadVoice() {
+    const set = () => { const v = this.synth.getVoices(); this.voice = v.find(x => x.lang.startsWith('en-US')) || v.find(x => x.lang.startsWith('en')) || v[0]; };
+    set(); this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const e = Math.floor((Date.now() - this.startTime) / 1000);
+      document.getElementById('timer').textContent = `${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    document.getElementById('partNav').innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i===0?' active':''}" data-part="${i}">${p.name}</button>`).join('');
+  }
+
+  renderAnswerSheet() {
+    document.getElementById('answerSheet').innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i===0?' current':''}" data-idx="${i}">${q.id}</div>`).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const shuffled = this.getShuffledChoices(q);
+    const correctLetter = this.getShuffledAnswer(q);
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}`;
+    if (q.session === 1) html += `<span class="review-tag">Ôn Buổi 1</span>`;
+    html += `</div>`;
+
+    if (q.passage && !q.passage.startsWith('(same')) html += `<div class="q-passage">${q.passage}</div>`;
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe audio</button>`;
+      html += `<span class="speed-label">TTS 0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div><ul class="choices">`;
+    shuffled.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) { if (letters[i] === correctLetter) cls = 'correct'; else if (letters[i] === userAns) cls = 'wrong'; }
+      else if (letters[i] === userAns) cls = 'selected';
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+    if (this.submitted) html += `<div class="explanation show">${q.explanation}</div>`;
+    html += `</div>`;
+    area.innerHTML = html;
+
+    if (!this.submitted) area.querySelectorAll('.choices li').forEach(li => {
+      li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+    });
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) { if (this.submitted) return; this.answers[qId] = choice; this.renderQuestion(); this.updateSheetCell(qId); }
+  updateSheetHighlight() { document.querySelectorAll('.sheet-cell').forEach((c, i) => c.classList.toggle('current', i === this.currentIdx)); }
+  updateSheetCell(qId) { const idx = this.allQuestions.findIndex(q => q.id === qId); const c = document.querySelectorAll('.sheet-cell')[idx]; if (c) c.classList.add('answered'); }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx]; if (!q.audio_script) return;
+    this.synth.cancel();
+    const u = new SpeechSynthesisUtterance(q.audio_script); u.voice = this.voice; u.rate = 0.85; this.synth.speak(u);
+  }
+
+  goTo(idx) { this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1)); this.renderQuestion(); }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true; clearInterval(this.timerInterval);
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === this.getShuffledAnswer(q)) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const reviewQs = this.allQuestions.filter(q => q.session === 1);
+    const reviewCorrect = reviewQs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+
+    document.getElementById('questionArea').innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:0.5rem;">Từ vựng Buổi 1 (ôn lại): ${reviewCorrect}/${reviewQs.length}</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => { const pqs = p.questions; const pc = pqs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length; return `${p.name}: ${pc}/${pqs.length}`; }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+    this.renderWordFamilyTracker();
+    this.renderVocabReview();
+  }
+
+  renderWordFamilyTracker() {
+    const tracker = document.getElementById('vocabTracker'); tracker.style.display = 'block';
+    let html = `<h3>Word Family Tracker</h3>`;
+    for (const [root, members] of Object.entries(this.vocabData.wordFamilies)) {
+      const baseRoot = root.replace(/ \[.*\]/, '');
+      const relatedQs = this.allQuestions.filter(q => q.wordFamily === baseRoot);
+      const correctCount = relatedQs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+      html += `<div class="word-family"><span class="root">${root.toUpperCase()}</span>`;
+      html += `<span class="word-chip ${correctCount === relatedQs.length ? 'hit' : correctCount > 0 ? 'hit' : 'miss'}">${correctCount}/${relatedQs.length}</span>`;
+      members.forEach(m => { html += `<span class="word-chip untested">${m}</span>`; });
+      html += `</div>`;
+    }
+    tracker.innerHTML = html;
+  }
+
+  renderVocabReview() {
+    const section = document.getElementById('vocabReview'); section.style.display = 'block';
+    let html = `<h3>Vocabulary Review — Synonyms, Antonyms & Confusing Pairs</h3><div id="collocationList">`;
+    this.vocabData.collocations.forEach((c, i) => {
+      html += `<div class="collocation-item" data-idx="${i}"><span>${c.stem}</span>
+        <select data-idx="${i}"><option value="">-- chọn --</option>${c.options.map(o => `<option value="${o}">${o}</option>`).join('')}</select></div>`;
+    });
+    html += `</div><button class="check-vocab-btn" onclick="exam.checkVocabReview()">Kiểm tra</button>`;
+    html += `<div id="vocabScore" style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);"></div>`;
+    section.innerHTML = html;
+  }
+
+  checkVocabReview() {
+    let correct = 0;
+    document.querySelectorAll('.collocation-item').forEach((item, i) => {
+      const val = item.querySelector('select').value;
+      item.classList.remove('correct', 'wrong');
+      item.classList.add(val === this.vocabData.collocations[i].answer ? 'correct' : 'wrong');
+      if (val === this.vocabData.collocations[i].answer) correct++;
+    });
+    document.getElementById('vocabScore').textContent = `${correct}/${this.vocabData.collocations.length} đúng`;
+  }
+
+  reviewAll() { this.currentIdx = 0; this.renderQuestion(); }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const pi = parseInt(e.target.dataset.part); let off = 0;
+      for (let i = 0; i < pi; i++) off += this.data.parts[i].questions.length;
+      this.goTo(off);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === pi));
+    });
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell'); if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExamV2(EXAM_DATA, VOCAB_REVIEW_DATA);
+  </script>
+</body>
+</html>

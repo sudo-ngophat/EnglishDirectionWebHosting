@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 6 — Mixed Articles (Boss Level)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.85rem;margin:.8rem 0;color:var(--success);line-height:2}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.exercise-item input[type="text"]{width:100px;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;text-align:center;outline:none}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}.boss-badge{display:inline-block;padding:.3rem .8rem;background:linear-gradient(135deg,var(--accent),var(--success));color:#000;border-radius:20px;font-size:.75rem;font-weight:700;margin-left:.5rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 6 — Mixed <span class="boss-badge">BOSS</span></h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Tổng hợp tất cả quy tắc</h3>
+      <div class="formula">
+        <strong>A/An:</strong> đếm được, số ít, lần đầu nhắc, nghề nghiệp, mỗi (per)<br>
+        <strong>The:</strong> đã nhắc, duy nhất, cả 2 biết, superlative, ordinal, only/same, nhạc cụ, sông/biển/sa mạc<br>
+        <strong>Zero (∅):</strong> số nhiều nói chung, không đếm được nói chung, tên riêng, bữa ăn, thể thao, by + transport, go to school/bed/work<br>
+        <strong>Some:</strong> khẳng định, mời, yêu cầu &nbsp;|&nbsp; <strong>Any:</strong> phủ định, hỏi, bất kỳ<br>
+        <strong>Much:</strong> không đếm được (−/?) &nbsp;|&nbsp; <strong>Many:</strong> đếm được (−/?) &nbsp;|&nbsp; <strong>A lot of:</strong> cả hai (+)<br>
+        <strong>Few/Little:</strong> ít (tiêu cực) &nbsp;|&nbsp; <strong>A few/A little:</strong> một vài/chút (tích cực)
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Tổng hợp chọn đúng -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn mạo từ/determiner đúng (25 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Điền vào đoạn văn -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Điền a/an/the/x vào đoạn văn (15 câu)</h3>
+      <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">Gõ "a", "an", "the", hoặc "x" (= không cần mạo từ).</p>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Sửa lỗi -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Sửa lỗi mạo từ (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-play" onclick="location.reload()">Làm lại</button>
+        <a href="index.html" class="btn btn-secondary" style="margin-left:.5rem;">Về trang chủ</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.9rem;color:var(--success);" id="masterMsg"></p>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-5-determiners.html" class="btn btn-secondary">&larr; Level 5</a>
+      <a href="index.html" class="btn btn-play">Hoàn thành!</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"I saw ___ accident on my way to work.",options:["a","an","the","∅ (nothing)"],answer:1,explain:"Lần đầu nhắc + nguyên âm → an"},
+    {q:"___ accident happened near the bridge.",options:["A","An","The","∅"],answer:2,explain:"Đã nhắc ở câu trước → the"},
+    {q:"She plays ___ violin in an orchestra.",options:["a","an","the","∅"],answer:2,explain:"play the + nhạc cụ → the"},
+    {q:"___ life is full of surprises.",options:["A","An","The","∅"],answer:3,explain:"Cuộc sống nói chung → zero article"},
+    {q:"He is ___ honest man.",options:["a","an","the","∅"],answer:1,explain:"honest (h câm) → âm nguyên âm → an"},
+    {q:"We had ___ dinner at a nice restaurant.",options:["a","an","the","∅"],answer:3,explain:"Bữa ăn → zero article"},
+    {q:"___ Nile is the longest river in Africa.",options:["A","An","The","∅"],answer:2,explain:"Sông → the"},
+    {q:"She doesn't have ___ patience.",options:["much","many","a lot of","few"],answer:0,explain:"Phủ định + không đếm được (patience) → much"},
+    {q:"There are ___ apples in the fridge.",options:["some","any","much","little"],answer:0,explain:"Câu khẳng định → some"},
+    {q:"He has ___ friends. He's always alone.",options:["few","a few","little","a little"],answer:0,explain:"Đếm được + tiêu cực (alone) → few"},
+    {q:"___ Mount Everest is in Nepal.",options:["A","The","∅","An"],answer:2,explain:"Núi đơn → zero article"},
+    {q:"She is ___ best singer I know.",options:["a","an","the","∅"],answer:2,explain:"Superlative (best) → the"},
+    {q:"I go to ___ work by bus.",options:["a","the","∅","an"],answer:2,explain:"go to work → zero article"},
+    {q:"Do you have ___ questions?",options:["some","any","much","few"],answer:1,explain:"Câu hỏi → any"},
+    {q:"___ United Kingdom is an island nation.",options:["A","An","The","∅"],answer:2,explain:"Có 'Kingdom' → the"},
+    {q:"I need ___ information about the course.",options:["a","an","some","many"],answer:2,explain:"information = không đếm được → some (không dùng a/an)"},
+    {q:"She gave me ___ useful advice.",options:["a","an","some","many"],answer:2,explain:"advice = không đếm được → some"},
+    {q:"___ children learn languages quickly.",options:["A","The","∅","Some"],answer:2,explain:"Trẻ em nói chung → zero article"},
+    {q:"He is ___ first person to arrive.",options:["a","an","the","∅"],answer:2,explain:"Ordinal (first) → the"},
+    {q:"I have ___ money left. Let's get coffee.",options:["few","a few","little","a little"],answer:3,explain:"Không đếm được + tích cực (đủ mua cà phê) → a little"},
+    {q:"She studies ___ English at university.",options:["a","an","the","∅"],answer:3,explain:"Môn học → zero article"},
+    {q:"___ poor need more support from the government.",options:["A","An","The","∅"],answer:2,explain:"the + adj → nhóm người → the poor"},
+    {q:"I bought ___ new phone yesterday.",options:["a","an","the","∅"],answer:0,explain:"Lần đầu nhắc + phụ âm → a"},
+    {q:"Can I have ___ water, please?",options:["a","some","any","many"],answer:1,explain:"Yêu cầu lịch sự → some"},
+    {q:"___ happiness cannot be bought with money.",options:["A","The","∅","An"],answer:2,explain:"Khái niệm trừu tượng nói chung → zero article"}
+  ],
+  ex2:[
+    {q:"Last week, I visited ___ museum in the city center.",answer:"a",explain:"Lần đầu nhắc → a"},
+    {q:"___ museum had an amazing collection of paintings.",answer:"the",alt:["The"],explain:"Đã nhắc → the"},
+    {q:"I spent ___ whole afternoon there.",answer:"the",explain:"the whole = cả (xác định)"},
+    {q:"___ art is important for society.",answer:"x",explain:"Nghệ thuật nói chung → zero"},
+    {q:"I saw ___ painting by Picasso.",answer:"a",explain:"Lần đầu nhắc → a"},
+    {q:"___ painting was worth millions of dollars.",answer:"the",alt:["The"],explain:"Đã nhắc → the"},
+    {q:"After that, I had ___ lunch at a nearby cafe.",answer:"x",explain:"Bữa ăn → zero"},
+    {q:"___ cafe served ___ best coffee in town.",answer:"the, the",alt:["The, the"],explain:"Cafe đã nhắc → the; superlative → the"},
+    {q:"I usually drink ___ tea, not coffee.",answer:"x",explain:"Trà nói chung → zero"},
+    {q:"But ___ coffee there was exceptional.",answer:"the",explain:"Cà phê CỤ THỂ (ở đó) → the"},
+    {q:"I took ___ bus home.",answer:"the",alt:["a"],explain:"the bus = xe buýt cụ thể (tuyến quen)"},
+    {q:"___ bus was crowded because it was ___ rush hour.",answer:"the, x",alt:["The, x"],explain:"Bus đã nhắc → the; rush hour = khái niệm → zero"},
+    {q:"I got home and played ___ guitar for ___ hour.",answer:"the, an",explain:"play the guitar; an hour (h câm)"},
+    {q:"___ music always helps me relax after ___ long day.",answer:"x, a",explain:"Âm nhạc nói chung → zero; a long day = chưa xác định"},
+    {q:"I think ___ life in ___ big city can be stressful.",answer:"x, a",explain:"Life nói chung → zero; a big city = chưa xác định"}
+  ],
+  ex3:[
+    {q:"I need an information about the course.",options:["Đúng","Sai — bỏ 'an', dùng 'some information'"],answer:1,explain:"information = không đếm được → không dùng a/an"},
+    {q:"She is the doctor. (nói về nghề, lần đầu giới thiệu)",options:["Đúng","Sai — dùng 'a doctor'"],answer:1,explain:"Nghề nghiệp lần đầu → a doctor"},
+    {q:"The life is beautiful.",options:["Đúng","Sai — bỏ 'the'"],answer:1,explain:"Life nói chung → zero article"},
+    {q:"I play the football every day.",options:["Đúng","Sai — bỏ 'the'"],answer:1,explain:"Môn thể thao → zero article"},
+    {q:"She went to the school to pick up her son.",options:["Đúng","Sai — bỏ 'the'"],answer:0,explain:"Đến tòa nhà trường (không phải đi học) → the đúng"},
+    {q:"The Mount Fuji is in Japan.",options:["Đúng","Sai — bỏ 'The'"],answer:1,explain:"Núi đơn → zero article"},
+    {q:"He is an European citizen.",options:["Đúng","Sai — dùng 'a European'"],answer:1,explain:"European đọc /juː/ = phụ âm → a"},
+    {q:"I have few friends here, so I'm happy. (tích cực)",options:["Đúng","Sai — dùng 'a few'"],answer:1,explain:"Tích cực (happy) → a few (không phải few)"},
+    {q:"The water boils at 100 degrees.",options:["Đúng","Sai — bỏ 'The'"],answer:1,explain:"Nước nói chung (sự thật) → zero article"},
+    {q:"She plays the piano beautifully.",options:["Đúng","Sai"],answer:0,explain:"play the + nhạc cụ → the đúng"}
+  ]
+};
+
+let scores={ex1:0,ex2:0,ex3:0};
+let totals={ex1:25,ex2:15,ex3:10};
+let checked={ex1:false,ex2:false,ex3:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{const parts=item.q.split('___');h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${s}-input-${i}" placeholder="a/an/the/x">${parts[1]||''}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().trim();}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});scores[s]=correct;checkAllDone();}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value);const cv=normalize(item.answer);const alts=(item.alt||[]).map(a=>normalize(a));const isZero=cv==='x'&&(uv===''||uv==='x'||uv==='nothing'||uv==='0'||uv==='∅');const isMulti=cv.includes(',');let match=false;if(isZero)match=true;else if(isMulti){const parts=cv.split(',').map(p=>p.trim());const userParts=uv.split(',').map(p=>p.trim());match=parts.length===userParts.length&&parts.every((p,idx)=>{const up=userParts[idx]||'';return p===up||(p==='x'&&(up===''||up==='x'||up==='∅'));});if(!match)match=alts.some(a=>normalize(a)===uv);}else{match=uv===cv||alts.includes(uv);}if(match){input.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');const display=cv.replace(/x/g,'∅');fb.textContent=`✗ Đáp án: ${display} — ${item.explain}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;const msg=document.getElementById('masterMsg');if(p>=90)msg.textContent='MASTER! Bạn đã thành thạo Articles & Determiners!';else if(p>=70)msg.textContent='Tốt lắm! Ôn lại những câu sai.';else if(p>=50)msg.textContent='Khá ổn! Quay lại ôn các Level trước.';else{msg.textContent='Cần luyện thêm. Quay lại từ Level 1.';msg.style.color='var(--accent-light)';}}
+
+renderMCSection('ex1');renderFillSection('ex2');renderMCSection('ex3');
+  </script>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 7 — 4-in-1 Drill</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .phase-bar { display: flex; gap: 0.3rem; margin-bottom: 1.5rem; }
+    .phase-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+    .phase-dot.done { background: var(--success); }
+    .phase-dot.active { background: var(--accent); }
+    .drill-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; min-height: 300px; }
+    .phase-label { font-size: 0.75rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .word-prompt { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+    .sub-prompt { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.2rem; line-height: 1.6; }
+    .drill-input { width: 100%; padding: 0.8rem 1rem; font-size: 1rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .drill-input:focus { border-color: var(--accent); }
+    .drill-input.correct { border-color: var(--success); background: rgba(0,210,211,0.05); }
+    .drill-input.wrong { border-color: var(--accent); background: rgba(233,69,96,0.05); }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; font-size: 0.95rem; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); opacity: 0.6; }
+    .feedback-box { margin-top: 1rem; padding: 0.8rem; border-radius: 8px; font-size: 0.85rem; display: none; }
+    .feedback-box.show { display: block; }
+    .feedback-box.ok { background: rgba(0,210,211,0.1); color: var(--success); border: 1px solid var(--success); }
+    .feedback-box.err { background: rgba(233,69,96,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; }
+    .score-bar { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-dim); }
+    .score-bar .num { font-weight: 700; color: var(--success); }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+    .audio-btn:active { opacity: 0.7; }
+    .transform-box { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; }
+    .transform-box .original { color: var(--text-dim); }
+    .transform-box .arrow { color: var(--accent); margin: 0.5rem 0; }
+    .hint-text { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; cursor: pointer; }
+    .hint-text:hover { color: var(--accent); }
+    .results-panel { text-align: center; padding: 2rem 1rem; }
+    .results-panel .big-score { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; text-align: left; font-size: 0.85rem; color: var(--text-dim); }
+    .breakdown-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+    .mistakes-list { margin-top: 1.5rem; text-align: left; }
+    .mistakes-list h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.8rem; }
+    .mistake-item { padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .mistake-item .mword { font-weight: 600; color: var(--text); }
+    .mistake-item .mdetail { color: var(--text-dim); margin-top: 0.2rem; }
+    .speed-control { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-dim); }
+    .speed-control select { padding: 0.3rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 7 — 4-in-1 Drill</h1>
+    </div>
+    <p class="hint">Mỗi từ test qua 4 kỹ năng: Nghe-Viết → Nghĩa → Ngữ pháp → TOEIC | Trọng tâm Buổi 7: opportunity, competence, conditions, equality, privilege, priority</p>
+
+    <div class="phase-bar" id="phaseBar"></div>
+    <div class="drill-card" id="drillCard"></div>
+    <div class="nav-row">
+      <div class="score-bar"><span class="num" id="scoreNum">0</span> / <span id="totalNum">0</span> đúng</div>
+      <div>
+        <button class="btn btn-secondary" id="btnSkip">Bỏ qua</button>
+        <button class="btn btn-play" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/word-stats.js"></script>
+  <script>
+const WORDS = [
+  {
+    word: "invest",
+    ipa: "/ɪnˈvest/",
+    meaning: "đầu tư thời gian, công sức hoặc tiền bạc để tạo giá trị tương lai",
+    confusers: ["spend", "waste", "save"],
+    confuserMeanings: ["tiêu dùng", "lãng phí", "tiết kiệm"],
+    grammar: {
+      original: "Good learners put time and effort into useful skills.",
+      target: "Good learners invest time and effort in useful skills.",
+      hint: "Dùng cấu trúc 'invest ... in'.",
+      keywords: ["invest", "in"]
+    },
+    toeic: {
+      text: "The company plans to _______ more resources in staff training next year.",
+      choices: ["invest", "compete", "condition", "prioritize"],
+      answer: 0,
+      explain: "Cấu trúc đúng là 'invest resources in training'."
+    }
+  },
+  {
+    word: "investment",
+    ipa: "/ɪnˈvest.mənt/",
+    meaning: "sự đầu tư; thứ bỏ ra để tạo lợi ích về sau",
+    confusers: ["expense", "habit", "competition"],
+    confuserMeanings: ["chi phí", "thói quen", "sự cạnh tranh"],
+    grammar: {
+      original: "The school spent money on teacher training because it would create future value.",
+      target: "The school saw teacher training as an investment in future value.",
+      hint: "Dùng danh từ 'investment' và pattern 'investment in'.",
+      keywords: ["investment", "in"]
+    },
+    toeic: {
+      text: "The new software is a long-term _______ in productivity.",
+      choices: ["investment", "privilege", "condition", "priority"],
+      answer: 0,
+      explain: "'investment in productivity' = sự đầu tư vào năng suất."
+    }
+  },
+  {
+    word: "familiar",
+    ipa: "/fəˈmɪl.jər/",
+    meaning: "quen thuộc, biết rõ vì đã gặp hoặc dùng trước đó",
+    confusers: ["similar", "comfortable", "competent"],
+    confuserMeanings: ["tương tự", "thoải mái", "đủ năng lực"],
+    grammar: {
+      original: "New employees should know the reporting system before the first meeting.",
+      target: "New employees should be familiar with the reporting system before the first meeting.",
+      hint: "Dùng 'be familiar with'.",
+      keywords: ["familiar", "with"]
+    },
+    toeic: {
+      text: "Applicants should be _______ with basic spreadsheet software.",
+      choices: ["familiar", "equal", "privileged", "competitive"],
+      answer: 0,
+      explain: "Cụm đúng là 'be familiar with'."
+    }
+  },
+  {
+    word: "compete",
+    ipa: "/kəmˈpiːt/",
+    meaning: "cạnh tranh để đạt vị trí, cơ hội hoặc kết quả tốt hơn",
+    confusers: ["compare", "cooperate", "complete"],
+    confuserMeanings: ["so sánh", "hợp tác", "hoàn thành"],
+    grammar: {
+      original: "Several candidates tried to win the same position.",
+      target: "Several candidates competed for the same position.",
+      hint: "Dùng 'compete for' khi tranh một vị trí/cơ hội.",
+      keywords: ["competed", "for"]
+    },
+    toeic: {
+      text: "Local suppliers will _______ for the maintenance contract.",
+      choices: ["compete", "invest", "condition", "privilege"],
+      answer: 0,
+      explain: "'compete for the contract' = cạnh tranh để giành hợp đồng."
+    }
+  },
+  {
+    word: "competent",
+    ipa: "/ˈkɒm.pɪ.tənt/",
+    meaning: "đủ năng lực để làm việc tốt và đáng tin cậy",
+    confusers: ["excellent", "familiar", "competitive"],
+    confuserMeanings: ["xuất sắc", "quen thuộc", "có tính cạnh tranh"],
+    grammar: {
+      original: "The assistant can handle customer questions without constant help.",
+      target: "The assistant is competent enough to handle customer questions without constant help.",
+      hint: "Dùng 'competent enough to'.",
+      keywords: ["competent", "enough"]
+    },
+    toeic: {
+      text: "The branch needs a _______ supervisor who can manage daily operations.",
+      choices: ["competent", "familiar", "equal", "privileged"],
+      answer: 0,
+      explain: "'competent supervisor' = quản lý đủ năng lực làm việc."
+    }
+  },
+  {
+    word: "condition",
+    ipa: "/kənˈdɪʃ.ən/",
+    meaning: "điều kiện, tình trạng hoặc hoàn cảnh ảnh hưởng đến việc gì đó",
+    confusers: ["position", "priority", "ability"],
+    confuserMeanings: ["vị trí", "ưu tiên", "năng lực"],
+    grammar: {
+      original: "People work better when the workplace is safe and stable.",
+      target: "People work better under safe and stable conditions.",
+      hint: "Dùng 'under ... conditions'.",
+      keywords: ["conditions"]
+    },
+    toeic: {
+      text: "The equipment should not be used under wet _______.",
+      choices: ["conditions", "privileges", "priorities", "investments"],
+      answer: 0,
+      explain: "'under wet conditions' = trong điều kiện ẩm ướt."
+    }
+  },
+  {
+    word: "equality",
+    ipa: "/iˈkwɒl.ə.ti/",
+    meaning: "sự bình đẳng, đặc biệt là cơ hội công bằng",
+    confusers: ["similarity", "priority", "privilege"],
+    confuserMeanings: ["sự giống nhau", "sự ưu tiên", "đặc quyền"],
+    grammar: {
+      original: "The policy tries to give every applicant a fair chance.",
+      target: "The policy supports equality of opportunity for every applicant.",
+      hint: "Dùng cụm 'equality of opportunity'.",
+      keywords: ["equality", "opportunity"]
+    },
+    toeic: {
+      text: "The hiring policy promotes _______ of opportunity across all departments.",
+      choices: ["equality", "investment", "condition", "competition"],
+      answer: 0,
+      explain: "'equality of opportunity' = bình đẳng về cơ hội."
+    }
+  },
+  {
+    word: "privilege",
+    ipa: "/ˈprɪv.əl.ɪdʒ/",
+    meaning: "đặc quyền hoặc lợi thế sẵn có mà không phải ai cũng có",
+    confusers: ["priority", "equality", "effort"],
+    confuserMeanings: ["ưu tiên", "bình đẳng", "nỗ lực"],
+    grammar: {
+      original: "Some students have extra support because of their family background.",
+      target: "Some students have educational privilege because of their family background.",
+      hint: "Dùng 'privilege' cho lợi thế có sẵn.",
+      keywords: ["privilege"]
+    },
+    toeic: {
+      text: "Access to private coaching is a _______ that many applicants do not have.",
+      choices: ["privilege", "priority", "condition", "competence"],
+      answer: 0,
+      explain: "'privilege' = lợi thế/đặc quyền không phải ai cũng có."
+    }
+  },
+  {
+    word: "priority",
+    ipa: "/praɪˈɒr.ə.ti/",
+    meaning: "điều được ưu tiên, đặt lên trước những việc khác",
+    confusers: ["privilege", "equality", "familiarity"],
+    confuserMeanings: ["đặc quyền", "bình đẳng", "sự quen thuộc"],
+    grammar: {
+      original: "The team should focus first on urgent safety issues.",
+      target: "The team should give priority to urgent safety issues.",
+      hint: "Dùng 'give priority to'.",
+      keywords: ["priority", "to"]
+    },
+    toeic: {
+      text: "During the renovation, management will give _______ to safety concerns.",
+      choices: ["priority", "privilege", "equality", "investment"],
+      answer: 0,
+      explain: "'give priority to safety concerns' = ưu tiên các vấn đề an toàn."
+    }
+  }
+];
+
+const PHASES = ['vocab','meaning','grammar','toeic'];
+const PHASE_LABELS = ['Nghe & Viết','Nghĩa','Ngữ pháp','TOEIC'];
+
+class DrillEngine {
+  constructor(words) {
+    this.words = words;
+    this.wordIdx = 0;
+    this.phase = 0;
+    this.score = 0;
+    this.total = words.length * 4;
+    this.mistakes = [];
+    this.answered = false;
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.rate = 0.8;
+    this._playToken = 0;
+    this.loadVoice();
+    this.render();
+    this.updateScore();
+    document.getElementById('totalNum').textContent = this.total;
+  }
+
+  loadVoice() {
+    const set = () => { const v = this.synth.getVoices(); this.voice = v.find(x => x.lang.startsWith('en-US')) || v.find(x => x.lang.startsWith('en')) || v[0]; };
+    set(); this.synth.onvoiceschanged = set;
+  }
+
+  speak(text, { cancelFirst = true } = {}) {
+    if (cancelFirst) this.stopPlayback();
+    const lessonId = 'buoi-7';
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => { if (!done) { done = true; resolve(); } };
+      const safety = setTimeout(finish, 6000);
+      const wrapEnd = () => { clearTimeout(safety); finish(); };
+      if (this.phase === 0 && window.HumanAudio) {
+        window.HumanAudio.play({
+          lessonId,
+          key: text,
+          text,
+          rate: this.rate,
+          voice: this.voice,
+          onend: wrapEnd,
+        });
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(text);
+      u.voice = this.voice;
+      u.rate = this.rate;
+      u.onend = wrapEnd;
+      u.onerror = wrapEnd;
+      this.synth.speak(u);
+    });
+  }
+
+  stopPlayback() {
+    this._playToken += 1;
+    this.synth.cancel();
+    if (window.HumanAudio && window.HumanAudio.cancel) window.HumanAudio.cancel();
+  }
+
+  async playRepeated(text, times = 3) {
+    const token = ++this._playToken;
+    for (let i = 0; i < times; i++) {
+      if (token !== this._playToken) return;
+      await this.speak(text, { cancelFirst: i === 0 });
+      if (token !== this._playToken) return;
+      if (i < times - 1) await this.delay(250);
+    }
+  }
+
+  async waitForPlaybackToFinish(token) {
+    if (token !== this._playToken) return;
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  get currentWord() { return this.words[this.wordIdx]; }
+
+  renderPhaseBar() {
+    const total = this.words.length * 4;
+    const current = this.wordIdx * 4 + this.phase;
+    const bar = document.getElementById('phaseBar');
+    bar.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'phase-dot' + (i < current ? ' done' : i === current ? ' active' : '');
+      bar.appendChild(dot);
+    }
+  }
+
+  render() {
+    this.stopPlayback();
+    this.answered = false;
+    this.renderPhaseBar();
+    document.getElementById('btnNext').disabled = true;
+    const card = document.getElementById('drillCard');
+    const w = this.currentWord;
+    const p = PHASES[this.phase];
+
+    if (p === 'vocab') this.renderVocab(card, w);
+    else if (p === 'meaning') this.renderMeaning(card, w);
+    else if (p === 'grammar') this.renderGrammar(card, w);
+    else if (p === 'toeic') this.renderToeic(card, w);
+  }
+
+  renderVocab(card, w) {
+    card.innerHTML = `
+      <div class="phase-label">Phase 1/4 — Nghe & Viết chính tả</div>
+      <div class="sub-prompt">Nghe từ và gõ lại chính xác</div>
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSel">
+          <option value="0.6">0.6x</option>
+          <option value="0.7">0.7x</option>
+          <option value="0.8" selected>0.8x</option>
+          <option value="1">1x</option>
+        </select>
+      </div>
+      <button class="audio-btn" id="playBtn">&#9654; Nghe (3 lần)</button>
+      <input class="drill-input" id="vocabInput" placeholder="Gõ từ bạn nghe..." autocomplete="off" spellcheck="false">
+      <div class="feedback-box" id="fb"></div>
+      <div class="hint-text" id="hintBtn">Gợi ý: ${w.ipa}</div>
+    `;
+    const playBtn = document.getElementById('playBtn');
+    const input = document.getElementById('vocabInput');
+    const speedSel = document.getElementById('speedSel');
+    speedSel.onchange = () => { this.rate = parseFloat(speedSel.value); };
+
+    playBtn.onclick = () => {
+      this.playRepeated(w.word, 3);
+    };
+    setTimeout(() => playBtn.click(), 300);
+
+    input.onkeydown = (e) => { if (e.key === 'Enter') this.checkVocab(); };
+  }
+
+  checkVocab() {
+    if (this.answered) return;
+    const input = document.getElementById('vocabInput');
+    const val = input.value.trim().toLowerCase();
+    const w = this.currentWord;
+    const fb = document.getElementById('fb');
+    this.answered = true;
+
+    if (val === w.word.toLowerCase()) {
+      input.classList.add('correct');
+      fb.className = 'feedback-box show ok';
+      fb.textContent = `Chính xác! "${w.word}" ${w.ipa}`;
+      this.score++;
+    } else {
+      input.classList.add('wrong');
+      fb.className = 'feedback-box show err';
+      fb.innerHTML = `Sai. Đáp án: <strong>${w.word}</strong> ${w.ipa}<br>Bạn viết: "${val}"`;
+      this.mistakes.push({ word: w.word, phase: 'spelling', detail: `Viết "${val}" thay vì "${w.word}"` });
+    }
+    this.updateScore();
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  renderMeaning(card, w) {
+    const options = this.shuffleArray([
+      { text: w.meaning, correct: true },
+      ...w.confusers.map((c, i) => ({ text: `${c}: ${w.confuserMeanings[i]}`, correct: false }))
+    ]);
+    card.innerHTML = `
+      <div class="phase-label">Phase 2/4 — Chọn nghĩa đúng</div>
+      <div class="word-prompt">${w.word}</div>
+      <div class="sub-prompt">Chọn nghĩa chính xác của từ này:</div>
+      <ul class="choices" id="meaningChoices">
+        ${options.map((o, i) => `<li data-idx="${i}" data-correct="${o.correct}">${String.fromCharCode(65+i)}. ${o.text}</li>`).join('')}
+      </ul>
+      <div class="feedback-box" id="fb"></div>
+    `;
+    card.querySelectorAll('.choices li').forEach(li => {
+      li.onclick = () => this.checkMeaning(li);
+    });
+  }
+
+  checkMeaning(li) {
+    if (this.answered) return;
+    this.answered = true;
+    const fb = document.getElementById('fb');
+    const w = this.currentWord;
+
+    document.querySelectorAll('.choices li').forEach(el => {
+      if (el.dataset.correct === 'true') el.classList.add('correct');
+    });
+
+    if (li.dataset.correct === 'true') {
+      li.classList.add('correct');
+      fb.className = 'feedback-box show ok';
+      fb.textContent = 'Chính xác!';
+      this.score++;
+    } else {
+      li.classList.add('wrong');
+      fb.className = 'feedback-box show err';
+      fb.innerHTML = `Sai. "${w.word}" = ${w.meaning}`;
+      this.mistakes.push({ word: w.word, phase: 'meaning', detail: 'Chọn sai nghĩa' });
+    }
+    this.updateScore();
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  renderGrammar(card, w) {
+    const g = w.grammar;
+    card.innerHTML = `
+      <div class="phase-label">Phase 3/4 — Viết lại câu</div>
+      <div class="transform-box">
+        <div class="original">${g.original}</div>
+        <div class="arrow">&#8595; Viết lại dùng từ gợi ý:</div>
+      </div>
+      <div class="sub-prompt">Gõ câu viết lại (chứa từ: <strong>${g.keywords.join(', ')}</strong>)</div>
+      <input class="drill-input" id="gramInput" placeholder="Viết lại câu..." autocomplete="off" spellcheck="false">
+      <div class="hint-text" id="gramHint" onclick="this.textContent='Gợi ý: ${g.hint.replace(/'/g, "\\'")}'">Nhấn để xem gợi ý</div>
+      <div class="feedback-box" id="fb"></div>
+    `;
+    document.getElementById('gramInput').onkeydown = (e) => { if (e.key === 'Enter') this.checkGrammar(); };
+  }
+
+  checkGrammar() {
+    if (this.answered) return;
+    const input = document.getElementById('gramInput');
+    const val = input.value.trim().toLowerCase();
+    const w = this.currentWord;
+    const g = w.grammar;
+    const fb = document.getElementById('fb');
+    this.answered = true;
+
+    const hasKeywords = g.keywords.every(k => val.includes(k.toLowerCase()));
+
+    if (hasKeywords && val.length > 15) {
+      input.classList.add('correct');
+      fb.className = 'feedback-box show ok';
+      fb.innerHTML = `Tốt! Câu mẫu:<br><em>${g.target}</em>`;
+      this.score++;
+    } else {
+      input.classList.add('wrong');
+      fb.className = 'feedback-box show err';
+      fb.innerHTML = `Chưa đúng. Cần chứa: <strong>${g.keywords.join(', ')}</strong><br>Câu mẫu: <em>${g.target}</em>`;
+      this.mistakes.push({ word: w.word, phase: 'grammar', detail: 'Thiếu keyword hoặc câu quá ngắn' });
+    }
+    this.updateScore();
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  renderToeic(card, w) {
+    const t = w.toeic;
+    const indices = this.shuffleIndices(t.choices.length);
+    const shuffled = indices.map(i => t.choices[i]);
+    const correctIdx = indices.indexOf(t.answer);
+
+    card.innerHTML = `
+      <div class="phase-label">Phase 4/4 — TOEIC Fill-in-the-blank</div>
+      <div class="sub-prompt" style="font-size:1rem; line-height:1.8;">${t.text}</div>
+      <ul class="choices" id="toeicChoices">
+        ${shuffled.map((c, i) => `<li data-idx="${i}" data-correct="${i===correctIdx}">${String.fromCharCode(65+i)}. ${c}</li>`).join('')}
+      </ul>
+      <div class="feedback-box" id="fb"></div>
+    `;
+    card.querySelectorAll('.choices li').forEach(li => {
+      li.onclick = () => this.checkToeic(li, t);
+    });
+  }
+
+  checkToeic(li, t) {
+    if (this.answered) return;
+    this.answered = true;
+    const fb = document.getElementById('fb');
+    const w = this.currentWord;
+
+    document.querySelectorAll('.choices li').forEach(el => {
+      if (el.dataset.correct === 'true') el.classList.add('correct');
+    });
+
+    if (li.dataset.correct === 'true') {
+      li.classList.add('correct');
+      fb.className = 'feedback-box show ok';
+      fb.innerHTML = `Chính xác! ${t.explain}`;
+      this.score++;
+    } else {
+      li.classList.add('wrong');
+      fb.className = 'feedback-box show err';
+      fb.innerHTML = `Sai. ${t.explain}`;
+      this.mistakes.push({ word: w.word, phase: 'toeic', detail: t.explain });
+    }
+    this.updateScore();
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  next() {
+    this.phase++;
+    if (this.phase >= 4) { this.phase = 0; this.wordIdx++; }
+    if (this.wordIdx >= this.words.length) { this.showResults(); return; }
+    this.render();
+  }
+
+  skip() {
+    this.mistakes.push({ word: this.currentWord.word, phase: PHASE_LABELS[this.phase], detail: 'Bỏ qua' });
+    this.next();
+  }
+
+  showResults() {
+    const pct = Math.round((this.score / this.total) * 100);
+    const card = document.getElementById('drillCard');
+    const phaseScores = {};
+    PHASE_LABELS.forEach(p => { phaseScores[p] = { correct: 0, total: 0 }; });
+    this.words.forEach((w, wi) => {
+      PHASE_LABELS.forEach((p, pi) => {
+        phaseScores[p].total++;
+        const wasMistake = this.mistakes.some(m => m.word === w.word && (m.phase === PHASES[pi] || m.phase === p));
+        if (!wasMistake) phaseScores[p].correct++;
+      });
+    });
+
+    let breakdownHtml = '';
+    PHASE_LABELS.forEach(p => {
+      const s = phaseScores[p];
+      breakdownHtml += `<div class="breakdown-row"><span>${p}</span><span>${s.correct}/${s.total}</span></div>`;
+    });
+
+    let mistakesHtml = '';
+    if (this.mistakes.length > 0) {
+      mistakesHtml = `<div class="mistakes-list"><h4>Cần ôn lại:</h4>`;
+      this.mistakes.forEach(m => {
+        mistakesHtml += `<div class="mistake-item"><div class="mword">${m.word} (${m.phase})</div><div class="mdetail">${m.detail}</div></div>`;
+      });
+      mistakesHtml += `</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="results-panel">
+        <div class="big-score">${pct}%</div>
+        <p>${this.score}/${this.total} câu đúng</p>
+        <div class="breakdown">${breakdownHtml}</div>
+        ${mistakesHtml}
+        <button class="btn btn-play" style="margin-top:1.5rem;" onclick="location.reload()">Làm lại</button>
+        <a href="../lessons/buoi-7-reading.html" class="btn btn-secondary" style="margin-top:0.5rem; display:inline-block;">Đọc tiếp Buổi 7 &rarr;</a>
+      </div>
+    `;
+    document.getElementById('phaseBar').innerHTML = '';
+    document.getElementById('btnNext').style.display = 'none';
+    document.getElementById('btnSkip').style.display = 'none';
+    this.saveResult(pct);
+  }
+
+  saveResult(pct) {
+    const key = 'drill_b7_history';
+    const history = JSON.parse(localStorage.getItem(key) || '[]');
+    history.push({ date: new Date().toISOString(), score: pct, mistakes: this.mistakes.length });
+    if (window.WordStats) WordStats.recordDrill(this.words, this.mistakes);
+    localStorage.setItem(key, JSON.stringify(history.slice(-20)));
+  }
+
+  shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+    return a;
+  }
+
+  shuffleIndices(len) {
+    const a = Array.from({length: len}, (_, i) => i);
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+    return a;
+  }
+
+  updateScore() { document.getElementById('scoreNum').textContent = this.score; }
+}
+
+const engine = new DrillEngine(WORDS);
+document.getElementById('btnNext').onclick = () => engine.next();
+document.getElementById('btnSkip').onclick = () => engine.skip();
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !document.getElementById('btnNext').disabled && document.activeElement.tagName !== 'INPUT') {
+    engine.next();
+  }
+});
+</script>
+</body>
+</html>

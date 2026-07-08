@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBA/GoldenGate — Buổi 1: Architecture Basic</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .model { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; font-size: 1.15rem; font-weight: 700; color: var(--success); margin: 1rem 0 1.5rem; }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; margin: 1rem 0; }
+    .section h3 { color: var(--accent-light); margin-bottom: 0.8rem; }
+    .term-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.8rem; }
+    .term-card { background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+    .term-card b { color: var(--success); }
+    .reading { line-height: 1.9; font-size: 1.02rem; }
+    .reading b { color: var(--success); }
+    .explain-list li, .questions li { margin-bottom: 0.8rem; line-height: 1.6; }
+    .answer { color: var(--text-dim); font-size: 0.9rem; }
+    .pill { display: inline-block; padding: 0.2rem 0.5rem; border: 1px solid var(--border); border-radius: 999px; color: var(--accent-light); font-size: 0.8rem; margin: 0.15rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>DBA/GoldenGate — Buổi 1</h1>
+    </div>
+    <h2>Architecture Basic: source -> hub -> target</h2>
+
+    <div class="model">Oracle source -> GoldenGate hub -> PostgreSQL target</div>
+
+    <div class="section">
+      <h3>1. Bối cảnh thực tế</h3>
+      <p>Một công ty đang dùng <b>Oracle database</b> làm hệ thống chính. Team DBA muốn replicate dữ liệu sang <b>PostgreSQL database</b> để phục vụ báo cáo. Thay vì để Oracle gửi trực tiếp sang PostgreSQL, team đặt <b>GoldenGate</b> trên một máy trung gian gọi là <b>hub</b>.</p>
+      <p>Trong bài này, bạn chỉ cần giữ một hình trong đầu: Oracle là nơi dữ liệu bắt đầu, GoldenGate hub xử lý ở giữa, PostgreSQL là nơi nhận dữ liệu.</p>
+      <div>
+        <span class="pill">Oracle source</span>
+        <span class="pill">GoldenGate hub</span>
+        <span class="pill">PostgreSQL target</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>2. 10 từ theo vai trò trong hệ thống</h3>
+      <div class="term-grid">
+        <div class="term-card"><b>architecture</b><br>Bức tranh tổng thể: Oracle ở đầu, GoldenGate ở giữa, PostgreSQL ở cuối.</div>
+        <div class="term-card"><b>topology</b><br>Sơ đồ kết nối cụ thể: source -> hub -> target.</div>
+        <div class="term-card"><b>deployment</b><br>Việc đưa thiết kế này vào chạy thật: cài, cấu hình, kiểm tra.</div>
+        <div class="term-card"><b>service</b><br>Dịch vụ GoldenGate đang chạy trên hub.</div>
+        <div class="term-card"><b>component</b><br>Một phần trong hệ thống, ví dụ phần đọc từ Oracle hoặc gửi sang PostgreSQL.</div>
+        <div class="term-card"><b>endpoint</b><br>Điểm kết nối, ví dụ Oracle endpoint hoặc PostgreSQL endpoint.</div>
+        <div class="term-card"><b>source</b><br>Nơi dữ liệu bắt đầu. Trong bài này, Oracle là source.</div>
+        <div class="term-card"><b>target</b><br>Nơi dữ liệu đi tới. Trong bài này, PostgreSQL là target.</div>
+        <div class="term-card"><b>hub</b><br>Máy trung gian chạy GoldenGate, nằm giữa source và target.</div>
+        <div class="term-card"><b>hub-based</b><br>Thiết kế lấy hub làm trung tâm, dữ liệu đi qua hub trước khi tới target.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>3. Reading: GoldenGate Hub Architecture</h3>
+      <p class="reading">A DBA team designs a simple GoldenGate <b>architecture</b> for data replication. The Oracle database is the <b>source</b>, and the PostgreSQL database is the <b>target</b>. Between them, the team places a GoldenGate <b>hub</b>. This <b>hub-based</b> design keeps the replication flow easy to manage.</p>
+      <p class="reading">The <b>topology</b> is simple: Oracle sends changes to the hub, and the hub sends data to PostgreSQL. During the <b>deployment</b>, the DBA checks each <b>service</b> on the hub. One <b>component</b> reads data from the source. Another component sends data to the target. Each database is an <b>endpoint</b> in the system.</p>
+      <p class="reading">If a problem happens, the DBA can explain it clearly: “The source is working, but the hub service has an issue.” This helps the team find the problem faster and keep the target database updated.</p>
+    </div>
+
+    <div class="section">
+      <h3>4. Câu quan trọng</h3>
+      <ol class="explain-list">
+        <li><b>The Oracle database is the source, and the PostgreSQL database is the target.</b><br><span class="answer">Oracle là nơi dữ liệu bắt đầu; PostgreSQL là nơi nhận dữ liệu.</span></li>
+        <li><b>Between them, the team places a GoldenGate hub.</b><br><span class="answer">GoldenGate nằm ở giữa Oracle và PostgreSQL, đóng vai trò hub.</span></li>
+        <li><b>This hub-based design keeps the replication flow easy to manage.</b><br><span class="answer">Thiết kế hub-based giúp DBA quản lý luồng replication dễ hơn.</span></li>
+        <li><b>The topology is simple: Oracle sends changes to the hub, and the hub sends data to PostgreSQL.</b><br><span class="answer">Topology chính là hình kết nối source -> hub -> target.</span></li>
+        <li><b>During the deployment, the DBA checks each service on the hub.</b><br><span class="answer">Khi deployment, DBA kiểm tra các service GoldenGate đang chạy trên hub.</span></li>
+      </ol>
+    </div>
+
+    <div class="section">
+      <h3>5. Reading check</h3>
+      <ol class="questions">
+        <li>Which database is the source?<br><span class="answer">Oracle is the source.</span></li>
+        <li>Which database is the target?<br><span class="answer">PostgreSQL is the target.</span></li>
+        <li>Where does GoldenGate run in this design?<br><span class="answer">GoldenGate runs on the hub.</span></li>
+        <li>What does the hub do?<br><span class="answer">The hub sends data from the source to the target.</span></li>
+        <li>Why is the hub-based design easy to manage?<br><span class="answer">Because the replication flow goes through one central hub.</span></li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

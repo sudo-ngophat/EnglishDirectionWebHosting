@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 9 — Dictation: Reasoning & Decision-Making</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 9 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 9: Reasoning & Decision-Making</h4>
+      <ul>
+        <li><strong>assume / assumption:</strong> giả định trước khi kiểm chứng; không phải kết luận cuối cùng.</li>
+        <li><strong>evidence / infer / conclusion:</strong> dùng bằng chứng để suy ra, rồi mới kết luận.</li>
+        <li><strong>evaluate / alternative:</strong> đánh giá lựa chọn và cân nhắc phương án thay thế.</li>
+        <li><strong>consequence / justify:</strong> hiểu hệ quả và giải thích quyết định bằng lý do rõ ràng.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/dictation.js?v=human-audio-v1"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 9",
+      lessonId: 'buoi-9',
+      vocabulary: [
+        { word: "assume", hint: "giả định rằng điều gì đúng dù chưa kiểm chứng", ipa: "/əˈsuːm/", syllables: 2, context: "Do not assume that a quiet student understands everything." },
+        { word: "assumption", hint: "giả định, điều được cho là đúng trước khi kiểm tra", ipa: "/əˈsʌmp.ʃən/", syllables: 3, context: "The teacher questioned the assumption that more homework always creates better results." },
+        { word: "evidence", hint: "bằng chứng dùng để hỗ trợ một nhận định", ipa: "/ˈev.ɪ.dəns/", syllables: 3, context: "Good feedback should be based on evidence, not only on personal feeling." },
+        { word: "infer", hint: "suy ra từ thông tin hoặc bằng chứng", ipa: "/ɪnˈfɜːr/", syllables: 2, context: "We can infer from the test results that the method needs adjustment." },
+        { word: "conclusion", hint: "kết luận sau khi xem xét thông tin", ipa: "/kənˈkluː.ʒən/", syllables: 3, context: "A careful learner reaches a conclusion after checking the evidence." },
+        { word: "evaluate", hint: "đánh giá cẩn thận trước khi quyết định", ipa: "/ɪˈvæl.ju.eɪt/", syllables: 4, context: "Students should evaluate a study method before using it for months." },
+        { word: "alternative", hint: "lựa chọn thay thế", ipa: "/ɔːlˈtɜːr.nə.tɪv/", syllables: 4, context: "If one plan fails, a learner should consider an alternative." },
+        { word: "consequence", hint: "hậu quả hoặc hệ quả xảy ra sau một hành động", ipa: "/ˈkɑːn.sə.kwens/", syllables: 3, context: "The consequence of poor planning is often unnecessary stress." },
+        { word: "justify", hint: "giải thích vì sao một quyết định hoặc nhận định là hợp lý", ipa: "/ˈdʒʌs.tə.faɪ/", syllables: 3, context: "A strong answer can justify its claim with clear reasons." }
+      ],
+      sentences: [
+        "Do not assume that a quiet student understands everything.",
+        "Many learners assume that a difficult method must be a better method.",
+        "The teacher questioned the assumption that more homework always creates better results.",
+        "A weak plan often begins with an untested assumption.",
+        "Good feedback should be based on evidence, not only on personal feeling.",
+        "The evidence from repeated mistakes showed that the class needed more practice.",
+        "We can infer from the test results that the method needs adjustment.",
+        "You should not infer too much from one small example.",
+        "A careful learner reaches a conclusion after checking the evidence.",
+        "The manager drew the wrong conclusion because she ignored important details.",
+        "Students should evaluate a study method before using it for months.",
+        "The team evaluated whether the new process saved time.",
+        "If one plan fails, a learner should consider an alternative.",
+        "Online practice can be a useful alternative to another workbook.",
+        "The consequence of poor planning is often unnecessary stress.",
+        "Every decision has a consequence, even when it seems small.",
+        "A strong answer can justify its claim with clear reasons.",
+        "The applicant justified his decision by pointing to the available evidence."
+      ],
+      passage: [
+        "Good learners do not assume that every familiar method is effective.",
+        "They know that an assumption can feel true before it has been tested.",
+        "Instead of trusting habit, they look for evidence in their mistakes, scores, and feedback.",
+        "From that evidence, they can infer which part of their learning system is weak.",
+        "Only then should they reach a conclusion about what needs to change.",
+        "A mature learner can evaluate a method instead of accepting it blindly.",
+        "If the method does not work, the learner should consider an alternative.",
+        "Each alternative has a consequence, so the choice must be made carefully.",
+        "When learners can justify their decisions with reasons, they study with more control and less confusion."
+      ],
+      fillblank: [
+        { sentence: "Do not assume that silence means understanding.", display: "Do not _____ that silence means understanding.", answer: "assume" },
+        { sentence: "The plan was based on a weak assumption.", display: "The plan was based on a weak _____.", answer: "assumption" },
+        { sentence: "The teacher asked for evidence before accepting the claim.", display: "The teacher asked for _____ before accepting the claim.", answer: "evidence" },
+        { sentence: "We can infer the problem from repeated mistakes.", display: "We can _____ the problem from repeated mistakes.", answer: "infer" },
+        { sentence: "The team reached a conclusion after the review.", display: "The team reached a _____ after the review.", answer: "conclusion" },
+        { sentence: "Students should evaluate the method before trusting it.", display: "Students should _____ the method before trusting it.", answer: "evaluate" },
+        { sentence: "They chose an alternative when the first plan failed.", display: "They chose an _____ when the first plan failed.", answer: "alternative" },
+        { sentence: "The consequence of delay was extra pressure.", display: "The _____ of delay was extra pressure.", answer: "consequence" },
+        { sentence: "A good writer can justify a claim with evidence.", display: "A good writer can _____ a claim with evidence.", answer: "justify" },
+        { sentence: "You should not infer too much from one example.", display: "You should not _____ too much from one example.", answer: "infer" },
+        { sentence: "The manager evaluated whether the change saved time.", display: "The manager _____ whether the change saved time.", answer: "evaluated" },
+        { sentence: "The decision was difficult to justify.", display: "The decision was difficult to _____.", answer: "justify" },
+        { sentence: "A false assumption can lead to a bad conclusion.", display: "A false _____ can lead to a bad conclusion.", answer: "assumption" },
+        { sentence: "The report used evidence to support its conclusion.", display: "The report used _____ to support its conclusion.", answer: "evidence" },
+        { sentence: "The consequence of ignoring feedback was slow progress.", display: "The _____ of ignoring feedback was slow progress.", answer: "consequence" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

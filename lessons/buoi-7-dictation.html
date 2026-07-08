@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 7 — Dictation: Opportunity & Competence</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 7 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 7: Opportunity, Competence & Priority</h4>
+      <ul>
+        <li><strong>invest / investment:</strong> một bên là hành động bỏ nguồn lực vào việc gì, một bên là danh từ chỉ khoản đầu tư hoặc giá trị tương lai.</li>
+        <li><strong>familiar:</strong> thường đi với pattern <em>be familiar with</em>, không chỉ là cảm giác thoải mái.</li>
+        <li><strong>compete / competent:</strong> một bên là cạnh tranh, một bên là đủ năng lực làm việc tốt.</li>
+        <li><strong>condition / equality:</strong> giúp nói về hoàn cảnh, môi trường, và cơ hội công bằng.</li>
+        <li><strong>privilege / priority:</strong> privilege là lợi thế sẵn có; priority là điều được đặt lên trước.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/dictation.js"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 7",
+      vocabulary: [
+        { word: "invest", hint: "đầu tư thời gian, công sức hoặc tiền bạc", ipa: "/ɪnˈvest/", syllables: 2, context: "Successful learners invest time and effort in skills that create long-term value." },
+        { word: "investment", hint: "sự đầu tư; khoản đầu tư", ipa: "/ɪnˈvest.mənt/", syllables: 3, context: "Education is an investment because it can create opportunities later in life." },
+        { word: "familiar", hint: "quen thuộc; biết rõ qua trải nghiệm", ipa: "/fəˈmɪl.jər/", syllables: 3, context: "Students learn faster when they are familiar with the system they are using." },
+        { word: "compete", hint: "cạnh tranh, thi đấu, tranh vị trí", ipa: "/kəmˈpiːt/", syllables: 2, context: "Young workers often compete for limited positions in crowded job markets." },
+        { word: "competent", hint: "đủ năng lực, làm được việc một cách tốt", ipa: "/ˈkɒm.pɪ.tənt/", syllables: 3, context: "A competent employee does not need to be perfect, but must handle the job reliably." },
+        { word: "condition", hint: "điều kiện; tình trạng; hoàn cảnh", ipa: "/kənˈdɪʃ.ən/", syllables: 3, context: "Better working conditions can help people perform with more confidence and energy." },
+        { word: "equality", hint: "sự bình đẳng", ipa: "/iˈkwɒl.ə.ti/", syllables: 4, context: "Equality of opportunity means people should not be limited by their background." },
+        { word: "privilege", hint: "đặc quyền, lợi thế sẵn có", ipa: "/ˈprɪv.əl.ɪdʒ/", syllables: 3, context: "Educational privilege can make success look easier than it really is." },
+        { word: "priority", hint: "sự ưu tiên; điều được đặt lên trước", ipa: "/praɪˈɒr.ə.ti/", syllables: 4, context: "When time is limited, students must give priority to the habits that matter most." }
+      ],
+      sentences: [
+        "Successful learners invest time and effort in skills that create long-term value.",
+        "Parents often invest money in education because they believe it can change a child’s future.",
+        "Education is an investment because it can create opportunities later in life.",
+        "A wise investment in training can improve both confidence and performance.",
+        "Students learn faster when they are familiar with the system they are using.",
+        "Being familiar with academic vocabulary helps learners understand more difficult texts.",
+        "Young workers often compete for limited positions in crowded job markets.",
+        "Candidates must compete against people with different levels of preparation and support.",
+        "A competent employee does not need to be perfect, but must handle the job reliably.",
+        "Competent teachers explain difficult ideas clearly and check whether students understand.",
+        "Better working conditions can help people perform with more confidence and energy.",
+        "Under certain conditions, even talented people may fail to show their real ability.",
+        "Equality of opportunity means people should not be limited by their background.",
+        "Privilege can give some students more time, safety, and support than others.",
+        "Educational privilege can make success look easier than it really is.",
+        "When time is limited, students must give priority to the habits that matter most.",
+        "A school that values equality should give priority to students who need extra support."
+      ],
+      passage: [
+        "Many people describe success as the result of hard work, but the reality is more complex.",
+        "A student may invest time and effort every day, yet still face difficult conditions at home or at school.",
+        "Education is an important investment, but not everyone has the same chance to benefit from it.",
+        "Learners who are familiar with academic systems often understand what teachers expect more quickly.",
+        "Others must compete for attention, resources, and opportunities without the same level of support.",
+        "A competent learner can still struggle when the environment is unstable or unfair.",
+        "That is why equality of opportunity matters more than simply telling everyone to try harder.",
+        "Privilege does not mean that a person never works hard; it means that some barriers are lower for them.",
+        "When schools set priorities wisely, they can give more support to learners who need it most.",
+        "In this way, real progress depends on effort, but also on conditions, opportunity, and honest priorities."
+      ],
+      fillblank: [
+        { sentence: "Learners invest time in skills that create long-term value.", display: "Learners _____ time in skills that create long-term value.", answer: "invest" },
+        { sentence: "Education is an investment in future opportunity.", display: "Education is an _____ in future opportunity.", answer: "investment" },
+        { sentence: "Students should be familiar with the system.", display: "Students should be _____ with the system.", answer: "familiar" },
+        { sentence: "Young workers compete for limited positions.", display: "Young workers _____ for limited positions.", answer: "compete" },
+        { sentence: "A competent employee can handle the job reliably.", display: "A _____ employee can handle the job reliably.", answer: "competent" },
+        { sentence: "Working conditions affect performance.", display: "Working _____ affect performance.", answer: "conditions" },
+        { sentence: "Equality of opportunity should not be just a slogan.", display: "_____ of opportunity should not be just a slogan.", answer: "Equality" },
+        { sentence: "Privilege can lower some barriers to success.", display: "_____ can lower some barriers to success.", answer: "Privilege" },
+        { sentence: "Students must give priority to the habits that matter most.", display: "Students must give _____ to the habits that matter most.", answer: "priority" },
+        { sentence: "The school invested in better training.", display: "The school _____ in better training.", answer: "invested" },
+        { sentence: "The course made students more familiar with workplace language.", display: "The course made students more _____ with workplace language.", answer: "familiar" },
+        { sentence: "Candidates compete against people with different levels of preparation.", display: "Candidates _____ against people with different levels of preparation.", answer: "compete" },
+        { sentence: "Some students succeed under difficult conditions.", display: "Some students succeed under difficult _____.", answer: "conditions" },
+        { sentence: "Educational privilege can make success look easier.", display: "Educational _____ can make success look easier.", answer: "privilege" },
+        { sentence: "The program gives priority to learners who need extra support.", display: "The program gives _____ to learners who need extra support.", answer: "priority" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

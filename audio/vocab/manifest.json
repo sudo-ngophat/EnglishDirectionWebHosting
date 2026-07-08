@@ -1,0 +1,215 @@
+{
+  "buoi-1": {
+    "lack": "audio/vocab/buoi-1/lack.wav",
+    "alter": "audio/vocab/buoi-1/alter.wav",
+    "consider": "audio/vocab/buoi-1/consider.wav",
+    "develop": "audio/vocab/buoi-1/develop.wav",
+    "require": "audio/vocab/buoi-1/require.wav",
+    "satisfy": "audio/vocab/buoi-1/satisfy.wav",
+    "value": "audio/vocab/buoi-1/value.wav"
+  },
+  "buoi-2": {
+    "acquire": "audio/vocab/buoi-2/acquire.wav",
+    "perform": "audio/vocab/buoi-2/perform.wav",
+    "decline": "audio/vocab/buoi-2/decline.wav",
+    "permit": "audio/vocab/buoi-2/permit.wav",
+    "compare": "audio/vocab/buoi-2/compare.wav",
+    "indifferent": "audio/vocab/buoi-2/indifferent.wav"
+  },
+  "buoi-3": {
+    "perspective": "audio/vocab/buoi-3/perspective.wav",
+    "perception": "audio/vocab/buoi-3/perception.wav",
+    "awareness": "audio/vocab/buoi-3/awareness.wav",
+    "consciousness": "audio/vocab/buoi-3/consciousness.wav",
+    "cognition": "audio/vocab/buoi-3/cognition.wav",
+    "recognition": "audio/vocab/buoi-3/recognition.wav",
+    "mutual": "audio/vocab/buoi-3/mutual.wav"
+  },
+  "buoi-4": {
+    "revise": "audio/vocab/buoi-4/revise.wav",
+    "amend": "audio/vocab/buoi-4/amend.wav",
+    "renovate": "audio/vocab/buoi-4/renovate.wav",
+    "restore": "audio/vocab/buoi-4/restore.wav",
+    "enhance": "audio/vocab/buoi-4/enhance.wav",
+    "implement": "audio/vocab/buoi-4/implement.wav",
+    "comply": "audio/vocab/buoi-4/comply.wav",
+    "eligible": "audio/vocab/buoi-4/eligible.wav",
+    "substantial": "audio/vocab/buoi-4/substantial.wav"
+  },
+  "buoi-5": {
+    "ambition": "audio/vocab/buoi-5/ambition.wav",
+    "ambitious": "audio/vocab/buoi-5/ambitious.wav",
+    "advantage": "audio/vocab/buoi-5/advantage.wav",
+    "effective": "audio/vocab/buoi-5/effective.wav",
+    "determined": "audio/vocab/buoi-5/determined.wav",
+    "varied": "audio/vocab/buoi-5/varied.wav",
+    "demonstrate": "audio/vocab/buoi-5/demonstrate.wav",
+    "influence": "audio/vocab/buoi-5/influence.wav",
+    "influential": "audio/vocab/buoi-5/influential.wav"
+  },
+  "buoi-6": {
+    "ambiguous": "audio/vocab/buoi-6/ambiguous.wav",
+    "ambiguity": "audio/vocab/buoi-6/ambiguity.wav",
+    "consist": "audio/vocab/buoi-6/consist.wav",
+    "consistent": "audio/vocab/buoi-6/consistent.wav",
+    "persist": "audio/vocab/buoi-6/persist.wav",
+    "persistence": "audio/vocab/buoi-6/persistence.wav",
+    "resolve": "audio/vocab/buoi-6/resolve.wav",
+    "related": "audio/vocab/buoi-6/related.wav",
+    "involve": "audio/vocab/buoi-6/involve.wav"
+  },
+  "buoi-7": {
+    "invest": "audio/vocab/buoi-7/invest.wav",
+    "investment": "audio/vocab/buoi-7/investment.wav",
+    "familiar": "audio/vocab/buoi-7/familiar.wav",
+    "compete": "audio/vocab/buoi-7/compete.wav",
+    "competent": "audio/vocab/buoi-7/competent.wav",
+    "condition": "audio/vocab/buoi-7/condition.wav",
+    "equality": "audio/vocab/buoi-7/equality.wav",
+    "privilege": "audio/vocab/buoi-7/privilege.wav",
+    "priority": "audio/vocab/buoi-7/priority.wav"
+  },
+  "buoi-8": {
+    "allocate": "audio/vocab/buoi-8/allocate.wav",
+    "dedicate": "audio/vocab/buoi-8/dedicate.wav",
+    "dedicated": "audio/vocab/buoi-8/dedicated.wav",
+    "commit": "audio/vocab/buoi-8/commit.wav",
+    "committed": "audio/vocab/buoi-8/committed.wav",
+    "submit": "audio/vocab/buoi-8/submit.wav",
+    "submissive": "audio/vocab/buoi-8/submissive.wav",
+    "cause": "audio/vocab/buoi-8/cause.wav",
+    "suffer": "audio/vocab/buoi-8/suffer.wav"
+  },
+  "buoi-9": {
+    "assume": "audio/vocab/buoi-9/assume.wav",
+    "assumption": "audio/vocab/buoi-9/assumption.wav",
+    "evidence": "audio/vocab/buoi-9/evidence.wav",
+    "infer": "audio/vocab/buoi-9/infer.wav",
+    "conclusion": "audio/vocab/buoi-9/conclusion.wav",
+    "evaluate": "audio/vocab/buoi-9/evaluate.wav",
+    "alternative": "audio/vocab/buoi-9/alternative.wav",
+    "consequence": "audio/vocab/buoi-9/consequence.wav",
+    "justify": "audio/vocab/buoi-9/justify.wav"
+  },
+  "buoi-10": {
+    "factor": "audio/vocab/buoi-10/factor.wav",
+    "affect": "audio/vocab/buoi-10/affect.wav",
+    "effect": "audio/vocab/buoi-10/effect.wav",
+    "influence": "audio/vocab/buoi-10/influence.wav",
+    "contribute": "audio/vocab/buoi-10/contribute.wav",
+    "trigger": "audio/vocab/buoi-10/trigger.wav",
+    "outcome": "audio/vocab/buoi-10/outcome.wav",
+    "result": "audio/vocab/buoi-10/result.wav",
+    "impact": "audio/vocab/buoi-10/impact.wav"
+  },
+  "buoi-11": {
+    "risk": "audio/vocab/buoi-11/risk.wav",
+    "mistake": "audio/vocab/buoi-11/mistake.wav",
+    "avoid": "audio/vocab/buoi-11/avoid.wav",
+    "prevent": "audio/vocab/buoi-11/prevent.wav",
+    "warning": "audio/vocab/buoi-11/warning.wav",
+    "careful": "audio/vocab/buoi-11/careful.wav",
+    "check": "audio/vocab/buoi-11/check.wav",
+    "fix": "audio/vocab/buoi-11/fix.wav",
+    "protect": "audio/vocab/buoi-11/protect.wav"
+  },
+  "buoi-12": {
+    "compare": "audio/vocab/buoi-12/compare.wav",
+    "contrast": "audio/vocab/buoi-12/contrast.wav",
+    "similar": "audio/vocab/buoi-12/similar.wav",
+    "different": "audio/vocab/buoi-12/different.wav",
+    "advantage": "audio/vocab/buoi-12/advantage.wav",
+    "disadvantage": "audio/vocab/buoi-12/disadvantage.wav",
+    "criteria": "audio/vocab/buoi-12/criteria.wav",
+    "suitable": "audio/vocab/buoi-12/suitable.wav",
+    "prefer": "audio/vocab/buoi-12/prefer.wav"
+  },
+  "buoi-13": {
+    "strategy": "audio/vocab/buoi-13/strategy.wav",
+    "approach": "audio/vocab/buoi-13/approach.wav",
+    "objective": "audio/vocab/buoi-13/objective.wav",
+    "initiative": "audio/vocab/buoi-13/initiative.wav",
+    "implement": "audio/vocab/buoi-13/implement.wav",
+    "execute": "audio/vocab/buoi-13/execute.wav",
+    "monitor": "audio/vocab/buoi-13/monitor.wav",
+    "adjust": "audio/vocab/buoi-13/adjust.wav",
+    "efficient": "audio/vocab/buoi-13/efficient.wav"
+  },
+  "buoi-14": {
+    "negotiate": "audio/vocab/buoi-14/negotiate.wav",
+    "persuade": "audio/vocab/buoi-14/persuade.wav",
+    "persuasive": "audio/vocab/buoi-14/persuasive.wav",
+    "propose": "audio/vocab/buoi-14/propose.wav",
+    "compromise": "audio/vocab/buoi-14/compromise.wav",
+    "concede": "audio/vocab/buoi-14/concede.wav",
+    "leverage": "audio/vocab/buoi-14/leverage.wav",
+    "reconcile": "audio/vocab/buoi-14/reconcile.wav",
+    "consensus": "audio/vocab/buoi-14/consensus.wav"
+  },
+  "buoi-15": {
+    "innovate": "audio/vocab/buoi-15/innovate.wav",
+    "innovative": "audio/vocab/buoi-15/innovative.wav",
+    "streamline": "audio/vocab/buoi-15/streamline.wav",
+    "diagnose": "audio/vocab/buoi-15/diagnose.wav",
+    "optimize": "audio/vocab/buoi-15/optimize.wav",
+    "breakthrough": "audio/vocab/buoi-15/breakthrough.wav",
+    "feasible": "audio/vocab/buoi-15/feasible.wav",
+    "overcome": "audio/vocab/buoi-15/overcome.wav",
+    "resourceful": "audio/vocab/buoi-15/resourceful.wav"
+  },
+  "buoi-16": {
+    "delegate": "audio/vocab/buoi-16/delegate.wav",
+    "supervise": "audio/vocab/buoi-16/supervise.wav",
+    "oversee": "audio/vocab/buoi-16/oversee.wav",
+    "empower": "audio/vocab/buoi-16/empower.wav",
+    "accountable": "audio/vocab/buoi-16/accountable.wav",
+    "authorize": "audio/vocab/buoi-16/authorize.wav",
+    "mentor": "audio/vocab/buoi-16/mentor.wav",
+    "coordinate": "audio/vocab/buoi-16/coordinate.wav",
+    "endorse": "audio/vocab/buoi-16/endorse.wav"
+  },
+  "buoi-17": {
+    "adhere": "audio/vocab/buoi-17/adhere.wav",
+    "enforce": "audio/vocab/buoi-17/enforce.wav",
+    "audit": "audio/vocab/buoi-17/audit.wav",
+    "disclose": "audio/vocab/buoi-17/disclose.wav",
+    "ethical": "audio/vocab/buoi-17/ethical.wav",
+    "transparent": "audio/vocab/buoi-17/transparent.wav",
+    "violate": "audio/vocab/buoi-17/violate.wav",
+    "mandate": "audio/vocab/buoi-17/mandate.wav",
+    "guideline": "audio/vocab/buoi-17/guideline.wav"
+  },
+  "buoi-18": {
+    "revenue": "audio/vocab/buoi-18/revenue.wav",
+    "expenditure": "audio/vocab/buoi-18/expenditure.wav",
+    "profitability": "audio/vocab/buoi-18/profitability.wav",
+    "forecast": "audio/vocab/buoi-18/forecast.wav",
+    "deficit": "audio/vocab/buoi-18/deficit.wav",
+    "surplus": "audio/vocab/buoi-18/surplus.wav",
+    "overhead": "audio/vocab/buoi-18/overhead.wav",
+    "fiscal": "audio/vocab/buoi-18/fiscal.wav",
+    "budgetary": "audio/vocab/buoi-18/budgetary.wav"
+  },
+  "buoi-19": {
+    "accommodate": "audio/vocab/buoi-19/accommodate.wav",
+    "courteous": "audio/vocab/buoi-19/courteous.wav",
+    "responsive": "audio/vocab/buoi-19/responsive.wav",
+    "escalate": "audio/vocab/buoi-19/escalate.wav",
+    "compensate": "audio/vocab/buoi-19/compensate.wav",
+    "retention": "audio/vocab/buoi-19/retention.wav",
+    "loyal": "audio/vocab/buoi-19/loyal.wav",
+    "refund": "audio/vocab/buoi-19/refund.wav",
+    "reputation": "audio/vocab/buoi-19/reputation.wav"
+  },
+  "buoi-20": {
+    "penetrate": "audio/vocab/buoi-20/penetrate.wav",
+    "diversify": "audio/vocab/buoi-20/diversify.wav",
+    "acquisition": "audio/vocab/buoi-20/acquisition.wav",
+    "alliance": "audio/vocab/buoi-20/alliance.wav",
+    "segment": "audio/vocab/buoi-20/segment.wav",
+    "saturated": "audio/vocab/buoi-20/saturated.wav",
+    "emerging": "audio/vocab/buoi-20/emerging.wav",
+    "dominate": "audio/vocab/buoi-20/dominate.wav",
+    "scalable": "audio/vocab/buoi-20/scalable.wav"
+  }
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 3 — Dictation</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 3 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 14</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 7%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 3: Nhận thức & Danh từ hóa</h4>
+      <ul>
+        <li><strong>Nhóm từ chính:</strong> perspective, perception, awareness, consciousness, cognition — đều liên quan đến "nhận thức" nhưng nghĩa khác nhau.</li>
+        <li><strong>Danh từ hóa:</strong> Chuyển câu dùng because → because of / due to / regardless of + danh từ.</li>
+        <li><strong>Mẹo:</strong> Nghe kỹ đuôi -tion, -ness, -ive để phân biệt dạng từ (cognition vs cognitive, aware vs awareness).</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/dictation.js"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 3",
+      vocabulary: [
+        { word: "perspective", hint: "quan điểm, góc nhìn", ipa: "/pərˈspek.tɪv/", syllables: 3, context: "From my perspective, technology is not the problem." },
+        { word: "thorough", hint: "kỹ lưỡng, thấu đáo", ipa: "/ˈθʌr.ə/", syllables: 2, context: "Designers must have thorough understanding of photo editing software." },
+        { word: "perception", hint: "nhận thức (về thực tại xung quanh)", ipa: "/pərˈsep.ʃən/", syllables: 3, context: "Social media can distort your perception of reality." },
+        { word: "awareness", hint: "sự ý thức, nhận biết", ipa: "/əˈweə.nəs/", syllables: 3, context: "Public awareness of the virus helped reduce infections." },
+        { word: "consciousness", hint: "ý thức (tỉnh táo / biết)", ipa: "/ˈkɒn.ʃəs.nəs/", syllables: 4, context: "He lost consciousness after the accident." },
+        { word: "self-consciousness", hint: "tự ý thức về bản thân", ipa: "/ˌself ˈkɒn.ʃəs.nəs/", syllables: 5, context: "I am more mature now due to my better self-consciousness." },
+        { word: "cognition", hint: "nhận thức, tư duy (khả năng não bộ)", ipa: "/kɒɡˈnɪʃ.ən/", syllables: 3, context: "Steve acquired a head injury that affected his cognition." },
+        { word: "cognitive", hint: "thuộc về nhận thức/tư duy", ipa: "/ˈkɒɡ.nɪ.tɪv/", syllables: 3, context: "Outdoor activities have cognitive benefits for children." },
+        { word: "recognition", hint: "sự công nhận", ipa: "/ˌrek.əɡˈnɪʃ.ən/", syllables: 4, context: "Many youngsters sacrifice their health for social recognition." },
+        { word: "mutual", hint: "lẫn nhau, chung", ipa: "/ˈmjuː.tʃu.əl/", syllables: 3, context: "Without mutual understanding, relationships cannot be maintained." },
+        { word: "sacrifice", hint: "hy sinh, đánh đổi", ipa: "/ˈsæk.rɪ.faɪs/", syllables: 3, context: "Many youngsters are willing to sacrifice their physical and mental health." },
+        { word: "desire", hint: "mong muốn, khao khát", ipa: "/dɪˈzaɪər/", syllables: 2, context: "Because of their desire for social recognition, they work too hard." },
+        { word: "regardless", hint: "bất chấp, không kể", ipa: "/rɪˈɡɑːd.ləs/", syllables: 3, context: "Regardless of the awareness of the virus, people still go out." },
+        { word: "mind-numbing", hint: "tê liệt tinh thần, nhàm chán cực độ", ipa: "/ˈmaɪnd ˌnʌm.ɪŋ/", syllables: 3, context: "Once you have spent a mind-numbing amount of time online, you start to lose your perception of reality." }
+      ],
+      sentences: [
+        "From my perspective, the misuse of technology harms people, not the technology itself.",
+        "Designers must have thorough understanding of photo editing software.",
+        "Once you have spent a mind-numbing amount of time online, you start to lose your perception of reality.",
+        "The government should run educational campaigns to raise public awareness of social media addiction.",
+        "Children's perception of the world is simplistic and shallow.",
+        "They don't know how complicated the world is.",
+        "Steve acquired a head injury that affected his cognition and prevented him from learning new things.",
+        "Many men struggle to find relationships because they are too short.",
+        "As I mature, I start to be more conscious of myself.",
+        "I am more mature now due to my better self-consciousness.",
+        "Many youngsters are willing to sacrifice their physical and mental health so that they are recognized by the society.",
+        "Relationships cannot be formed or maintained if people don't understand each other.",
+        "Without mutual understanding, relationships cannot be formed or maintained.",
+        "Regardless of the awareness of the virus, people have no other options but to risk their lives to make a living.",
+        "Because of their desire for social recognition, many youngsters are willing to sacrifice their health.",
+        "Due to the cognitive benefits of outdoor activities, children should be allowed to participate in them.",
+        "Public awareness of the virus did not prevent people from going outside.",
+        "The desire to have social recognition drives young people to overwork.",
+        "Children should be allowed to engage in outdoor activities because doing so is good for their cognition."
+      ],
+      passage: [
+        "In today's digital age, our perception of reality is increasingly shaped by social media.",
+        "Once you have spent a mind-numbing amount of time scrolling through feeds, your consciousness begins to shift.",
+        "From my perspective, the problem is not technology itself but the lack of public awareness about its effects.",
+        "Many youngsters sacrifice their physical and mental health for social recognition.",
+        "Their desire to be acknowledged drives them to present a distorted version of their lives online.",
+        "Regardless of their awareness of these dangers, they continue to engage in harmful behaviors.",
+        "Research shows that outdoor activities provide significant cognitive benefits for children.",
+        "A thorough understanding of child development suggests that physical play enhances cognition.",
+        "Without mutual understanding between parents and children, healthy relationships cannot be maintained.",
+        "As we mature, our self-consciousness grows, and we begin to see the world from a broader perspective.",
+        "The recognition that social media distorts our perception of reality is the first step toward change.",
+        "Due to the cognitive advantages of real-world experiences, we should encourage children to spend less time online.",
+        "Public awareness campaigns can help people make more informed choices about their digital consumption."
+      ],
+      fillblank: [
+        { sentence: "From my perspective, technology is not the problem.", display: "From my _____, technology is not the problem.", answer: "perspective" },
+        { sentence: "Designers must have thorough understanding of the software.", display: "Designers must have _____ understanding of the software.", answer: "thorough" },
+        { sentence: "Social media distorts your perception of reality.", display: "Social media distorts your _____ of reality.", answer: "perception" },
+        { sentence: "Public awareness of the virus helped reduce infections.", display: "Public _____ of the virus helped reduce infections.", answer: "awareness" },
+        { sentence: "He lost consciousness after the accident.", display: "He lost _____ after the accident.", answer: "consciousness" },
+        { sentence: "Outdoor activities have cognitive benefits for children.", display: "Outdoor activities have _____ benefits for children.", answer: "cognitive" },
+        { sentence: "The injury affected his cognition.", display: "The injury affected his _____.", answer: "cognition" },
+        { sentence: "Many youngsters sacrifice their health for social recognition.", display: "Many youngsters sacrifice their health for social _____.", answer: "recognition" },
+        { sentence: "Without mutual understanding, relationships fail.", display: "Without _____ understanding, relationships fail.", answer: "mutual" },
+        { sentence: "They are willing to sacrifice their health.", display: "They are willing to _____ their health.", answer: "sacrifice" },
+        { sentence: "Their desire for recognition drives them.", display: "Their _____ for recognition drives them.", answer: "desire" },
+        { sentence: "Regardless of the risks, they continue.", display: "_____ of the risks, they continue.", answer: "Regardless" },
+        { sentence: "I am more mature due to my better self-consciousness.", display: "I am more mature due to my better _____.", answer: "self-consciousness" },
+        { sentence: "Spending too much time online is mind-numbing.", display: "Spending too much time online is _____.", answer: "mind-numbing" },
+        { sentence: "Because of their desire for social recognition, they overwork.", display: "Because of their _____ for social recognition, they overwork.", answer: "desire" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

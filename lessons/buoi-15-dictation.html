@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 15 — Dictation: Problem-Solving & Innovation</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 15 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 15: Problem-Solving & Innovation</h4>
+      <ul>
+        <li><strong>innovate / innovative:</strong> innovate là động từ "đổi mới"; innovative là tính từ "mang tính đổi mới".</li>
+        <li><strong>diagnose / optimize:</strong> diagnose là tìm ra gốc vấn đề; optimize là tối ưu cái đang có.</li>
+        <li><strong>streamline / feasible:</strong> streamline là làm quy trình gọn nhanh hơn; feasible là "khả thi, làm được".</li>
+        <li><strong>breakthrough / overcome / resourceful:</strong> bước đột phá, vượt qua trở ngại, và tháo vát khi thiếu nguồn lực.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/dictation.js?v=human-audio-v1"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 15",
+      lessonId: 'buoi-15',
+      vocabulary: [
+        { word: "innovate", hint: "đổi mới, tạo ra cách làm hoặc sản phẩm mới", ipa: "/ˈɪn.ə.veɪt/", syllables: 3, context: "Successful companies innovate constantly to stay ahead of rivals." },
+        { word: "innovative", hint: "mang tính đổi mới, sáng tạo", ipa: "/ˈɪn.ə.veɪ.tɪv/", syllables: 4, context: "We need an innovative approach to reduce shipping delays." },
+        { word: "streamline", hint: "tinh giản để quy trình gọn và nhanh hơn", ipa: "/ˈstriːm.laɪn/", syllables: 2, context: "The new software will streamline the entire approval process." },
+        { word: "diagnose", hint: "chẩn đoán, xác định gốc rễ của vấn đề", ipa: "/ˈdaɪ.əɡ.noʊz/", syllables: 3, context: "Engineers first tried to diagnose the cause of the system failure." },
+        { word: "optimize", hint: "tối ưu hóa để đạt kết quả tốt nhất", ipa: "/ˈɑːp.tə.maɪz/", syllables: 3, context: "This update is designed to optimize battery performance." },
+        { word: "breakthrough", hint: "bước đột phá, tiến bộ quan trọng", ipa: "/ˈbreɪk.θruː/", syllables: 2, context: "The research team achieved a breakthrough in data security." },
+        { word: "feasible", hint: "khả thi, có thể thực hiện được", ipa: "/ˈfiː.zə.bəl/", syllables: 3, context: "The committee decided the timeline was not feasible and extended it." },
+        { word: "overcome", hint: "vượt qua hoặc khắc phục khó khăn", ipa: "/ˌoʊ.vɚˈkʌm/", syllables: 3, context: "The startup overcame its funding problems and doubled in size." },
+        { word: "resourceful", hint: "tháo vát, giỏi xoay xở khi thiếu nguồn lực", ipa: "/rɪˈsɔːrs.fəl/", syllables: 3, context: "A resourceful manager finds solutions even with a limited budget." }
+      ],
+      sentences: [
+        "Successful companies innovate constantly to stay ahead of rivals.",
+        "Teams that never innovate slowly lose their customers.",
+        "We need an innovative approach to reduce shipping delays.",
+        "The startup won the award for its innovative design.",
+        "The new software will streamline the entire approval process.",
+        "Managers streamline workflows to remove unnecessary steps.",
+        "Engineers first tried to diagnose the cause of the system failure.",
+        "A doctor must diagnose the problem before choosing a treatment.",
+        "This update is designed to optimize battery performance.",
+        "We can optimize the route to save both time and fuel.",
+        "The research team achieved a breakthrough in data security.",
+        "One breakthrough can change an entire industry.",
+        "The committee decided the timeline was not feasible and extended it.",
+        "Before approval, we check whether the plan is technically feasible.",
+        "The startup overcame its funding problems and doubled in size.",
+        "Great teams overcome obstacles instead of avoiding them.",
+        "A resourceful manager finds solutions even with a limited budget.",
+        "Being resourceful matters most when resources are scarce."
+      ],
+      passage: [
+        "Every strong team eventually meets a problem that its old methods cannot solve.",
+        "At that moment, the safe choice is to repeat the past, but the better choice is to innovate.",
+        "An innovative idea, however, is only the beginning of the real work.",
+        "First the team must diagnose the true cause instead of reacting to surface symptoms.",
+        "Then they look for ways to streamline the process so effort is not wasted on useless steps.",
+        "The goal is to optimize what already works while testing the new idea carefully.",
+        "Sometimes these experiments lead to a genuine breakthrough that changes how the whole team operates.",
+        "But an idea is worthless if it is not feasible within the real budget and timeline.",
+        "Strong teams overcome these limits with careful planning rather than wishful thinking.",
+        "In the end, the most resourceful people are those who turn tight constraints into creative solutions."
+      ],
+      fillblank: [
+        { sentence: "Successful companies innovate constantly to stay ahead.", display: "Successful companies _____ constantly to stay ahead.", answer: "innovate" },
+        { sentence: "We need an innovative approach to reduce delays.", display: "We need an _____ approach to reduce delays.", answer: "innovative" },
+        { sentence: "The new software will streamline the approval process.", display: "The new software will _____ the approval process.", answer: "streamline" },
+        { sentence: "Engineers tried to diagnose the cause of the failure.", display: "Engineers tried to _____ the cause of the failure.", answer: "diagnose" },
+        { sentence: "This update is designed to optimize performance.", display: "This update is designed to _____ performance.", answer: "optimize" },
+        { sentence: "The team achieved a breakthrough in data security.", display: "The team achieved a _____ in data security.", answer: "breakthrough" },
+        { sentence: "The committee decided the timeline was not feasible.", display: "The committee decided the timeline was not _____.", answer: "feasible" },
+        { sentence: "The startup overcame its funding problems.", display: "The startup _____ its funding problems.", answer: "overcame" },
+        { sentence: "A resourceful manager finds solutions with a small budget.", display: "A _____ manager finds solutions with a small budget.", answer: "resourceful" },
+        { sentence: "Teams that never innovate lose their customers.", display: "Teams that never _____ lose their customers.", answer: "innovate" },
+        { sentence: "Managers streamline workflows to remove extra steps.", display: "Managers _____ workflows to remove extra steps.", answer: "streamline" },
+        { sentence: "A doctor must diagnose the problem before treatment.", display: "A doctor must _____ the problem before treatment.", answer: "diagnose" },
+        { sentence: "We can optimize the route to save fuel.", display: "We can _____ the route to save fuel.", answer: "optimize" },
+        { sentence: "Great teams overcome obstacles instead of avoiding them.", display: "Great teams _____ obstacles instead of avoiding them.", answer: "overcome" },
+        { sentence: "Before approval we check whether the plan is feasible.", display: "Before approval we check whether the plan is _____.", answer: "feasible" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

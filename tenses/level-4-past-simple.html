@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4 — Past Simple</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .irregular-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .irregular-table th { background: var(--card); padding: 0.5rem; text-align: left; border: 1px solid var(--border); color: var(--text-dim); }
+    .irregular-table td { padding: 0.5rem; border: 1px solid var(--border); }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 150px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 4 — Past Simple</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Past Simple là gì?</h3>
+      <p>Dùng để nói về hành động <strong>đã xảy ra và kết thúc</strong> trong quá khứ:</p>
+      <ul style="margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.9rem;">
+        <li><strong>Hành động đã hoàn tất:</strong> I visited Paris last year.</li>
+        <li><strong>Chuỗi sự kiện trong quá khứ:</strong> She woke up, brushed her teeth, and left.</li>
+        <li><strong>Thói quen trong quá khứ (không còn):</strong> He played football when he was young.</li>
+      </ul>
+
+      <div class="formula">
+        (+) S + V2 (past form) &nbsp;&nbsp; → &nbsp; She <strong>went</strong> to school.<br>
+        (-) S + did not + V1 &nbsp;&nbsp; → &nbsp; She <strong>did not go</strong> to school.<br>
+        (?) Did + S + V1? &nbsp;&nbsp; → &nbsp; <strong>Did</strong> she <strong>go</strong> to school?
+      </div>
+
+      <div class="note">
+        <strong>Quy tắc thêm -ed (động từ có quy tắc):</strong><br>
+        • Hầu hết: thêm -ed (worked, played, watched)<br>
+        • Kết thúc -e: thêm -d (lived, loved, used)<br>
+        • Phụ âm + y: đổi y → ied (studied, carried, tried)<br>
+        • 1 nguyên âm + 1 phụ âm (từ ngắn): gấp đôi phụ âm + ed (stopped, planned)
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Động từ bất quy tắc thường gặp</h3>
+      <table class="irregular-table">
+        <thead><tr><th>V1</th><th>V2</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td>go</td><td>went</td><td>đi</td></tr>
+          <tr><td>come</td><td>came</td><td>đến</td></tr>
+          <tr><td>see</td><td>saw</td><td>thấy</td></tr>
+          <tr><td>have</td><td>had</td><td>có</td></tr>
+          <tr><td>do</td><td>did</td><td>làm</td></tr>
+          <tr><td>make</td><td>made</td><td>tạo</td></tr>
+          <tr><td>take</td><td>took</td><td>lấy</td></tr>
+          <tr><td>get</td><td>got</td><td>nhận</td></tr>
+          <tr><td>give</td><td>gave</td><td>cho</td></tr>
+          <tr><td>know</td><td>knew</td><td>biết</td></tr>
+          <tr><td>think</td><td>thought</td><td>nghĩ</td></tr>
+          <tr><td>say</td><td>said</td><td>nói</td></tr>
+          <tr><td>tell</td><td>told</td><td>kể</td></tr>
+          <tr><td>find</td><td>found</td><td>tìm</td></tr>
+          <tr><td>write</td><td>wrote</td><td>viết</td></tr>
+          <tr><td>read</td><td>read</td><td>đọc</td></tr>
+          <tr><td>eat</td><td>ate</td><td>ăn</td></tr>
+          <tr><td>drink</td><td>drank</td><td>uống</td></tr>
+          <tr><td>buy</td><td>bought</td><td>mua</td></tr>
+          <tr><td>bring</td><td>brought</td><td>mang</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Dấu hiệu nhận biết</h3>
+      <div class="formula">
+        yesterday, last week/month/year, ago, in 2020, when I was young, at that time, the other day
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Chia động từ có quy tắc -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chia động từ có quy tắc — thêm -ed (10 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Chia động từ bất quy tắc -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chia động từ bất quy tắc (15 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Phủ định & Nghi vấn -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Chuyển sang phủ định hoặc nghi vấn (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4: Sửa lỗi sai -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Sửa lỗi sai (10 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <!-- EXERCISE 5: Viết câu -->
+    <div class="exercise-section" id="ex5">
+      <h3>Bài 5: Viết câu hoàn chỉnh (5 câu)</h3>
+      <div id="ex5Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex5')">Kiểm tra Bài 5</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-5-past-continuous.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 5 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-3-present-simple-vs-continuous.html" class="btn btn-secondary">&larr; Level 3</a>
+      <a href="level-5-past-continuous.html" class="btn btn-play">Level 5: Past Continuous &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "She ___ (walk) to school yesterday.", answer: "walked", hint: "walk + ed" },
+    { q: "They ___ (play) football last Sunday.", answer: "played", hint: "play + ed" },
+    { q: "He ___ (study) all night for the exam.", answer: "studied", hint: "study → studied (y → ied)" },
+    { q: "We ___ (watch) a movie last night.", answer: "watched", hint: "watch + ed" },
+    { q: "She ___ (live) in Hanoi for 5 years.", answer: "lived", hint: "live + d (đã có e)" },
+    { q: "I ___ (stop) smoking two years ago.", answer: "stopped", hint: "stop → stopped (gấp đôi p)" },
+    { q: "They ___ (plan) the trip carefully.", answer: "planned", hint: "plan → planned (gấp đôi n)" },
+    { q: "He ___ (carry) the heavy box upstairs.", answer: "carried", hint: "carry → carried (y → ied)" },
+    { q: "She ___ (love) that song when she was young.", answer: "loved", hint: "love + d" },
+    { q: "We ___ (arrive) at the airport at 6 AM.", answer: "arrived", hint: "arrive + d" }
+  ],
+  ex2: [
+    { q: "She ___ (go) to Japan last summer.", answer: "went" },
+    { q: "I ___ (see) a beautiful sunset yesterday.", answer: "saw" },
+    { q: "He ___ (have) a headache this morning.", answer: "had" },
+    { q: "They ___ (make) a big mistake.", answer: "made" },
+    { q: "She ___ (take) the bus to work.", answer: "took" },
+    { q: "I ___ (get) a new phone last week.", answer: "got" },
+    { q: "He ___ (give) me a present.", answer: "gave" },
+    { q: "We ___ (know) the answer immediately.", answer: "knew" },
+    { q: "She ___ (think) it was a good idea.", answer: "thought" },
+    { q: "He ___ (tell) me the truth.", answer: "told" },
+    { q: "I ___ (find) my keys under the sofa.", answer: "found" },
+    { q: "She ___ (write) a letter to her mother.", answer: "wrote" },
+    { q: "They ___ (eat) dinner at 7 PM.", answer: "ate" },
+    { q: "He ___ (buy) a new car last month.", answer: "bought" },
+    { q: "She ___ (come) home late last night.", answer: "came" }
+  ],
+  ex3: [
+    { q: "He went to the party. → (phủ định)", answer: "He did not go to the party.", alt: ["He didn't go to the party."] },
+    { q: "She bought a new dress. → (phủ định)", answer: "She did not buy a new dress.", alt: ["She didn't buy a new dress."] },
+    { q: "They played tennis. → (nghi vấn)", answer: "Did they play tennis?" },
+    { q: "You saw the movie. → (nghi vấn)", answer: "Did you see the movie?" },
+    { q: "He ate breakfast. → (phủ định)", answer: "He did not eat breakfast.", alt: ["He didn't eat breakfast."] },
+    { q: "She lived in London. → (nghi vấn)", answer: "Did she live in London?" },
+    { q: "They came early. → (phủ định)", answer: "They did not come early.", alt: ["They didn't come early."] },
+    { q: "He knew the answer. → (nghi vấn)", answer: "Did he know the answer?" },
+    { q: "We had a good time. → (phủ định)", answer: "We did not have a good time.", alt: ["We didn't have a good time."] },
+    { q: "She wrote the report. → (nghi vấn)", answer: "Did she write the report?" }
+  ],
+  ex4: [
+    { q: "She goed to school yesterday.", answer: "She went to school yesterday.", explain: "go → went (bất quy tắc)" },
+    { q: "He didn't went to the party.", answer: "He didn't go to the party.", explain: "Sau didn't → V1 (go, không phải went)" },
+    { q: "Did she went home early?", answer: "Did she go home early?", explain: "Sau Did → V1 (go, không phải went)" },
+    { q: "I buyed a new phone last week.", answer: "I bought a new phone last week.", explain: "buy → bought (bất quy tắc)" },
+    { q: "They didn't studied for the exam.", answer: "They didn't study for the exam.", explain: "Sau didn't → V1 (study, không phải studied)" },
+    { q: "She taked the wrong bus.", answer: "She took the wrong bus.", explain: "take → took (bất quy tắc)" },
+    { q: "He stoped the car suddenly.", answer: "He stopped the car suddenly.", explain: "stop → stopped (gấp đôi p + ed)" },
+    { q: "We eated dinner at 8 PM.", answer: "We ate dinner at 8 PM.", explain: "eat → ate (bất quy tắc)" },
+    { q: "Did they made a decision?", answer: "Did they make a decision?", explain: "Sau Did → V1 (make, không phải made)" },
+    { q: "She writed a long email.", answer: "She wrote a long email.", explain: "write → wrote (bất quy tắc)" }
+  ],
+  ex5: [
+    { q: "(I / visit / my grandmother / last weekend)", answer: "I visited my grandmother last weekend." },
+    { q: "(she / not / go / to the party / yesterday)", answer: "She did not go to the party yesterday.", alt: ["She didn't go to the party yesterday."] },
+    { q: "(they / buy / a new house / last year)", answer: "They bought a new house last year." },
+    { q: "(he / lose / his wallet / yesterday?)", answer: "Did he lose his wallet yesterday?" },
+    { q: "(we / have / a great time / at the concert)", answer: "We had a great time at the concert." }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0 };
+let totals = { ex1: 10, ex2: 15, ex3: 10, ex4: 10, ex5: 5 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false };
+
+function renderFillSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    const parts = item.q.split('___');
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${section}-input-${i}" placeholder="...">${parts[1]}</div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderWriteSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    const isError = section === 'ex4';
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${isError ? `<span style="color:var(--accent);">${item.q}</span>` : item.q}</div>
+      <input type="text" id="${section}-input-${i}" placeholder="${isError ? 'Viết lại câu đúng...' : 'Viết câu hoàn chỉnh...'}" style="width:100%; margin-top:0.5rem;">
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkSection(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      const explain = item.explain ? ` — ${item.explain}` : (item.hint ? ` — ${item.hint}` : '');
+      fb.textContent = `✗ Đáp án: ${item.answer}${explain}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderFillSection('ex1');
+renderFillSection('ex2');
+renderWriteSection('ex3');
+renderWriteSection('ex4');
+renderWriteSection('ex5');
+  </script>
+</body>
+</html>

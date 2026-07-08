@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 7 — Reported Speech</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.9rem;margin:.8rem 0;color:var(--success)}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.conj-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0}.conj-table th{background:var(--card);padding:.6rem;text-align:left;border:1px solid var(--border);color:var(--success)}.conj-table td{padding:.6rem;border:1px solid var(--border)}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item input[type="text"]{width:100%;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;outline:none;margin-top:.5rem}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 7 — Reported Speech</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Câu tường thuật là gì?</h3>
+      <p>Dùng để <strong>thuật lại lời người khác nói</strong> mà không trích dẫn trực tiếp.</p>
+      <div class="formula">
+        <strong>Direct:</strong> She said, "I am tired."<br>
+        <strong>Reported:</strong> She said (that) she <strong>was</strong> tired.<br><br>
+        <strong>Direct:</strong> He said, "I will help you."<br>
+        <strong>Reported:</strong> He said (that) he <strong>would</strong> help me.
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Quy tắc lùi thì (Backshift)</h3>
+      <table class="conj-table">
+        <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
+        <tbody>
+          <tr><td>Present Simple (am/is/are, do)</td><td>Past Simple (was/were, did)</td></tr>
+          <tr><td>Present Continuous (am doing)</td><td>Past Continuous (was doing)</td></tr>
+          <tr><td>Past Simple (did)</td><td>Past Perfect (had done)</td></tr>
+          <tr><td>Present Perfect (have done)</td><td>Past Perfect (had done)</td></tr>
+          <tr><td>will</td><td>would</td></tr>
+          <tr><td>can</td><td>could</td></tr>
+          <tr><td>may</td><td>might</td></tr>
+          <tr><td>must</td><td>had to</td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:1.5rem;">Đổi đại từ & trạng từ</h3>
+      <table class="conj-table">
+        <thead><tr><th>Direct</th><th>Reported</th></tr></thead>
+        <tbody>
+          <tr><td>I / me / my</td><td>he/she / him/her / his/her</td></tr>
+          <tr><td>we / us / our</td><td>they / them / their</td></tr>
+          <tr><td>today</td><td>that day</td></tr>
+          <tr><td>tomorrow</td><td>the next day / the following day</td></tr>
+          <tr><td>yesterday</td><td>the day before / the previous day</td></tr>
+          <tr><td>now</td><td>then</td></tr>
+          <tr><td>here</td><td>there</td></tr>
+          <tr><td>this</td><td>that</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <strong>Câu hỏi tường thuật:</strong><br>
+        • Yes/No question → if/whether: "Are you happy?" → He asked <strong>if</strong> I was happy.<br>
+        • Wh- question → giữ wh-: "Where do you live?" → He asked <strong>where</strong> I lived.<br>
+        • Bỏ dấu hỏi, đổi sang trật tự câu trần thuật (S + V, không đảo)
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chuyển sang Reported Speech — Câu trần thuật (12 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chuyển sang Reported Speech — Câu hỏi (10 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Chuyển sang Reported Speech — Mệnh lệnh / Yêu cầu (8 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4 -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Chuyển ngược — Reported → Direct (8 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-8-mixed-structures.html" class="btn btn-secondary" style="margin-top:1rem;margin-left:.5rem;">Level 8 →</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-6-conditionals.html" class="btn btn-secondary">&larr; Level 6</a>
+      <a href="level-8-mixed-structures.html" class="btn btn-play">Level 8: Mixed Structures &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:`"I am happy." → She said (that)...`,answer:"She said that she was happy.",alt:["She said she was happy."]},
+    {q:`"I will call you tomorrow." → He said (that)...`,answer:"He said that he would call me the next day.",alt:["He said he would call me the following day.","He said that he would call me the following day."]},
+    {q:`"I can swim." → She said (that)...`,answer:"She said that she could swim.",alt:["She said she could swim."]},
+    {q:`"We are leaving now." → They said (that)...`,answer:"They said that they were leaving then.",alt:["They said they were leaving then."]},
+    {q:`"I have finished my homework." → He said (that)...`,answer:"He said that he had finished his homework.",alt:["He said he had finished his homework."]},
+    {q:`"I don't like coffee." → She said (that)...`,answer:"She said that she didn't like coffee.",alt:["She said she didn't like coffee.","She said that she did not like coffee."]},
+    {q:`"I was watching TV." → He said (that)...`,answer:"He said that he had been watching TV.",alt:["He said he had been watching TV."]},
+    {q:`"I must go now." → She said (that)...`,answer:"She said that she had to go then.",alt:["She said she had to go then."]},
+    {q:`"We will meet here tomorrow." → They said (that)...`,answer:"They said that they would meet there the next day.",alt:["They said they would meet there the following day."]},
+    {q:`"I bought a new car yesterday." → He said (that)...`,answer:"He said that he had bought a new car the day before.",alt:["He said he had bought a new car the previous day.","He said that he had bought a new car the previous day."]},
+    {q:`"I am going to study abroad." → She said (that)...`,answer:"She said that she was going to study abroad.",alt:["She said she was going to study abroad."]},
+    {q:`"I may come to the party." → He said (that)...`,answer:"He said that he might come to the party.",alt:["He said he might come to the party."]}
+  ],
+  ex2:[
+    {q:`"Are you happy?" → He asked (me)...`,answer:"He asked me if I was happy.",alt:["He asked if I was happy.","He asked me whether I was happy."]},
+    {q:`"Where do you live?" → She asked (me)...`,answer:"She asked me where I lived.",alt:["She asked where I lived."]},
+    {q:`"Can you help me?" → He asked (me)...`,answer:"He asked me if I could help him.",alt:["He asked if I could help him.","He asked me whether I could help him."]},
+    {q:`"What time does the train leave?" → She asked...`,answer:"She asked what time the train left."},
+    {q:`"Did you finish the report?" → He asked (me)...`,answer:"He asked me if I had finished the report.",alt:["He asked if I had finished the report.","He asked me whether I had finished the report."]},
+    {q:`"Why are you crying?" → She asked (me)...`,answer:"She asked me why I was crying.",alt:["She asked why I was crying."]},
+    {q:`"Will you come tomorrow?" → He asked (me)...`,answer:"He asked me if I would come the next day.",alt:["He asked if I would come the next day.","He asked me whether I would come the following day."]},
+    {q:`"How old are you?" → She asked (me)...`,answer:"She asked me how old I was.",alt:["She asked how old I was."]},
+    {q:`"Have you ever been to Japan?" → He asked (me)...`,answer:"He asked me if I had ever been to Japan.",alt:["He asked if I had ever been to Japan."]},
+    {q:`"Who broke the window?" → She asked...`,answer:"She asked who had broken the window."}
+  ],
+  ex3:[
+    {q:`"Close the door." → She told me...`,answer:"She told me to close the door."},
+    {q:`"Don't be late." → He told me...`,answer:"He told me not to be late."},
+    {q:`"Please help me." → She asked me...`,answer:"She asked me to help her."},
+    {q:`"Don't touch that." → He told me...`,answer:"He told me not to touch that."},
+    {q:`"Sit down, please." → The teacher told us...`,answer:"The teacher told us to sit down."},
+    {q:`"Don't make noise." → She told the children...`,answer:"She told the children not to make noise."},
+    {q:`"Please wait here." → He asked me...`,answer:"He asked me to wait there."},
+    {q:`"Don't forget your keys." → She reminded me...`,answer:"She reminded me not to forget my keys."}
+  ],
+  ex4:[
+    {q:"She said that she was tired. → Direct:",answer:`She said, "I am tired."`,alt:[`She said, "I'm tired."`]},
+    {q:"He said that he would come the next day. → Direct:",answer:`He said, "I will come tomorrow."`,alt:[`He said, "I'll come tomorrow."`]},
+    {q:"She asked me if I was happy. → Direct:",answer:`She asked, "Are you happy?"`,alt:[`She asked me, "Are you happy?"`]},
+    {q:"He told me to close the door. → Direct:",answer:`He said, "Close the door."`,alt:[`He told me, "Close the door."`]},
+    {q:"She said that she had finished her work. → Direct:",answer:`She said, "I have finished my work."`,alt:[`She said, "I've finished my work."`]},
+    {q:"He asked me where I lived. → Direct:",answer:`He asked, "Where do you live?"`,alt:[`He asked me, "Where do you live?"`]},
+    {q:"She told me not to be late. → Direct:",answer:`She said, "Don't be late."`,alt:[`She told me, "Don't be late."`]},
+    {q:"He said that he could swim. → Direct:",answer:`He said, "I can swim."`}
+  ]
+};
+
+let scores={ex1:0,ex2:0,ex3:0,ex4:0};
+let totals={ex1:12,ex2:10,ex3:8,ex4:8};
+let checked={ex1:false,ex2:false,ex3:false,ex4:false};
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><input type="text" id="${s}-input-${i}" placeholder="Viết câu tường thuật..."><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().replace(/[''""]/g,m=>(m==='‘'||m==='’')?"'":'"').replace(/\s+/g,' ').trim().replace(/\.$/,'');}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value),cv=normalize(item.answer),alts=(item.alt||[]).map(a=>normalize(a));if(uv===cv||alts.includes(uv)){input.classList.add('correct');fb.textContent='✓ Đúng!';fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;}
+
+renderFillSection('ex1');renderFillSection('ex2');renderFillSection('ex3');renderFillSection('ex4');
+  </script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 3 — Complex Sentences</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .conj-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .conj-table th { background: var(--card); padding: 0.6rem; text-align: left; border: 1px solid var(--border); color: var(--success); }
+    .conj-table td { padding: 0.6rem; border: 1px solid var(--border); }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 100%; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; outline: none; margin-top: 0.5rem; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 3 — Complex Sentences</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Câu phức (Complex Sentence) là gì?</h3>
+      <p>Câu phức = <strong>1 mệnh đề chính (independent)</strong> + <strong>1 hoặc nhiều mệnh đề phụ (dependent)</strong>, nối bằng <strong>liên từ phụ thuộc</strong> (subordinating conjunction).</p>
+
+      <div class="formula">
+        <strong>Mệnh đề chính</strong> + <strong>liên từ phụ thuộc</strong> + <strong>mệnh đề phụ</strong><br>
+        I stayed home <strong>because</strong> it was raining.<br><br>
+        <strong>Liên từ phụ thuộc</strong> + <strong>mệnh đề phụ</strong>, + <strong>mệnh đề chính</strong><br>
+        <strong>Because</strong> it was raining, I stayed home.
+      </div>
+
+      <div class="note">
+        <strong>Quy tắc dấu phẩy:</strong><br>
+        • Mệnh đề phụ ĐỨNG SAU → KHÔNG cần phẩy: I stayed home because it was raining.<br>
+        • Mệnh đề phụ ĐỨNG TRƯỚC → CẦN phẩy: Because it was raining, I stayed home.
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Các liên từ phụ thuộc thường gặp</h3>
+      <table class="conj-table">
+        <thead><tr><th>Nhóm</th><th>Liên từ</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Nguyên nhân</strong></td><td>because, since, as</td><td>vì, bởi vì</td></tr>
+          <tr><td><strong>Tương phản</strong></td><td>although, though, even though</td><td>mặc dù</td></tr>
+          <tr><td><strong>Thời gian</strong></td><td>when, while, before, after, until, as soon as, since</td><td>khi, trong khi, trước khi, sau khi, cho đến khi</td></tr>
+          <tr><td><strong>Điều kiện</strong></td><td>if, unless, provided that, as long as</td><td>nếu, trừ khi, miễn là</td></tr>
+          <tr><td><strong>Mục đích</strong></td><td>so that, in order that</td><td>để mà</td></tr>
+          <tr><td><strong>Kết quả</strong></td><td>so...that, such...that</td><td>quá...đến nỗi</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="theory-box">
+      <h3>Phân biệt: Câu ghép vs Câu phức</h3>
+      <div class="formula" style="font-size:0.85rem;">
+        <strong>Câu ghép (Compound):</strong> 2 mệnh đề ĐỘC LẬP nối bằng FANBOYS<br>
+        → I was tired, <strong>so</strong> I went to bed. (cả 2 đều đứng 1 mình được)<br><br>
+        <strong>Câu phức (Complex):</strong> 1 mệnh đề chính + 1 mệnh đề PHỤ THUỘC<br>
+        → I went to bed <strong>because</strong> I was tired. ("because I was tired" không đứng 1 mình được)
+      </div>
+      <div class="note">
+        <strong>Mẹo:</strong> Nếu bỏ liên từ đi mà cả 2 phần đều là câu hoàn chỉnh → câu ghép.<br>
+        Nếu 1 phần không thể đứng 1 mình → câu phức.
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn liên từ phụ thuộc đúng (15 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Nối 2 câu thành câu phức (10 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Câu đơn / Câu ghép / Câu phức? (12 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4 -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Đặt dấu phẩy đúng chỗ (10 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <!-- EXERCISE 5 -->
+    <div class="exercise-section" id="ex5">
+      <h3>Bài 5: Viết lại câu — đảo vị trí mệnh đề (8 câu)</h3>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">Viết lại câu bằng cách đưa mệnh đề phụ lên đầu (hoặc xuống cuối).</p>
+      <div id="ex5Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex5')">Kiểm tra Bài 5</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-4-relative-clauses.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 4 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-2-compound-sentences.html" class="btn btn-secondary">&larr; Level 2</a>
+      <a href="level-4-relative-clauses.html" class="btn btn-play">Level 4: Relative Clauses &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "I stayed home ___ it was raining.", options: ["because", "although", "unless", "while"], answer: 0, explain: "Nguyên nhân (ở nhà vì mưa) → because" },
+    { q: "___ she was tired, she continued working.", options: ["Because", "Although", "If", "Until"], answer: 1, explain: "Tương phản (mệt nhưng vẫn làm) → Although" },
+    { q: "I will call you ___ I arrive.", options: ["because", "although", "when", "unless"], answer: 2, explain: "Thời gian (khi tôi đến) → when" },
+    { q: "You won't pass ___ you study harder.", options: ["because", "although", "when", "unless"], answer: 3, explain: "Điều kiện phủ định (trừ khi học chăm hơn) → unless" },
+    { q: "She left early ___ she could catch the train.", options: ["because", "so that", "although", "while"], answer: 1, explain: "Mục đích (để bắt kịp tàu) → so that" },
+    { q: "___ I was cooking, the phone rang.", options: ["Because", "Although", "While", "Unless"], answer: 2, explain: "Thời gian (trong khi nấu ăn) → While" },
+    { q: "He didn't go out ___ it stopped raining.", options: ["because", "although", "until", "while"], answer: 2, explain: "Thời gian (cho đến khi tạnh mưa) → until" },
+    { q: "___ you finish your homework, you can play games.", options: ["Although", "Because", "After", "Unless"], answer: 2, explain: "Thời gian (sau khi làm xong) → After" },
+    { q: "I'll help you ___ you ask nicely.", options: ["unless", "although", "if", "until"], answer: 2, explain: "Điều kiện (nếu hỏi lịch sự) → if" },
+    { q: "She passed the exam ___ she didn't study much.", options: ["because", "although", "if", "when"], answer: 1, explain: "Tương phản (đậu dù không học nhiều) → although" },
+    { q: "I've known him ___ we were children.", options: ["while", "since", "until", "before"], answer: 1, explain: "Thời gian (kể từ khi còn nhỏ) → since" },
+    { q: "He was so tired ___ he fell asleep immediately.", options: ["because", "that", "although", "when"], answer: 1, explain: "Kết quả (quá mệt đến nỗi) → so...that" },
+    { q: "I'll wait here ___ you come back.", options: ["because", "although", "until", "since"], answer: 2, explain: "Thời gian (cho đến khi quay lại) → until" },
+    { q: "___ he is rich, he lives a simple life.", options: ["Because", "Although", "If", "When"], answer: 1, explain: "Tương phản (giàu nhưng sống đơn giản) → Although" },
+    { q: "Call me ___ you need help.", options: ["although", "because", "if", "until"], answer: 2, explain: "Điều kiện (nếu cần giúp) → if" }
+  ],
+  ex2: [
+    { q: "It was raining. I took an umbrella. (because)", answer: "I took an umbrella because it was raining.", alt: ["Because it was raining, I took an umbrella."] },
+    { q: "She was sick. She went to work. (although)", answer: "Although she was sick, she went to work.", alt: ["She went to work although she was sick."] },
+    { q: "I will leave. He arrives. (before)", answer: "I will leave before he arrives.", alt: ["Before he arrives, I will leave."] },
+    { q: "You study hard. You will pass. (if)", answer: "If you study hard, you will pass.", alt: ["You will pass if you study hard."] },
+    { q: "She finished dinner. She watched TV. (after)", answer: "After she finished dinner, she watched TV.", alt: ["She watched TV after she finished dinner."] },
+    { q: "He was sleeping. The alarm went off. (when)", answer: "He was sleeping when the alarm went off.", alt: ["When the alarm went off, he was sleeping."] },
+    { q: "I won't go. You come with me. (unless)", answer: "I won't go unless you come with me.", alt: ["Unless you come with me, I won't go."] },
+    { q: "She studied hard. She wanted to pass. (because)", answer: "She studied hard because she wanted to pass.", alt: ["Because she wanted to pass, she studied hard."] },
+    { q: "He was reading. She was cooking. (while)", answer: "He was reading while she was cooking.", alt: ["While she was cooking, he was reading."] },
+    { q: "I'll wait. You are ready. (until)", answer: "I'll wait until you are ready.", alt: ["Until you are ready, I'll wait.", "I will wait until you are ready."] }
+  ],
+  ex3: [
+    { q: "She reads books every day.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 0, explain: "1 S + 1 V, không có liên từ = câu đơn" },
+    { q: "I like coffee, but she prefers tea.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 1, explain: "2 mệnh đề độc lập + 'but' (FANBOYS) = câu ghép" },
+    { q: "Because it was raining, we stayed home.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 2, explain: "'Because' = liên từ phụ thuộc → câu phức" },
+    { q: "She studied hard, so she passed.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 1, explain: "'so' (FANBOYS) nối 2 mệnh đề độc lập = câu ghép" },
+    { q: "Although he is young, he is very mature.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 2, explain: "'Although' = liên từ phụ thuộc → câu phức" },
+    { q: "The tall man quickly finished his expensive coffee.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 0, explain: "Dài nhưng chỉ 1 S + 1 V = câu đơn" },
+    { q: "I will call you when I arrive.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 2, explain: "'when' = liên từ phụ thuộc → câu phức" },
+    { q: "She sings and dances beautifully.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 0, explain: "1 S + 2 V (nối bằng 'and') = câu đơn (động từ kép)" },
+    { q: "If you need help, just ask me.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 2, explain: "'If' = liên từ phụ thuộc → câu phức" },
+    { q: "He ran fast, yet he missed the bus.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 1, explain: "'yet' (FANBOYS) nối 2 mệnh đề = câu ghép" },
+    { q: "She left before I could say goodbye.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 2, explain: "'before' = liên từ phụ thuộc → câu phức" },
+    { q: "My brother and I play football every weekend.", options: ["Câu đơn", "Câu ghép", "Câu phức"], answer: 0, explain: "Chủ ngữ kép nhưng 1 V = câu đơn" }
+  ],
+  ex4: [
+    { q: "Because she was late she missed the bus.", answer: "Because she was late, she missed the bus.", explain: "Mệnh đề phụ đứng trước → cần phẩy" },
+    { q: "I will help you if you ask me.", answer: "I will help you if you ask me.", explain: "Mệnh đề phụ đứng SAU → KHÔNG cần phẩy" },
+    { q: "Although he studied hard he failed the exam.", answer: "Although he studied hard, he failed the exam.", explain: "Mệnh đề phụ đứng trước → cần phẩy" },
+    { q: "She went to bed because she was tired.", answer: "She went to bed because she was tired.", explain: "Mệnh đề phụ đứng SAU → KHÔNG cần phẩy" },
+    { q: "When the rain stopped we went outside.", answer: "When the rain stopped, we went outside.", explain: "Mệnh đề phụ đứng trước → cần phẩy" },
+    { q: "I won't leave until you come back.", answer: "I won't leave until you come back.", alt: ["I will not leave until you come back."], explain: "Mệnh đề phụ đứng SAU → KHÔNG cần phẩy" },
+    { q: "Before you leave please turn off the lights.", answer: "Before you leave, please turn off the lights.", explain: "Mệnh đề phụ đứng trước → cần phẩy" },
+    { q: "Unless you hurry you will be late.", answer: "Unless you hurry, you will be late.", explain: "Mệnh đề phụ đứng trước → cần phẩy" },
+    { q: "He passed the exam although he didn't study much.", answer: "He passed the exam although he didn't study much.", alt: ["He passed the exam although he did not study much."], explain: "Mệnh đề phụ đứng SAU → KHÔNG cần phẩy" },
+    { q: "After she graduated she traveled around Europe.", answer: "After she graduated, she traveled around Europe.", explain: "Mệnh đề phụ đứng trước → cần phẩy" }
+  ],
+  ex5: [
+    { q: "I stayed home because it was cold. → (đưa 'because' lên đầu)", answer: "Because it was cold, I stayed home." },
+    { q: "Although she was tired, she kept working. → (đưa mệnh đề phụ xuống cuối)", answer: "She kept working although she was tired." },
+    { q: "When the bell rang, the students left. → (đưa mệnh đề phụ xuống cuối)", answer: "The students left when the bell rang." },
+    { q: "I will wait until you finish. → (đưa 'until' lên đầu)", answer: "Until you finish, I will wait." },
+    { q: "If it rains tomorrow, we will cancel the trip. → (đưa mệnh đề phụ xuống cuối)", answer: "We will cancel the trip if it rains tomorrow." },
+    { q: "She passed the exam because she studied hard. → (đưa 'because' lên đầu)", answer: "Because she studied hard, she passed the exam." },
+    { q: "Before I go to bed, I always read a book. → (đưa mệnh đề phụ xuống cuối)", answer: "I always read a book before I go to bed." },
+    { q: "Unless you apologize, I won't forgive you. → (đưa mệnh đề phụ xuống cuối)", answer: "I won't forgive you unless you apologize.", alt: ["I will not forgive you unless you apologize."] }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0 };
+let totals = { ex1: 15, ex2: 10, ex3: 12, ex4: 10, ex5: 8 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false };
+
+function renderMCSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="${section}" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked[section]) return;
+    const q = parseInt(btn.dataset.q);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+  });
+}
+
+function renderFillSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <input type="text" id="${section}-input-${i}" placeholder="Viết câu hoàn chỉnh...">
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkMC(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const selected = document.querySelector(`#${section}Questions .mc-btn[data-q="${i}"].selected`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const btns = document.querySelectorAll(`#${section}Questions .mc-btn[data-q="${i}"]`);
+    btns.forEach(b => b.classList.add('disabled'));
+    if (selected && parseInt(selected.dataset.opt) === item.answer) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + item.explain;
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      if (selected) selected.classList.add('wrong');
+      btns[item.answer].classList.add('correct');
+      fb.textContent = '✗ ' + item.explain;
+      fb.className = 'fb wrong-fb';
+    }
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkFill(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      const explain = item.explain ? ` — ${item.explain}` : '';
+      fb.textContent = `✗ Đáp án: ${item.answer}${explain}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderMCSection('ex1');
+renderFillSection('ex2');
+renderMCSection('ex3');
+renderFillSection('ex4');
+renderFillSection('ex5');
+  </script>
+</body>
+</html>

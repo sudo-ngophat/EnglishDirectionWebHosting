@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC V2 — Buổi 4: Change & Improvement</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+    .review-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.7rem; background: rgba(0,210,211,0.15); color: var(--success); margin-left: 0.5rem; }
+    .review-tag.b2 { background: rgba(255,193,7,0.15); color: #ffc107; }
+    .review-tag.b3 { background: rgba(156,39,176,0.15); color: #ce93d8; }
+    .vocab-tracker { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-tracker h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .word-family { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+    .word-family .root { font-weight: 700; color: var(--accent); min-width: 100px; }
+    .word-chip { padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; }
+    .word-chip.hit { background: rgba(0,210,211,0.15); color: var(--success); border: 1px solid var(--success); }
+    .word-chip.miss { background: rgba(233,69,96,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .word-chip.untested { background: var(--input-bg); color: var(--text-dim); border: 1px solid var(--border); }
+    .vocab-review-section { margin-top: 1.5rem; padding: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .vocab-review-section h3 { font-size: 0.9rem; margin-bottom: 1rem; color: var(--accent); }
+    .confusing-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1rem; }
+    .confusing-table th, .confusing-table td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+    .confusing-table th { background: var(--card); color: var(--accent); }
+    .collocation-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.9rem; flex-wrap: wrap; }
+    .collocation-item select { padding: 0.3rem 0.5rem; border-radius: 4px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); font-size: 0.85rem; }
+    .collocation-item.correct select { border-color: var(--success); }
+    .collocation-item.wrong select { border-color: var(--accent); }
+    .check-vocab-btn { margin-top: 1rem; padding: 0.6rem 1.2rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC V2 — Buổi 4</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+    <div class="part-nav" id="partNav"></div>
+    <div id="questionArea"></div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+    <div class="vocab-tracker" id="vocabTracker" style="display:none;"></div>
+    <div class="vocab-review-section" id="vocabReview" style="display:none;"></div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 5, name: "Part 5: Confusing Pairs — Change & Compliance (10 câu)", questions: [
+      { id:1, text:"The editor asked the author to _______ the manuscript before resubmission.", choices:["revise","renovate","restore","comply"], answer:"A", explanation:"'revise the manuscript' = sửa đổi, chỉnh sửa nội dung (văn bản, kế hoạch). Revise = xem lại và sửa cho tốt hơn.", wordFamily:"revise", session:4 },
+      { id:2, text:"The contractor was hired to _______ the historic building's original facade.", choices:["restore","renovate","revise","enhance"], answer:"A", explanation:"'restore the original facade' = phục hồi về trạng thái ban đầu. Restore = đưa về nguyên bản.", wordFamily:"restore", session:4 },
+      { id:3, text:"The landlord plans to _______ the apartment complex with modern amenities.", choices:["renovate","restore","revise","amend"], answer:"A", explanation:"'renovate with modern amenities' = cải tạo, nâng cấp (tòa nhà). Renovate = làm mới, hiện đại hóa.", wordFamily:"renovate", session:4 },
+      { id:4, text:"The new software update will _______ the system's processing speed.", choices:["enhance","renovate","restore","amend"], answer:"A", explanation:"'enhance the speed' = nâng cao, cải thiện (chất lượng/hiệu suất). Enhance = làm tốt hơn cái đã tốt.", wordFamily:"enhance", session:4 },
+      { id:5, text:"All employees must _______ with the updated safety regulations.", choices:["comply","implement","amend","revise"], answer:"A", explanation:"'comply with regulations' = tuân thủ quy định. Comply = làm theo luật/quy tắc.", wordFamily:"comply", session:4 },
+      { id:6, text:"The IT department will _______ the new security protocol next Monday.", choices:["implement","comply","enhance","restore"], answer:"A", explanation:"'implement the protocol' = triển khai, thực hiện (kế hoạch/chính sách). Implement = đưa vào thực tế.", wordFamily:"implement", session:4 },
+      { id:7, text:"The board voted to _______ the company's constitution to allow remote voting.", choices:["amend","revise","renovate","implement"], answer:"A", explanation:"'amend the constitution' = sửa đổi (văn bản pháp lý chính thức). Amend = thay đổi luật/hợp đồng.", wordFamily:"amend", session:4 },
+      { id:8, text:"Only employees with over five years of service are _______ for the pension plan.", choices:["eligible","substantial","compliant","revised"], answer:"A", explanation:"'eligible for' = đủ điều kiện, đủ tiêu chuẩn để nhận. Eligible = có quyền tham gia.", wordFamily:"eligible", session:4 },
+      { id:9, text:"The company reported a _______ increase in profits during the third quarter.", choices:["substantial","eligible","compliant","enhanced"], answer:"A", explanation:"'substantial increase' = sự tăng trưởng đáng kể, lớn. Substantial = nhiều, quan trọng.", wordFamily:"substantial", session:4 },
+      { id:10, text:"Sales have _______ by 20% since the new marketing strategy was implemented.", choices:["declined","restored","amended","complied"], answer:"A", explanation:"'declined by 20%' = giảm 20%. [Ôn Buổi 2: decline]", wordFamily:"decline", session:2 }
+    ]},
+    { number: 6, name: "Part 6: Text Completion — All Sessions (8 câu)", questions: [
+      { id:11, passage:"NOTICE TO TENANTS\nSubject: Building Renovation Project\n\nWe are pleased to announce that the management has approved a plan to (11)_______ the lobby and common areas. The project aims to (12)_______ the building's appearance while (13)_______ its historic character.\n\nAll tenants must (14)_______ with the temporary access restrictions during construction. We appreciate your patience.", text:"Question 11:", choices:["renovate","restore","revise","amend"], answer:"A", explanation:"'renovate the lobby' = cải tạo sảnh (nâng cấp, hiện đại hóa không gian).", wordFamily:"renovate", session:4 },
+      { id:12, passage:"(same passage as Q11)", text:"Question 12:", choices:["enhance","implement","comply","revise"], answer:"A", explanation:"'enhance the appearance' = nâng cao vẻ ngoài, làm đẹp hơn.", wordFamily:"enhance", session:4 },
+      { id:13, passage:"(same passage as Q11)", text:"Question 13:", choices:["restoring","renovating","revising","implementing"], answer:"A", explanation:"'while restoring its historic character' = đồng thời phục hồi nét lịch sử. Restore = giữ/đưa về nguyên bản.", wordFamily:"restore", session:4 },
+      { id:14, passage:"(same passage as Q11)", text:"Question 14:", choices:["comply","implement","amend","enhance"], answer:"A", explanation:"'comply with restrictions' = tuân thủ các hạn chế.", wordFamily:"comply", session:4 },
+      { id:15, passage:"Dear Shareholders,\n\nFollowing a (15)_______ review of our operations, the board has decided to (16)_______ several changes to improve efficiency. We will (17)_______ our hiring policy to make more candidates (18)_______ for internal promotions.\n\nThese amendments reflect our commitment to employee development and long-term growth.", text:"Question 15:", choices:["thorough","substantial","eligible","compliant"], answer:"A", explanation:"'thorough review' = đánh giá kỹ lưỡng. [Ôn Buổi 3: thorough]", wordFamily:"thorough", session:3 },
+      { id:16, passage:"(same passage as Q15)", text:"Question 16:", choices:["implement","comply","restore","decline"], answer:"A", explanation:"'implement changes' = triển khai các thay đổi.", wordFamily:"implement", session:4 },
+      { id:17, passage:"(same passage as Q15)", text:"Question 17:", choices:["amend","renovate","enhance","restore"], answer:"A", explanation:"'amend our policy' = sửa đổi chính sách (văn bản chính thức).", wordFamily:"amend", session:4 },
+      { id:18, passage:"(same passage as Q15)", text:"Question 18:", choices:["eligible","substantial","compliant","comparable"], answer:"A", explanation:"'eligible for promotions' = đủ điều kiện thăng chức.", wordFamily:"eligible", session:4 }
+    ]},
+    { number: 3, name: "Part 3: Conversations — Mix (6 câu)", questions: [
+      { id:19, text:"Woman: The city council voted to amend the zoning regulations last night.\nMan: Does that mean we're now eligible to build the new warehouse?\nWoman: Yes, but we still need to comply with the environmental standards.\n\nWhat happened at the city council meeting?", choices:["The zoning regulations were amended","A new warehouse was approved","Environmental standards were removed","The building permit was denied"], answer:"A", explanation:"Woman nói 'voted to amend the zoning regulations'. Dùng 3 từ mới: amend, eligible, comply.", audio_script:"Woman: The city council voted to amend the zoning regulations last night. Man: Does that mean we're now eligible to build the new warehouse? Woman: Yes, but we still need to comply with the environmental standards.", wordFamily:"amend", session:4 },
+      { id:20, text:"Man: We need to revise the project timeline. The renovation is taking longer than expected.\nWoman: How substantial is the delay?\nMan: About three weeks. We should enhance our communication with the contractors.\n\nWhat is the main problem?", choices:["The renovation is behind schedule","The budget has been exceeded","The contractors quit","The building was restored incorrectly"], answer:"A", explanation:"Man nói 'renovation is taking longer than expected' → chậm tiến độ. Mix: revise, renovation, substantial, enhance.", audio_script:"Man: We need to revise the project timeline. The renovation is taking longer than expected. Woman: How substantial is the delay? Man: About three weeks. We should enhance our communication with the contractors.", wordFamily:"renovate", session:4 },
+      { id:21, text:"Woman: Has the IT team implemented the new security measures yet?\nMan: Partially. They've restored the backup system, but the enhanced firewall won't be ready until Friday.\nWoman: Make sure everything complies with the data protection regulations.\n\nWhat is NOT yet complete?", choices:["The enhanced firewall","The backup system restoration","The data protection regulations","The security audit"], answer:"A", explanation:"Man nói 'enhanced firewall won't be ready until Friday' → chưa xong. Mix: implement, restore, enhance, comply.", audio_script:"Woman: Has the IT team implemented the new security measures yet? Man: Partially. They've restored the backup system, but the enhanced firewall won't be ready until Friday. Woman: Make sure everything complies with the data protection regulations.", wordFamily:"implement", session:4 },
+      { id:22, text:"Man: From my perspective, the revised proposal is much stronger than the original.\nWoman: I agree. The substantial changes to the budget section address all the board's concerns.\nMan: Now we just need their recognition that our team delivered under pressure.\n\nWhat do both speakers think about the revised proposal?", choices:["It is much stronger than the original","It needs more revisions","The budget is still problematic","The board will reject it"], answer:"A", explanation:"Man nói 'much stronger', Woman nói 'agree'. Mix: perspective (B3), revise (B4), substantial (B4), recognition (B3).", audio_script:"Man: From my perspective, the revised proposal is much stronger than the original. Woman: I agree. The substantial changes to the budget section address all the board's concerns. Man: Now we just need their recognition that our team delivered under pressure.", wordFamily:"revise", session:"mix" },
+      { id:23, text:"Woman: Are part-time employees eligible for the training program?\nMan: They need to have performed consistently for at least six months.\nWoman: That's comparable to the requirement for full-time staff, isn't it?\n\nWhat is required for part-time employees to join the program?", choices:["Six months of consistent performance","A manager's recommendation","Full-time employment status","A written application"], answer:"A", explanation:"Man nói 'performed consistently for at least six months'. Mix: eligible (B4), perform (B2), comparable (B2), requirement (B1).", audio_script:"Woman: Are part-time employees eligible for the training program? Man: They need to have performed consistently for at least six months. Woman: That's comparable to the requirement for full-time staff, isn't it?", wordFamily:"eligible", session:"mix" },
+      { id:24, text:"Man: The client isn't satisfied with the current design. They want us to revise it substantially.\nWoman: Should we alter the entire layout or just enhance certain elements?\nMan: Let's consider both options and develop a proposal by Thursday.\n\nWhat does the client want?", choices:["Substantial revisions to the design","A completely new project","To cancel the contract","Minor color changes only"], answer:"A", explanation:"Man nói 'revise it substantially' → sửa đổi đáng kể. Mix: satisfy (B1), revise (B4), substantial (B4), alter (B1), enhance (B4), consider (B1), develop (B1).", audio_script:"Man: The client isn't satisfied with the current design. They want us to revise it substantially. Woman: Should we alter the entire layout or just enhance certain elements? Man: Let's consider both options and develop a proposal by Thursday.", wordFamily:"revise", session:"mix" }
+    ]},
+    { number: 7, name: "Part 7: Reading — Vocabulary in Context (6 câu)", questions: [
+      { id:25, passage:"Greenfield City — Urban Renewal Report\n\nThe Greenfield City Council has approved a substantial investment of $4.2 million to renovate the downtown district. The project, which will be implemented over 18 months, aims to restore the area's historic architecture while enhancing its commercial appeal.\n\n\"We revised our original plan three times before arriving at this final version,\" said Mayor Chen. \"Each amendment was made to ensure compliance with both heritage preservation laws and modern accessibility standards.\"\n\nAll businesses in the affected zone are eligible for temporary tax relief during construction. Property owners must comply with the revised building codes, which were amended last quarter to include stricter energy efficiency requirements.\n\nThe council expects the renovation to attract new businesses and substantially improve property values. Early estimates suggest a comparable return on investment to the successful Harbor District project completed in 2023.", text:"What is the total budget for the renovation project?", choices:["$4.2 million","$2.4 million","$42 million","Not specified"], answer:"A", explanation:"Đoạn 1: 'a substantial investment of $4.2 million'.", wordFamily:"substantial", session:4 },
+      { id:26, passage:"(same passage as Q25)", text:"How many times was the original plan revised?", choices:["Three times","Twice","Once","Four times"], answer:"A", explanation:"Mayor Chen nói: 'We revised our original plan three times'.", wordFamily:"revise", session:4 },
+      { id:27, passage:"(same passage as Q25)", text:"The word 'implemented' in paragraph 1 is closest in meaning to:", choices:["carried out","discussed","revised","canceled"], answer:"A", explanation:"'implemented over 18 months' = triển khai trong 18 tháng. Implement = carry out = thực hiện.", wordFamily:"implement", session:4 },
+      { id:28, passage:"(same passage as Q25)", text:"Who is eligible for temporary tax relief?", choices:["Businesses in the affected zone","All city residents","Property owners only","The construction company"], answer:"A", explanation:"Đoạn 3: 'All businesses in the affected zone are eligible for temporary tax relief'.", wordFamily:"eligible", session:4 },
+      { id:29, passage:"(same passage as Q25)", text:"What must property owners do according to the passage?", choices:["Comply with revised building codes","Sell their properties","Renovate their own buildings","Apply for tax relief"], answer:"A", explanation:"Đoạn 3: 'Property owners must comply with the revised building codes'. Mix: comply (B4), revise (B4), amend (B4).", wordFamily:"comply", session:4 },
+      { id:30, passage:"(same passage as Q25)", text:"The expected return on investment is described as:", choices:["Comparable to the Harbor District project","Higher than any previous project","Uncertain and risky","Lower than initially projected"], answer:"A", explanation:"Đoạn cuối: 'a comparable return on investment to the Harbor District project'. [Ôn Buổi 2: comparable]", wordFamily:"compare", session:2 }
+    ]}
+  ]
+};
+
+const VOCAB_REVIEW_DATA = {
+  confusingPairs: [
+    { word: "revise", meaning: "Sửa đổi NỘI DUNG (văn bản, kế hoạch)", example: "Revise the report/plan", usage: "Tài liệu, bài viết" },
+    { word: "amend", meaning: "Sửa đổi VĂN BẢN PHÁP LÝ chính thức", example: "Amend the constitution/policy", usage: "Luật, hợp đồng, điều lệ" },
+    { word: "renovate", meaning: "Cải tạo, NÂNG CẤP (tòa nhà)", example: "Renovate the office/building", usage: "Kiến trúc, bất động sản" },
+    { word: "restore", meaning: "PHỤC HỒI về trạng thái ban đầu", example: "Restore the original design", usage: "Di tích, dữ liệu, sức khỏe" },
+    { word: "enhance", meaning: "NÂNG CAO cái đã tốt", example: "Enhance performance/quality", usage: "Chất lượng, hiệu suất" },
+    { word: "implement", meaning: "TRIỂN KHAI, đưa vào thực tế", example: "Implement a plan/policy", usage: "Kế hoạch, chính sách" },
+    { word: "comply", meaning: "TUÂN THỦ quy định/luật", example: "Comply with regulations", usage: "Pháp luật, quy tắc" },
+    { word: "eligible", meaning: "ĐỦ ĐIỀU KIỆN để nhận/tham gia", example: "Eligible for the program", usage: "Tuyển dụng, phúc lợi" },
+    { word: "substantial", meaning: "ĐÁNG KỂ, lớn (số lượng/tầm quan trọng)", example: "A substantial increase", usage: "Tài chính, báo cáo" }
+  ],
+  collocations: [
+    { stem: "revise the ___", options: ["manuscript","building","law","system"], answer: "manuscript", hint: "sửa nội dung văn bản" },
+    { stem: "amend the ___", options: ["constitution","building","report","speed"], answer: "constitution", hint: "sửa văn bản pháp lý" },
+    { stem: "___ the building", options: ["renovate","revise","amend","comply"], answer: "renovate", hint: "cải tạo tòa nhà" },
+    { stem: "___ the original design", options: ["restore","renovate","enhance","implement"], answer: "restore", hint: "phục hồi về nguyên bản" },
+    { stem: "___ performance", options: ["enhance","renovate","restore","amend"], answer: "enhance", hint: "nâng cao hiệu suất" },
+    { stem: "___ a new policy", options: ["implement","comply","restore","revise"], answer: "implement", hint: "triển khai chính sách mới" },
+    { stem: "comply ___ regulations", options: ["with","to","for","on"], answer: "with", hint: "comply WITH = tuân thủ" },
+    { stem: "eligible ___ the program", options: ["for","with","to","on"], answer: "for", hint: "eligible FOR = đủ điều kiện cho" },
+    { stem: "a ___ improvement", options: ["substantial","eligible","compliant","restored"], answer: "substantial", hint: "sự cải thiện đáng kể" },
+    { stem: "revise vs amend:", options: ["revise = general, amend = legal","same meaning","revise = legal, amend = general","both = renovate"], answer: "revise = general, amend = legal", hint: "revise = sửa chung; amend = sửa luật/hợp đồng" },
+    { stem: "renovate vs restore:", options: ["renovate = modernize, restore = original","same meaning","renovate = original, restore = modernize","both = enhance"], answer: "renovate = modernize, restore = original", hint: "renovate = hiện đại hóa; restore = đưa về nguyên bản" },
+    { stem: "[Ôn B3] mutual ___", options: ["respect","function","awareness","revision"], answer: "respect", hint: "sự tôn trọng lẫn nhau" }
+  ],
+  wordFamilies: {
+    "revise": ["revise (v)", "revision (n)", "revised (adj)"],
+    "amend": ["amend (v)", "amendment (n)", "amended (adj)"],
+    "renovate": ["renovate (v)", "renovation (n)"],
+    "restore": ["restore (v)", "restoration (n)", "restorative (adj)"],
+    "enhance": ["enhance (v)", "enhancement (n)", "enhanced (adj)"],
+    "implement": ["implement (v)", "implementation (n)"],
+    "comply": ["comply (v)", "compliance (n)", "compliant (adj)", "non-compliant (adj)"],
+    "eligible": ["eligible (adj)", "eligibility (n)", "ineligible (adj)"],
+    "substantial": ["substantial (adj)", "substantially (adv)", "substance (n)"],
+    "decline [Ôn B2]": ["decline (v/n)", "declining (adj)"],
+    "thorough [Ôn B3]": ["thorough (adj)", "thoroughly (adv)"]
+  }
+};
+
+class ToeicExamV2 {
+  constructor(data, vocabData) {
+    this.data = data;
+    this.vocabData = vocabData;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.shuffleMap = this.buildShuffleMap();
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+    this.init();
+  }
+
+  buildShuffleMap() {
+    const map = {};
+    this.allQuestions.forEach(q => {
+      const indices = q.choices.map((_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      map[q.id] = indices;
+    });
+    return map;
+  }
+
+  getShuffledChoices(q) { return this.shuffleMap[q.id].map(i => q.choices[i]); }
+  getShuffledAnswer(q) {
+    const letters = ['A','B','C','D'];
+    const origIdx = letters.indexOf(q.answer);
+    return letters[this.shuffleMap[q.id].indexOf(origIdx)];
+  }
+
+  init() { this.loadVoice(); this.renderPartNav(); this.renderAnswerSheet(); this.renderQuestion(); this.bindEvents(); this.startTimer(); }
+
+  loadVoice() {
+    const set = () => { const v = this.synth.getVoices(); this.voice = v.find(x => x.lang.startsWith('en-US')) || v.find(x => x.lang.startsWith('en')) || v[0]; };
+    set(); this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const e = Math.floor((Date.now() - this.startTime) / 1000);
+      document.getElementById('timer').textContent = `${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    document.getElementById('partNav').innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i===0?' active':''}" data-part="${i}">${p.name}</button>`).join('');
+  }
+
+  renderAnswerSheet() {
+    document.getElementById('answerSheet').innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i===0?' current':''}" data-idx="${i}">${q.id}</div>`).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const shuffled = this.getShuffledChoices(q);
+    const correctLetter = this.getShuffledAnswer(q);
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}`;
+    if (q.session === 1) html += `<span class="review-tag">Ôn B1</span>`;
+    else if (q.session === 2) html += `<span class="review-tag b2">Ôn B2</span>`;
+    else if (q.session === 3) html += `<span class="review-tag b3">Ôn B3</span>`;
+    html += `</div>`;
+
+    if (q.passage && !q.passage.startsWith('(same')) html += `<div class="q-passage">${q.passage}</div>`;
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe</button>`;
+      html += `<span class="speed-label">0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div><ul class="choices">`;
+    shuffled.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) { if (letters[i] === correctLetter) cls = 'correct'; else if (letters[i] === userAns) cls = 'wrong'; }
+      else if (letters[i] === userAns) cls = 'selected';
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+    if (this.submitted) html += `<div class="explanation show">${q.explanation}</div>`;
+    html += `</div>`;
+    area.innerHTML = html;
+
+    if (!this.submitted) area.querySelectorAll('.choices li').forEach(li => {
+      li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+    });
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) { if (this.submitted) return; this.answers[qId] = choice; this.renderQuestion(); this.updateSheetCell(qId); }
+  updateSheetHighlight() { document.querySelectorAll('.sheet-cell').forEach((c, i) => c.classList.toggle('current', i === this.currentIdx)); }
+  updateSheetCell(qId) { const idx = this.allQuestions.findIndex(q => q.id === qId); const c = document.querySelectorAll('.sheet-cell')[idx]; if (c) c.classList.add('answered'); }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx]; if (!q.audio_script) return;
+    this.synth.cancel();
+    const u = new SpeechSynthesisUtterance(q.audio_script); u.voice = this.voice; u.rate = 0.85; this.synth.speak(u);
+  }
+
+  goTo(idx) { this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1)); this.renderQuestion(); }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true; clearInterval(this.timerInterval);
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === this.getShuffledAnswer(q)) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const b1Qs = this.allQuestions.filter(q => q.session === 1);
+    const b2Qs = this.allQuestions.filter(q => q.session === 2);
+    const b3Qs = this.allQuestions.filter(q => q.session === 3);
+    const b1c = b1Qs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+    const b2c = b2Qs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+    const b3c = b3Qs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+
+    document.getElementById('questionArea').innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:0.5rem;">Ôn Buổi 1: ${b1c}/${b1Qs.length} | Ôn Buổi 2: ${b2c}/${b2Qs.length} | Ôn Buổi 3: ${b3c}/${b3Qs.length}</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => { const pqs = p.questions; const pc = pqs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length; return `${p.name}: ${pc}/${pqs.length}`; }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+    this.renderWordFamilyTracker();
+    this.renderVocabReview();
+  }
+
+  renderWordFamilyTracker() {
+    const tracker = document.getElementById('vocabTracker'); tracker.style.display = 'block';
+    let html = `<h3>Word Family Tracker</h3>`;
+    for (const [root, members] of Object.entries(this.vocabData.wordFamilies)) {
+      const baseRoot = root.replace(/ \[.*\]/, '');
+      const relatedQs = this.allQuestions.filter(q => q.wordFamily === baseRoot);
+      const cc = relatedQs.filter(q => this.answers[q.id] === this.getShuffledAnswer(q)).length;
+      html += `<div class="word-family"><span class="root">${root.toUpperCase()}</span>`;
+      html += `<span class="word-chip ${cc === relatedQs.length ? 'hit' : cc > 0 ? 'hit' : 'miss'}">${cc}/${relatedQs.length}</span>`;
+      members.forEach(m => { html += `<span class="word-chip untested">${m}</span>`; });
+      html += `</div>`;
+    }
+    tracker.innerHTML = html;
+  }
+
+  renderVocabReview() {
+    const section = document.getElementById('vocabReview'); section.style.display = 'block';
+    const pairs = this.vocabData.confusingPairs;
+    const colls = this.vocabData.collocations;
+
+    let html = `<h3>Confusing Pairs — "Change & Compliance"</h3>`;
+    html += `<table class="confusing-table"><tr><th>Từ</th><th>Nghĩa</th><th>Ví dụ</th><th>Ngữ cảnh</th></tr>`;
+    pairs.forEach(p => { html += `<tr><td><strong>${p.word}</strong></td><td>${p.meaning}</td><td>${p.example}</td><td>${p.usage}</td></tr>`; });
+    html += `</table>`;
+
+    html += `<h3 style="margin-top:1.5rem;">Collocations Quiz</h3><div id="collocationList">`;
+    colls.forEach((c, i) => {
+      html += `<div class="collocation-item" data-idx="${i}"><span>${c.stem}</span>
+        <select data-idx="${i}"><option value="">-- chọn --</option>${c.options.map(o => `<option value="${o}">${o}</option>`).join('')}</select></div>`;
+    });
+    html += `</div><button class="check-vocab-btn" onclick="exam.checkVocabReview()">Kiểm tra</button>`;
+    html += `<div id="vocabScore" style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);"></div>`;
+    section.innerHTML = html;
+  }
+
+  checkVocabReview() {
+    let correct = 0;
+    document.querySelectorAll('.collocation-item').forEach((item, i) => {
+      const val = item.querySelector('select').value;
+      item.classList.remove('correct', 'wrong');
+      item.classList.add(val === this.vocabData.collocations[i].answer ? 'correct' : 'wrong');
+      if (val === this.vocabData.collocations[i].answer) correct++;
+    });
+    document.getElementById('vocabScore').textContent = `${correct}/${this.vocabData.collocations.length} đúng`;
+  }
+
+  reviewAll() { this.currentIdx = 0; this.renderQuestion(); }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const pi = parseInt(e.target.dataset.part); let off = 0;
+      for (let i = 0; i < pi; i++) off += this.data.parts[i].questions.length;
+      this.goTo(off);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === pi));
+    });
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell'); if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExamV2(EXAM_DATA, VOCAB_REVIEW_DATA);
+  </script>
+</body>
+</html>

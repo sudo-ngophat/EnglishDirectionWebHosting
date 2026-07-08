@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 3 — Zero Article</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.9rem;margin:.8rem 0;color:var(--success)}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.exercise-item input[type="text"]{width:100px;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;text-align:center;outline:none}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 3 — Zero Article</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Khi nào KHÔNG dùng mạo từ (Zero Article)?</h3>
+      <p>Nhiều trường hợp trong tiếng Anh <strong>không cần a/an/the</strong>:</p>
+      <div class="formula" style="font-size:.85rem;line-height:2.2;">
+        1. <strong>Danh từ số nhiều nói chung:</strong> ∅ Dogs are loyal. ∅ Books are expensive.<br>
+        2. <strong>Danh từ không đếm được nói chung:</strong> ∅ Water is essential. ∅ Music makes me happy.<br>
+        3. <strong>Tên riêng:</strong> ∅ Vietnam, ∅ John, ∅ Google<br>
+        4. <strong>Bữa ăn:</strong> ∅ breakfast, ∅ lunch, ∅ dinner<br>
+        5. <strong>Môn thể thao / môn học:</strong> ∅ football, ∅ math, ∅ English<br>
+        6. <strong>Phương tiện đi lại (by + ...):</strong> by ∅ bus, by ∅ car, by ∅ plane<br>
+        7. <strong>Ngày / tháng / mùa (nói chung):</strong> ∅ Monday, ∅ January, ∅ summer<br>
+        8. <strong>Nơi chốn với chức năng chính:</strong> go to ∅ school/church/bed/work/hospital
+      </div>
+      <div class="note">
+        <strong>So sánh:</strong><br>
+        • I like ∅ music. (âm nhạc nói chung) vs I like <strong>the</strong> music in this cafe. (cụ thể)<br>
+        • She goes to ∅ school. (đi học) vs She went to <strong>the</strong> school to meet the teacher. (đến tòa nhà trường)<br>
+        • ∅ Life is short. (cuộc sống nói chung) vs <strong>The</strong> life of a doctor is busy. (cụ thể)
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Cần mạo từ hay không? (20 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Điền a/an/the hoặc ∅ (nothing) (15 câu)</h3>
+      <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">Gõ "a", "an", "the", hoặc "x" (= không cần mạo từ).</p>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-4-the-rules.html" class="btn btn-secondary" style="margin-top:1rem;margin-left:.5rem;">Level 4 →</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-2-a-an-the.html" class="btn btn-secondary">&larr; Level 2</a>
+      <a href="level-4-the-rules.html" class="btn btn-play">Level 4: The Rules &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"___ dogs are loyal animals.",options:["The","A","No article (∅)"],answer:2,explain:"Nói chung về loài chó → zero article"},
+    {q:"I had ___ breakfast at 7 AM.",options:["a","the","No article (∅)"],answer:2,explain:"Bữa ăn → zero article"},
+    {q:"She plays ___ tennis every weekend.",options:["a","the","No article (∅)"],answer:2,explain:"Môn thể thao → zero article"},
+    {q:"___ water is essential for life.",options:["A","The","No article (∅)"],answer:2,explain:"Nước nói chung (không đếm được) → zero article"},
+    {q:"He goes to ___ work by bus.",options:["a","the","No article (∅)"],answer:2,explain:"go to work = đi làm → zero article"},
+    {q:"I love ___ music.",options:["a","the","No article (∅)"],answer:2,explain:"Âm nhạc nói chung → zero article"},
+    {q:"She is studying ___ English.",options:["an","the","No article (∅)"],answer:2,explain:"Môn học → zero article"},
+    {q:"We traveled by ___ plane.",options:["a","the","No article (∅)"],answer:2,explain:"by + phương tiện → zero article"},
+    {q:"___ life is beautiful.",options:["A","The","No article (∅)"],answer:2,explain:"Cuộc sống nói chung → zero article"},
+    {q:"Children go to ___ school at age 6.",options:["a","the","No article (∅)"],answer:2,explain:"go to school = đi học (chức năng) → zero article"},
+    {q:"I like ___ coffee in this cafe.",options:["a","the","No article (∅)"],answer:1,explain:"Cà phê CỤ THỂ (in this cafe) → the"},
+    {q:"___ Mount Everest is the highest mountain.",options:["A","The","No article (∅)"],answer:2,explain:"Tên núi → zero article"},
+    {q:"She went to ___ hospital to visit her friend.",options:["a","the","No article (∅)"],answer:1,explain:"Đến bệnh viện để thăm (không phải bệnh nhân) → the"},
+    {q:"He is in ___ hospital. (bệnh nhân)",options:["a","the","No article (∅)"],answer:2,explain:"in hospital = đang nằm viện (chức năng) → zero article"},
+    {q:"___ happiness is more important than money.",options:["A","The","No article (∅)"],answer:2,explain:"Khái niệm trừu tượng nói chung → zero article"},
+    {q:"I have ___ lunch at noon every day.",options:["a","the","No article (∅)"],answer:2,explain:"Bữa ăn → zero article"},
+    {q:"___ Japan is a beautiful country.",options:["A","The","No article (∅)"],answer:2,explain:"Tên nước (không có 'of/republic/kingdom') → zero article"},
+    {q:"She speaks ___ French fluently.",options:["a","the","No article (∅)"],answer:2,explain:"Ngôn ngữ → zero article"},
+    {q:"I go to ___ bed at 11 PM.",options:["a","the","No article (∅)"],answer:2,explain:"go to bed = đi ngủ (chức năng) → zero article"},
+    {q:"___ information you gave me was useful.",options:["An","The","No article (∅)"],answer:1,explain:"Thông tin CỤ THỂ (you gave me) → the"}
+  ],
+  ex2:[
+    {q:"___ cats are independent animals.",answer:"x",explain:"Nói chung → zero article"},
+    {q:"I usually have ___ dinner at 7 PM.",answer:"x",explain:"Bữa ăn → zero article"},
+    {q:"She is ___ best student in the class.",answer:"the",explain:"Superlative → the"},
+    {q:"He plays ___ guitar very well.",answer:"the",explain:"play the + nhạc cụ → the"},
+    {q:"___ love is all you need.",answer:"x",explain:"Khái niệm trừu tượng nói chung → zero"},
+    {q:"I went to ___ school to pick up my son.",answer:"the",explain:"Đến tòa nhà trường (không phải đi học) → the"},
+    {q:"She is ___ doctor.",answer:"a",explain:"Nghề nghiệp → a"},
+    {q:"We traveled to ___ France last summer.",answer:"x",explain:"Tên nước → zero article"},
+    {q:"___ children need love and attention.",answer:"x",explain:"Trẻ em nói chung → zero article"},
+    {q:"I bought ___ new car yesterday.",answer:"a",explain:"Lần đầu nhắc → a"},
+    {q:"He goes to ___ church every Sunday.",answer:"x",explain:"go to church = đi lễ (chức năng) → zero"},
+    {q:"___ English is spoken worldwide.",answer:"x",explain:"Ngôn ngữ → zero article"},
+    {q:"She had ___ interesting idea.",answer:"an",explain:"Lần đầu nhắc + nguyên âm → an"},
+    {q:"___ money doesn't buy happiness.",answer:"x",explain:"Tiền nói chung (không đếm được) → zero"},
+    {q:"I saw ___ moon last night. It was beautiful.",answer:"the",explain:"Chỉ có 1 mặt trăng → the"}
+  ]
+};
+
+let scores={ex1:0,ex2:0};
+let totals={ex1:20,ex2:15};
+let checked={ex1:false,ex2:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{const parts=item.q.split('___');h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${s}-input-${i}" placeholder="a/an/the/x">${parts[1]||''}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().trim();}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});scores[s]=correct;checkAllDone();}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value);const cv=normalize(item.answer);const match=uv===cv||(cv==='x'&&(uv===''||uv==='nothing'||uv==='no'||uv==='-'||uv==='0'||uv==='∅'));if(match){input.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer==='x'?'∅ (không cần)':item.answer} — ${item.explain}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;}
+
+renderMCSection('ex1');renderFillSection('ex2');
+  </script>
+</body>
+</html>

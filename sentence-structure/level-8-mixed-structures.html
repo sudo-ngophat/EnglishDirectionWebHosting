@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 8 — Mixed Structures (Boss Level)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;line-height:1.8}.theory-box h3{color:var(--accent-light);margin-bottom:1rem;font-size:1.1rem}.theory-box .formula{background:var(--card);padding:.8rem 1.2rem;border-radius:8px;font-family:monospace;font-size:.85rem;margin:.8rem 0;color:var(--success);line-height:2}.theory-box .note{font-size:.85rem;color:var(--accent-light);margin-top:.8rem;padding:.6rem;background:rgba(233,69,96,.05);border-radius:6px}.exercise-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem}.exercise-section h3{color:var(--accent-light);margin-bottom:1rem;font-size:1rem}.exercise-item{padding:.8rem 0;border-bottom:1px solid var(--border)}.exercise-item:last-child{border-bottom:none}.exercise-item .q{font-size:.9rem;margin-bottom:.5rem}.exercise-item input[type="text"]{width:100%;padding:.4rem .6rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.9rem;outline:none;margin-top:.5rem}.exercise-item input.correct{border-color:var(--success);color:var(--success)}.exercise-item input.wrong{border-color:var(--accent);color:var(--accent)}.exercise-item .fb{font-size:.8rem;margin-top:.3rem;min-height:1.2rem}.exercise-item .fb.correct-fb{color:var(--success)}.exercise-item .fb.wrong-fb{color:var(--accent)}.mc-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}.mc-btn{padding:.4rem .8rem;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;cursor:pointer;transition:all .15s}.mc-btn:hover{border-color:var(--accent)}.mc-btn.correct{border-color:var(--success);background:rgba(0,210,211,.1);color:var(--success)}.mc-btn.wrong{border-color:var(--accent);background:rgba(233,69,96,.1);color:var(--accent)}.mc-btn.disabled{pointer-events:none;opacity:.6}.score-summary{text-align:center;padding:1.5rem;background:var(--card);border-radius:var(--radius);margin-top:1.5rem;display:none}.score-summary .score-big{font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--success));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.check-all-btn{margin-top:1rem}.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem}.boss-badge{display:inline-block;padding:.3rem .8rem;background:linear-gradient(135deg,var(--accent),var(--success));color:#000;border-radius:20px;font-size:.75rem;font-weight:700;margin-left:.5rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 8 — Mixed <span class="boss-badge">BOSS</span></h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Tổng hợp tất cả cấu trúc câu</h3>
+      <div class="formula">
+        <strong>Simple:</strong> S + V + O (1 mệnh đề)<br>
+        <strong>Compound:</strong> MC + , FANBOYS + MC (and/but/or/so/yet)<br>
+        <strong>Complex:</strong> MC + SC (because/although/when/if/while...)<br>
+        <strong>Relative Clause:</strong> ...noun + who/which/that/whose/where...<br>
+        <strong>Passive:</strong> S + be + V3 (+ by agent)<br>
+        <strong>Conditional:</strong> If + condition, result (Type 0/1/2/3)<br>
+        <strong>Reported:</strong> He said (that) + lùi thì
+      </div>
+      <div class="note">
+        <strong>Chiến lược:</strong><br>
+        1. Xác định có bao nhiêu mệnh đề?<br>
+        2. Mệnh đề nối bằng gì? (FANBOYS = ghép, subordinator = phức)<br>
+        3. Có bị động không? (be + V3)<br>
+        4. Có điều kiện không? (If...)<br>
+        5. Có tường thuật không? (said/told/asked + lùi thì)
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Nhận diện loại câu -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Xác định loại cấu trúc (15 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Chuyển đổi cấu trúc -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chuyển đổi cấu trúc câu (12 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Sửa lỗi tổng hợp -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Sửa lỗi sai — Tổng hợp (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4: Viết câu nâng cao -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Kết hợp nhiều cấu trúc trong 1 câu (8 câu)</h3>
+      <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">Nối các ý thành 1 câu hoàn chỉnh dùng cấu trúc được yêu cầu.</p>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:.5rem;color:var(--text-dim);" id="totalDetail"></p>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-play" onclick="location.reload()">Làm lại</button>
+        <a href="index.html" class="btn btn-secondary" style="margin-left:.5rem;">Về trang chủ</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.9rem;color:var(--success);" id="masterMsg"></p>
+    </div>
+    <div class="nav-buttons">
+      <a href="level-7-reported-speech.html" class="btn btn-secondary">&larr; Level 7</a>
+      <a href="index.html" class="btn btn-play">Hoàn thành!</a>
+    </div>
+  </div>
+
+  <script>
+const DATA={
+  ex1:[
+    {q:"She reads books every day.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:0,explain:"1 S + 1 V = Simple"},
+    {q:"I like tea, but she prefers coffee.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:1,explain:"2 mệnh đề + 'but' (FANBOYS) = Compound"},
+    {q:"Because it was raining, we stayed home.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:2,explain:"'Because' = subordinator → Complex"},
+    {q:"The book was written by a famous author.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:3,explain:"was written = be + V3 → Passive"},
+    {q:"If I had more time, I would learn piano.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:4,explain:"If + condition → Conditional (Type 2)"},
+    {q:"She said that she was tired.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:5,explain:"said that + lùi thì → Reported Speech"},
+    {q:"The man who lives next door is a doctor.",options:["Simple","Compound","Complex (Relative)","Passive","Conditional","Reported"],answer:2,explain:"'who lives next door' = relative clause → Complex"},
+    {q:"He studied hard, so he passed the exam.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:1,explain:"'so' (FANBOYS) nối 2 mệnh đề = Compound"},
+    {q:"The meeting has been cancelled.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:3,explain:"has been cancelled = be + V3 → Passive"},
+    {q:"If you heat water to 100°C, it boils.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:4,explain:"If + sự thật → Conditional (Type 0)"},
+    {q:"He asked me where I lived.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:5,explain:"asked + wh- + lùi thì → Reported Speech"},
+    {q:"Although she was tired, she kept working.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:2,explain:"'Although' = subordinator → Complex"},
+    {q:"My brother and I play football every weekend.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:0,explain:"Chủ ngữ kép nhưng 1 V = Simple"},
+    {q:"The car which I bought last year broke down.",options:["Simple","Compound","Complex (Relative)","Passive","Conditional","Reported"],answer:2,explain:"'which I bought' = relative clause → Complex"},
+    {q:"She told me not to be late.",options:["Simple","Compound","Complex","Passive","Conditional","Reported"],answer:5,explain:"told + to V → Reported command"}
+  ],
+  ex2:[
+    {q:"Active → Passive: \"They build houses here.\"",answer:"Houses are built here.",alt:["Houses are built here by them."]},
+    {q:"Active → Passive: \"Someone stole my bike.\"",answer:"My bike was stolen.",alt:["My bike was stolen by someone."]},
+    {q:"Direct → Reported: \"I am happy.\" (She said...)",answer:"She said that she was happy.",alt:["She said she was happy."]},
+    {q:"Direct → Reported: \"Where do you live?\" (He asked me...)",answer:"He asked me where I lived."},
+    {q:"2 câu → Compound: \"It was cold. We stayed inside.\" (so)",answer:"It was cold, so we stayed inside."},
+    {q:"2 câu → Complex: \"She was tired. She kept working.\" (although)",answer:"Although she was tired, she kept working.",alt:["She kept working although she was tired."]},
+    {q:"2 câu → Relative: \"I met a man. He speaks 6 languages.\" (who)",answer:"I met a man who speaks 6 languages."},
+    {q:"Passive → Active: \"The cake was made by my mother.\"",answer:"My mother made the cake."},
+    {q:"Reported → Direct: \"He said that he would come.\"",answer:"He said, \"I will come.\"",alt:["He said, \"I'll come.\""]},
+    {q:"2 câu → Conditional Type 2: \"I don't have money. I can't buy a car.\"",answer:"If I had money, I would buy a car.",alt:["If I had money, I could buy a car."]},
+    {q:"2 câu → Complex: \"I will wait. You come back.\" (until)",answer:"I will wait until you come back.",alt:["Until you come back, I will wait."]},
+    {q:"2 câu → Relative: \"This is the city. I was born here.\" (where)",answer:"This is the city where I was born."}
+  ],
+  ex3:[
+    {q:"The book was wrote by a famous author.",answer:"The book was written by a famous author.",explain:"write → written (V3)"},
+    {q:"She said that she is tired. (reported past)",answer:"She said that she was tired.",explain:"Lùi thì: is → was"},
+    {q:"If I will study hard, I will pass.",answer:"If I study hard, I will pass.",explain:"If clause Type 1 → Present Simple (không dùng will)"},
+    {q:"The man which lives next door is kind.",answer:"The man who lives next door is kind.",explain:"Người → who (không phải which)"},
+    {q:"Although she was tired but she kept working.",answer:"Although she was tired, she kept working.",explain:"Although...but = thừa. Chọn 1: Although hoặc but"},
+    {q:"He asked me where did I live.",answer:"He asked me where I lived.",explain:"Reported question: bỏ đảo ngữ (where I lived, không phải where did I)"},
+    {q:"The homework has been did by the students.",answer:"The homework has been done by the students.",explain:"do → done (V3)"},
+    {q:"If I was you, I would leave.",answer:"If I were you, I would leave.",explain:"Type 2: dùng 'were' cho tất cả ngôi"},
+    {q:"I like coffee, because it gives me energy.",answer:"I like coffee because it gives me energy.",explain:"'because' = subordinator → KHÔNG dùng phẩy khi mệnh đề phụ đứng sau"},
+    {q:"She told me don't be late.",answer:"She told me not to be late.",explain:"Reported command: told + O + (not) to V"}
+  ],
+  ex4:[
+    {q:"Kết hợp Passive + Complex: (the bridge / build / 1990) + (it / still use / today) — dùng 'which'",answer:"The bridge, which was built in 1990, is still used today.",alt:["The bridge which was built in 1990 is still used today."]},
+    {q:"Kết hợp Conditional + Passive: (if / the project / approve) → (it / complete / next year)",answer:"If the project is approved, it will be completed next year."},
+    {q:"Kết hợp Reported + Conditional: He said: \"If I had time, I would help you.\"",answer:"He said that if he had had time, he would have helped me.",alt:["He said that if he had time, he would help me."]},
+    {q:"Kết hợp Complex + Relative: (the students / pass) + (they / study hard) + (the teacher / recommend) — dùng 'because' + 'who'",answer:"The students who studied hard passed because the teacher recommended them.",alt:["Because the teacher recommended them, the students who studied hard passed."]},
+    {q:"Kết hợp Compound + Passive: (the letter / send / yesterday) + (no reply / receive / yet) — dùng 'but'",answer:"The letter was sent yesterday, but no reply has been received yet."},
+    {q:"Kết hợp Complex + Conditional: (you / not study) → (you / fail) + (your parents / be disappointed) — dùng 'if' + 'and'",answer:"If you don't study, you will fail and your parents will be disappointed.",alt:["If you do not study, you will fail and your parents will be disappointed."]},
+    {q:"Kết hợp Passive + Reported: She said: \"The window was broken by the children.\"",answer:"She said that the window had been broken by the children."},
+    {q:"Kết hợp Relative + Passive: (the book / write / J.K. Rowling) + (it / sell / millions of copies) — dùng 'which'",answer:"The book, which was written by J.K. Rowling, has sold millions of copies.",alt:["The book which was written by J.K. Rowling has sold millions of copies."]}
+  ]
+};
+
+let scores={ex1:0,ex2:0,ex3:0,ex4:0};
+let totals={ex1:15,ex2:12,ex3:10,ex4:8};
+let checked={ex1:false,ex2:false,ex3:false,ex4:false};
+
+function renderMCSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${item.q}</div><div class="mc-options">${item.options.map((o,j)=>`<button class="mc-btn" data-section="${s}" data-q="${i}" data-opt="${j}">${o}</button>`).join('')}</div><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;c.addEventListener('click',e=>{const b=e.target.closest('.mc-btn');if(!b||checked[s])return;const q=parseInt(b.dataset.q);c.querySelectorAll(`.mc-btn[data-q="${q}"]`).forEach(x=>{x.classList.remove('selected');x.style.outline='';});b.classList.add('selected');b.style.outline='2px solid var(--accent)';});}
+
+function renderFillSection(s){const c=document.getElementById(s+'Questions');let h='';DATA[s].forEach((item,i)=>{const isErr=s==='ex3';h+=`<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${isErr?`<span style="color:var(--accent);">${item.q}</span>`:item.q}</div><input type="text" id="${s}-input-${i}" placeholder="${isErr?'Viết lại câu đúng...':'Viết câu hoàn chỉnh...'}"><div class="fb" id="${s}-fb-${i}"></div></div>`;});c.innerHTML=h;}
+
+function normalize(s){return s.toLowerCase().replace(/[''""]/g,m=>(m==='‘'||m==='’')?"'":'"').replace(/\s+/g,' ').trim().replace(/\.$/,'');}
+
+function checkMC(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const sel=document.querySelector(`#${s}Questions .mc-btn[data-q="${i}"].selected`);const fb=document.getElementById(`${s}-fb-${i}`);const btns=document.querySelectorAll(`#${s}Questions .mc-btn[data-q="${i}"]`);btns.forEach(b=>b.classList.add('disabled'));if(sel&&parseInt(sel.dataset.opt)===item.answer){sel.classList.add('correct');fb.textContent='✓ '+item.explain;fb.className='fb correct-fb';correct++;}else{if(sel)sel.classList.add('wrong');btns[item.answer].classList.add('correct');fb.textContent='✗ '+item.explain;fb.className='fb wrong-fb';}});scores[s]=correct;checkAllDone();}
+
+function checkFill(s){if(checked[s])return;checked[s]=true;let correct=0;DATA[s].forEach((item,i)=>{const input=document.getElementById(`${s}-input-${i}`);const fb=document.getElementById(`${s}-fb-${i}`);const uv=normalize(input.value),cv=normalize(item.answer),alts=(item.alt||[]).map(a=>normalize(a));if(uv===cv||alts.includes(uv)){input.classList.add('correct');fb.textContent='✓ Đúng!';fb.className='fb correct-fb';correct++;}else{input.classList.add('wrong');fb.textContent=`✗ Đáp án: ${item.answer}${item.explain?' — '+item.explain:''}`;fb.className='fb wrong-fb';}input.disabled=true;});scores[s]=correct;checkAllDone();}
+
+function checkAllDone(){if(!Object.values(checked).every(v=>v))return;const t=Object.values(scores).reduce((a,b)=>a+b,0),m=Object.values(totals).reduce((a,b)=>a+b,0),p=Math.round(t/m*100);document.getElementById('finalScore').style.display='block';document.getElementById('totalScore').textContent=p+'%';document.getElementById('totalDetail').textContent=`${t} / ${m} câu đúng`;const msg=document.getElementById('masterMsg');if(p>=90)msg.textContent='MASTER! Bạn đã thành thạo tất cả cấu trúc câu!';else if(p>=70)msg.textContent='Tốt lắm! Ôn lại những câu sai để hoàn thiện.';else if(p>=50)msg.textContent='Khá ổn! Quay lại ôn các Level trước.';else{msg.textContent='Cần luyện thêm. Hãy quay lại từ Level 1.';msg.style.color='var(--accent-light)';}}
+
+renderMCSection('ex1');renderFillSection('ex2');renderFillSection('ex3');renderFillSection('ex4');
+  </script>
+</body>
+</html>

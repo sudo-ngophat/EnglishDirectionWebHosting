@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEIC Practice — Buổi 1 Vocabulary</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toeic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .timer { font-size: 1.3rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .part-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .part-btn { padding: 0.5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); cursor: pointer; font-size: 0.8rem; }
+    .part-btn.active { background: var(--card); color: var(--accent); border-color: var(--accent); }
+    .part-btn.done { color: var(--success); border-color: var(--success); }
+    .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .q-number { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+    .q-text { font-size: 1rem; margin-bottom: 1rem; line-height: 1.6; white-space: pre-wrap; }
+    .q-passage { background: var(--input-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; }
+    .choices { list-style: none; padding: 0; }
+    .choices li { padding: 0.7rem 1rem; margin-bottom: 0.5rem; background: var(--input-bg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .choices li:hover { border-color: var(--accent); }
+    .choices li.selected { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+    .choices li.correct { border-color: var(--success); background: rgba(0,210,211,0.1); }
+    .choices li.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); text-decoration: line-through; opacity: 0.6; }
+    .explanation { margin-top: 1rem; padding: 0.8rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; color: var(--text-dim); display: none; }
+    .explanation.show { display: block; }
+    .audio-btn { padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; }
+    .audio-btn:hover { background: var(--accent-light); }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+    .answer-sheet { margin-top: 1.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .answer-sheet h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-dim); }
+    .sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 0.3rem; }
+    .sheet-cell { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: var(--input-bg); border: 1px solid var(--border); }
+    .sheet-cell.answered { background: var(--card); border-color: var(--accent); color: var(--accent); }
+    .sheet-cell.current { border-color: var(--success); box-shadow: 0 0 0 2px rgba(0,210,211,0.3); }
+    .results-panel { text-align: center; padding: 2rem; }
+    .results-panel .score-big { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .results-panel .breakdown { margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); }
+    .speed-label { font-size: 0.75rem; color: var(--text-dim); margin-left: 0.5rem; }
+    .q-image { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; border: 2px solid var(--border); background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toeic-header">
+      <div class="header">
+        <a href="../index.html">&larr;</a>
+        <h1>TOEIC — Buổi 1</h1>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div class="part-nav" id="partNav"></div>
+
+    <div id="questionArea"></div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btnPrev" disabled>&larr; Trước</button>
+      <button class="btn btn-secondary" id="btnSubmit" style="display:none;">Nộp bài</button>
+      <button class="btn btn-secondary" id="btnNext">Tiếp &rarr;</button>
+    </div>
+
+    <div class="answer-sheet">
+      <h3>Answer Sheet</h3>
+      <div class="sheet-grid" id="answerSheet"></div>
+    </div>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script>
+const EXAM_DATA = {
+  parts: [
+    { number: 1, name: "Part 1: Photographs", questions: [
+      { id:1, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The woman is considering the items on the shelf.","The woman is developing a new product.","The woman is lacking confidence.","The woman is altering her appearance."], answer:"A", explanation:"Hình ảnh người phụ nữ đang xem xét (consider) các sản phẩm trên kệ.", audio_script:"(A) The woman is considering the items on the shelf. (B) The woman is developing a new product. (C) The woman is lacking confidence. (D) The woman is altering her appearance.", image:"img/q1.jpg" },
+      { id:2, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The tailor is altering the suit jacket.","The tailor is requiring a new measurement.","The tailor is satisfying a customer's complaint.","The tailor is developing a new design."], answer:"A", explanation:"Hình ảnh thợ may đang sửa (alter) áo vest.", audio_script:"(A) The tailor is altering the suit jacket. (B) The tailor is requiring a new measurement. (C) The tailor is satisfying a customer's complaint. (D) The tailor is developing a new design.", image:"img/q2.jpg" },
+      { id:3, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The team is developing a new software application.","The team is lacking proper equipment.","The team is considering a job offer.","The team is satisfying the client's requirements."], answer:"A", explanation:"Hình ảnh nhóm lập trình viên đang phát triển (develop) phần mềm.", audio_script:"(A) The team is developing a new software application. (B) The team is lacking proper equipment. (C) The team is considering a job offer. (D) The team is satisfying the client's requirements.", image:"img/q3.jpg" },
+      { id:4, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The customer appears satisfied with the service.","The customer is altering the menu.","The customer lacks a reservation.","The customer is requiring a refund."], answer:"A", explanation:"Hình ảnh khách hàng có vẻ hài lòng (satisfied) với dịch vụ.", audio_script:"(A) The customer appears satisfied with the service. (B) The customer is altering the menu. (C) The customer lacks a reservation. (D) The customer is requiring a refund.", image:"img/q4.jpg" },
+      { id:5, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The sign requires visitors to wear safety helmets.","The sign values customer feedback.","The sign considers all options.","The sign satisfies the building code."], answer:"A", explanation:"Hình ảnh biển báo yêu cầu (require) đội mũ bảo hộ.", audio_script:"(A) The sign requires visitors to wear safety helmets. (B) The sign values customer feedback. (C) The sign considers all options. (D) The sign satisfies the building code.", image:"img/q5.jpg" },
+      { id:6, text:"Look at the picture and choose the statement that best describes what you see.", choices:["The jeweler is examining a valuable necklace.","The jeweler is lacking customers.","The jeweler is altering the store layout.","The jeweler is developing new skills."], answer:"A", explanation:"Hình ảnh thợ kim hoàn đang xem xét chiếc vòng cổ có giá trị (valuable).", audio_script:"(A) The jeweler is examining a valuable necklace. (B) The jeweler is lacking customers. (C) The jeweler is altering the store layout. (D) The jeweler is developing new skills.", image:"img/q6.jpg" }
+    ]},
+    { number: 2, name: "Part 2: Question-Response", questions: [
+      { id:7, text:"What does the company require for this position?", choices:["At least three years of experience.","The meeting is at three o'clock.","Yes, I required it yesterday."], answer:"A", explanation:"Hỏi 'require what' → trả lời nội dung yêu cầu.", audio_script:"What does the company require for this position? (A) At least three years of experience. (B) The meeting is at three o'clock. (C) Yes, I required it yesterday." },
+      { id:8, text:"Are you satisfied with the new office layout?", choices:["Yes, it's much better than before.","The office is on the third floor.","I'll satisfy the report by Friday."], answer:"A", explanation:"Yes/No question về 'satisfied'. Đáp án A trả lời đúng.", audio_script:"Are you satisfied with the new office layout? (A) Yes, it's much better than before. (B) The office is on the third floor. (C) I'll satisfy the report by Friday." },
+      { id:9, text:"Who is considered the best candidate?", choices:["Ms. Park has the most experience.","I'll consider it tomorrow.","The role was posted last week."], answer:"A", explanation:"Hỏi 'who is considered' → trả lời người cụ thể.", audio_script:"Who is considered the best candidate for the manager role? (A) Ms. Park has the most experience. (B) I'll consider it tomorrow. (C) The role was posted last week." },
+      { id:10, text:"Why does the project lack funding?", choices:["Because the budget was cut this quarter.","The project will start next month.","I lack the time to explain."], answer:"A", explanation:"Hỏi 'why lack' → trả lời lý do.", audio_script:"Why does the project lack funding? (A) Because the budget was cut this quarter. (B) The project will start next month. (C) I lack the time to explain." },
+      { id:11, text:"Has the new policy altered your daily routine?", choices:["Only slightly — I now start thirty minutes earlier.","The alternative plan is ready.","I altered the document yesterday."], answer:"A", explanation:"'altered routine' = thay đổi một phần. 'Only slightly' khớp nghĩa alter.", audio_script:"Has the new policy altered your daily routine? (A) Only slightly — I now start thirty minutes earlier. (B) The alternative plan is ready. (C) I altered the document yesterday." },
+      { id:12, text:"What do you value most about working here?", choices:["The supportive team environment.","The value of the stock went up.","It's quite valuable, actually."], answer:"A", explanation:"Hỏi 'value what' → trả lời nội dung cụ thể.", audio_script:"What do you value most about working here? (A) The supportive team environment. (B) The value of the stock went up. (C) It's quite valuable, actually." }
+    ]},
+    { number: 5, name: "Part 5: Incomplete Sentences", questions: [
+      { id:13, text:"Couples who _______ communication skills are often unhappy with their relationships.", choices:["lack","lacking","lacked","lacks"], answer:"A", explanation:"Chủ ngữ 'Couples' số nhiều → động từ nguyên mẫu. 'lack' = thiếu." },
+      { id:14, text:"Online shopping has substantially _______ the way Vietnamese consumers purchase goods.", choices:["alter","altered","altering","alteration"], answer:"B", explanation:"Present perfect: has + V3. 'altered' = đã thay đổi." },
+      { id:15, text:"Arnold Schwarzenegger is _______ one of the most influential bodybuilders in history.", choices:["consider","considered","considerable","considerate"], answer:"B", explanation:"Passive voice: is + V3. 'is considered' = được xem là." },
+      { id:16, text:"Residents of overcrowded apartments may _______ mental health issues over time.", choices:["develop","developing","development","developed"], answer:"A", explanation:"Sau modal 'may' → V nguyên mẫu. 'develop' = hình thành dần." },
+      { id:17, text:"This position _______ at least five years of relevant experience.", choices:["requires","requests","demands","desires"], answer:"A", explanation:"'requires' = cần bắt buộc. Chủ ngữ số ít → requires." },
+      { id:18, text:"As a service provider, we put a lot of effort into _______ our customers.", choices:["satisfy","satisfying","satisfaction","satisfactory"], answer:"B", explanation:"Sau giới từ 'into' → V-ing. 'satisfying' = làm hài lòng." },
+      { id:19, text:"Things that you _______ are not always valuable to others.", choices:["value","valuable","invaluable","valuation"], answer:"A", explanation:"Cần động từ sau 'you'. 'value' (v) = trân trọng." },
+      { id:20, text:"The _______ of parental attention is the main cause of children's misbehavior.", choices:["lack","lacking","lacked","lacks"], answer:"A", explanation:"'The lack of' = sự thiếu. Danh từ." },
+      { id:21, text:"E-books have become a popular _______ to traditional printed books.", choices:["alter","alteration","alternative","alternatively"], answer:"C", explanation:"'alternative to' = sự thay thế cho. Danh từ." },
+      { id:22, text:"A _______ person always thinks about how their actions affect others.", choices:["consider","considerate","considerable","consideration"], answer:"B", explanation:"Tính từ trước danh từ. 'considerate' = biết nghĩ cho người khác." },
+      { id:23, text:"The gaming industry has seen remarkable _______ in the past decade.", choices:["develop","developed","developing","development"], answer:"D", explanation:"Danh từ sau 'remarkable'. 'development' = sự phát triển." },
+      { id:24, text:"All applicants must meet the minimum _______ before being considered.", choices:["require","required","requirements","requiring"], answer:"C", explanation:"Danh từ số nhiều. 'requirements' = các yêu cầu." },
+      { id:25, text:"The mentorship she received proved to be _______.", choices:["value","valuable","invaluable","valued"], answer:"C", explanation:"'invaluable' = vô giá. Sau 'to be' cần tính từ." },
+      { id:26, text:"Many young professionals are _______ to commit to long-term relationships.", choices:["reluctant","reluctance","reluctantly","relucting"], answer:"A", explanation:"'be reluctant to' = ngần ngại. Tính từ sau 'are'." },
+      { id:27, text:"The new regulations have _______ modified the company's hiring procedures.", choices:["substance","substantial","substantially","substantiate"], answer:"C", explanation:"Trạng từ bổ nghĩa cho 'modified'. 'substantially' = đáng kể." },
+      { id:28, text:"If you are _______ with the quality of our service, please contact support.", choices:["dissatisfied","unsatisfying","dissatisfaction","satisfactory"], answer:"A", explanation:"'be dissatisfied with' = không hài lòng với. Tính từ." },
+      { id:29, text:"She gradually _______ a preference for classical music.", choices:["developed","altered","required","valued"], answer:"A", explanation:"'develop a preference' = hình thành dần sự ưa thích." },
+      { id:30, text:"The teacher _______ students to turn on their microphones, but it was not mandatory.", choices:["required","requested","demanded","needed"], answer:"B", explanation:"'requested' = yêu cầu lịch sự (không bắt buộc). 'not mandatory' = request." }
+    ]}
+  ]
+};
+
+class ToeicExam {
+  constructor(data) {
+    this.data = data;
+    this.allQuestions = [];
+    this.data.parts.forEach(p => p.questions.forEach(q => { q.partNum = p.number; this.allQuestions.push(q); }));
+    this.currentIdx = 0;
+    this.answers = {};
+    this.submitted = false;
+    this.startTime = Date.now();
+    this.synth = window.speechSynthesis;
+    this.voice = null;
+    this.timerInterval = null;
+
+    this.init();
+  }
+
+  init() {
+    this.loadVoice();
+    this.renderPartNav();
+    this.renderAnswerSheet();
+    this.renderQuestion();
+    this.bindEvents();
+    this.startTimer();
+  }
+
+  loadVoice() {
+    const set = () => {
+      const voices = this.synth.getVoices();
+      this.voice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    };
+    set();
+    this.synth.onvoiceschanged = set;
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+      const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+      const s = String(elapsed % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+    }, 1000);
+  }
+
+  renderPartNav() {
+    const nav = document.getElementById('partNav');
+    nav.innerHTML = this.data.parts.map((p, i) =>
+      `<button class="part-btn${i === 0 ? ' active' : ''}" data-part="${i}">${p.name}</button>`
+    ).join('');
+  }
+
+  renderAnswerSheet() {
+    const sheet = document.getElementById('answerSheet');
+    sheet.innerHTML = this.allQuestions.map((q, i) =>
+      `<div class="sheet-cell${i === 0 ? ' current' : ''}" data-idx="${i}">${q.id}</div>`
+    ).join('');
+  }
+
+  renderQuestion() {
+    const q = this.allQuestions[this.currentIdx];
+    const area = document.getElementById('questionArea');
+    const letters = ['A','B','C','D'];
+    const userAns = this.answers[q.id];
+
+    let html = `<div class="question-card">`;
+    html += `<div class="q-number">Question ${q.id} — Part ${q.partNum}</div>`;
+
+    if (q.image) {
+      html += `<img class="q-image" src="${q.image}" alt="Question ${q.id} photograph">`;
+    }
+
+    if (q.audio_script) {
+      html += `<button class="audio-btn" onclick="exam.playAudio(${this.currentIdx})">&#9654; Nghe audio</button>`;
+      html += `<span class="speed-label">TTS 0.85x</span>`;
+    }
+
+    html += `<div class="q-text">${q.text}</div>`;
+    html += `<ul class="choices">`;
+    q.choices.forEach((c, i) => {
+      let cls = '';
+      if (this.submitted) {
+        if (letters[i] === q.answer) cls = 'correct';
+        else if (letters[i] === userAns) cls = 'wrong';
+      } else if (letters[i] === userAns) {
+        cls = 'selected';
+      }
+      html += `<li class="${cls}" data-choice="${letters[i]}">${letters[i]}. ${c}</li>`;
+    });
+    html += `</ul>`;
+
+    if (this.submitted) {
+      html += `<div class="explanation show">${q.explanation}</div>`;
+    }
+    html += `</div>`;
+
+    area.innerHTML = html;
+
+    if (!this.submitted) {
+      area.querySelectorAll('.choices li').forEach(li => {
+        li.addEventListener('click', () => this.selectAnswer(q.id, li.dataset.choice));
+      });
+    }
+
+    document.getElementById('btnPrev').disabled = this.currentIdx === 0;
+    document.getElementById('btnNext').style.display = this.currentIdx < this.allQuestions.length - 1 ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = (!this.submitted && this.currentIdx === this.allQuestions.length - 1) ? '' : 'none';
+
+    this.updateSheetHighlight();
+  }
+
+  selectAnswer(qId, choice) {
+    if (this.submitted) return;
+    this.answers[qId] = choice;
+    this.renderQuestion();
+    this.updateSheetCell(qId);
+  }
+
+  updateSheetHighlight() {
+    document.querySelectorAll('.sheet-cell').forEach((cell, i) => {
+      cell.classList.toggle('current', i === this.currentIdx);
+    });
+  }
+
+  updateSheetCell(qId) {
+    const idx = this.allQuestions.findIndex(q => q.id === qId);
+    const cell = document.querySelectorAll('.sheet-cell')[idx];
+    if (cell) cell.classList.add('answered');
+  }
+
+  playAudio(idx) {
+    const q = this.allQuestions[idx];
+    if (!q.audio_script) return;
+    this.synth.cancel();
+    const utt = new SpeechSynthesisUtterance(q.audio_script);
+    utt.voice = this.voice;
+    utt.rate = 0.85;
+    this.synth.speak(utt);
+  }
+
+  goTo(idx) {
+    this.currentIdx = Math.max(0, Math.min(idx, this.allQuestions.length - 1));
+    this.renderQuestion();
+  }
+
+  submit() {
+    if (this.submitted) return;
+    this.submitted = true;
+    clearInterval(this.timerInterval);
+
+    let correct = 0;
+    this.allQuestions.forEach(q => { if (this.answers[q.id] === q.answer) correct++; });
+    const total = this.allQuestions.length;
+    const pct = Math.round((correct / total) * 100);
+
+    const area = document.getElementById('questionArea');
+    area.innerHTML = `<div class="results-panel">
+      <h2>Kết quả</h2>
+      <div class="score-big">${pct}%</div>
+      <div class="breakdown">${correct} / ${total} câu đúng</div>
+      <div class="breakdown" style="margin-top:1rem;">
+        ${this.data.parts.map(p => {
+          const pqs = p.questions;
+          const pc = pqs.filter(q => this.answers[q.id] === q.answer).length;
+          return `${p.name}: ${pc}/${pqs.length}`;
+        }).join('<br>')}
+      </div>
+      <button class="btn btn-play" style="margin-top:1.5rem;" onclick="exam.reviewAll()">Xem lại đáp án</button>
+    </div>`;
+  }
+
+  reviewAll() {
+    this.currentIdx = 0;
+    this.renderQuestion();
+  }
+
+  bindEvents() {
+    document.getElementById('btnNext').addEventListener('click', () => this.goTo(this.currentIdx + 1));
+    document.getElementById('btnPrev').addEventListener('click', () => this.goTo(this.currentIdx - 1));
+    document.getElementById('btnSubmit').addEventListener('click', () => this.submit());
+
+    document.getElementById('partNav').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('part-btn')) return;
+      const partIdx = parseInt(e.target.dataset.part);
+      let offset = 0;
+      for (let i = 0; i < partIdx; i++) offset += this.data.parts[i].questions.length;
+      this.goTo(offset);
+      document.querySelectorAll('.part-btn').forEach((b, i) => b.classList.toggle('active', i === partIdx));
+    });
+
+    document.getElementById('answerSheet').addEventListener('click', (e) => {
+      const cell = e.target.closest('.sheet-cell');
+      if (cell) this.goTo(parseInt(cell.dataset.idx));
+    });
+  }
+}
+
+const exam = new ToeicExam(EXAM_DATA);
+  </script>
+</body>
+</html>

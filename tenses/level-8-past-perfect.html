@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 8 — Past Perfect</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .timeline { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; padding: 1rem; background: var(--card); border-radius: 8px; font-size: 0.85rem; flex-wrap: wrap; }
+    .timeline .event { padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; }
+    .timeline .event.first { background: rgba(233,69,96,0.2); color: var(--accent-light); }
+    .timeline .event.second { background: rgba(0,210,211,0.2); color: var(--success); }
+    .timeline .arrow { color: var(--text-dim); }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 200px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 8 — Past Perfect</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Past Perfect là gì?</h3>
+      <p>Dùng để nói về hành động <strong>đã xảy ra TRƯỚC một hành động khác trong quá khứ</strong>:</p>
+
+      <div class="timeline">
+        <span class="event first">Had + V3 (xảy ra trước)</span>
+        <span class="arrow">→ rồi →</span>
+        <span class="event second">Past Simple (xảy ra sau)</span>
+        <span class="arrow">→</span>
+        <span style="color:var(--text-dim)">NOW</span>
+      </div>
+
+      <ul style="margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.9rem;">
+        <li><strong>Hành động xảy ra trước:</strong> When I arrived, the movie <strong>had already started</strong>.</li>
+        <li><strong>Kinh nghiệm trước 1 mốc quá khứ:</strong> She <strong>had never seen</strong> snow before she moved to Canada.</li>
+        <li><strong>Nguyên nhân trong quá khứ:</strong> He failed the exam because he <strong>had not studied</strong>.</li>
+      </ul>
+
+      <div class="formula">
+        (+) S + had + V3 &nbsp;&nbsp; → &nbsp; She <strong>had left</strong> before I arrived.<br>
+        (-) S + had not + V3 &nbsp;&nbsp; → &nbsp; She <strong>had not left</strong> yet.<br>
+        (?) Had + S + V3? &nbsp;&nbsp; → &nbsp; <strong>Had</strong> she <strong>left</strong> before you arrived?
+      </div>
+
+      <div class="note">
+        <strong>Khi nào PHẢI dùng Past Perfect?</strong><br>
+        • Khi muốn nhấn mạnh thứ tự: hành động nào xảy ra TRƯỚC<br>
+        • Thường đi với: before, after, when, by the time, already, just, never... before<br><br>
+        <strong>Khi nào KHÔNG cần?</strong><br>
+        • Nếu thứ tự đã rõ ràng (dùng "then", "and then"), Past Simple là đủ:<br>
+        &nbsp;&nbsp; I woke up, brushed my teeth, and left. (thứ tự rõ → không cần Past Perfect)
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Dấu hiệu nhận biết</h3>
+      <div class="formula">
+        before, after, when, by the time, already, just, never... before, until, as soon as
+      </div>
+      <p style="font-size:0.9rem; margin-top:0.8rem;">Ví dụ:</p>
+      <ul style="margin: 0.3rem 0 0 1.5rem; font-size: 0.9rem;">
+        <li><strong>By the time</strong> I got there, the train <strong>had left</strong>.</li>
+        <li>She <strong>had never</strong> traveled abroad <strong>before</strong> she turned 30.</li>
+        <li><strong>After</strong> he <strong>had finished</strong> dinner, he watched TV.</li>
+      </ul>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chia động từ Past Perfect (12 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Past Perfect hay Past Simple? (12 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Kết hợp 2 thì — Chia đúng cả 2 động từ (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4 -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Sửa lỗi sai (8 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <!-- EXERCISE 5 -->
+    <div class="exercise-section" id="ex5">
+      <h3>Bài 5: Viết câu — sắp xếp sự kiện (5 câu)</h3>
+      <div id="ex5Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex5')">Kiểm tra Bài 5</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-9-mixed-tenses.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 9 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-7-present-perfect.html" class="btn btn-secondary">&larr; Level 7</a>
+      <a href="level-9-mixed-tenses.html" class="btn btn-play">Level 9: Mixed Tenses &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "By the time I arrived, the movie ___ (already / start).", answer: "had already started" },
+    { q: "She ___ (never / fly) before her trip to Japan.", answer: "had never flown" },
+    { q: "He ___ (finish) his work before the deadline.", answer: "had finished" },
+    { q: "They ___ (leave) by the time we got to the party.", answer: "had left" },
+    { q: "I ___ (not eat) anything all day, so I was very hungry.", answer: "had not eaten", alt: ["hadn't eaten"] },
+    { q: "She realized she ___ (forget) her passport at home.", answer: "had forgotten" },
+    { q: "The ground was wet because it ___ (rain) all night.", answer: "had rained" },
+    { q: "He ___ (never / see) such a beautiful sunset before.", answer: "had never seen" },
+    { q: "By 2020, she ___ (live) in three different countries.", answer: "had lived" },
+    { q: "I ___ (already / read) the book before watching the movie.", answer: "had already read" },
+    { q: "They ___ (not meet) before the conference.", answer: "had not met", alt: ["hadn't met"] },
+    { q: "The teacher was angry because the students ___ (not do) their homework.", answer: "had not done", alt: ["hadn't done"] }
+  ],
+  ex2: [
+    { q: "When I arrived at the cinema, the film ___ (start).", options: ["had started", "started"], answer: 0, explain: "Film started TRƯỚC khi tôi đến → Past Perfect" },
+    { q: "I ___ (see) that movie last week.", options: ["had seen", "saw"], answer: 1, explain: "\"last week\" = thời gian cụ thể, không có hành động thứ 2 → Past Simple" },
+    { q: "She was tired because she ___ (work) all day.", options: ["had worked", "worked"], answer: 0, explain: "Làm việc cả ngày (trước) → mệt (sau) → Past Perfect cho hành động trước" },
+    { q: "After he ___ (eat) dinner, he watched TV.", options: ["had eaten", "ate"], answer: 0, explain: "After + hành động xảy ra trước → Past Perfect" },
+    { q: "They ___ (go) to Paris in 2019.", options: ["had gone", "went"], answer: 1, explain: "Chỉ nói sự kiện trong quá khứ, không có hành động thứ 2 → Past Simple" },
+    { q: "I ___ (never / try) sushi before I went to Japan.", options: ["had never tried", "never tried"], answer: 0, explain: "\"before I went\" = trước 1 mốc quá khứ → Past Perfect" },
+    { q: "She ___ (lose) her job, so she was looking for a new one.", options: ["had lost", "lost"], answer: 0, explain: "Mất việc (trước) → đang tìm việc mới (sau) → Past Perfect" },
+    { q: "We ___ (arrive) at the airport and checked in.", options: ["had arrived", "arrived"], answer: 1, explain: "Chuỗi sự kiện nối tiếp (arrived → checked in) → Past Simple cho cả 2" },
+    { q: "By the time she called, I ___ (already / leave).", options: ["had already left", "already left"], answer: 0, explain: "\"By the time\" = trước khi → Past Perfect" },
+    { q: "He told me he ___ (be) to London three times.", options: ["had been", "was"], answer: 0, explain: "Reported speech: kinh nghiệm trước thời điểm nói → Past Perfect" },
+    { q: "I ___ (meet) her at the party and we talked for hours.", options: ["had met", "met"], answer: 1, explain: "Chuỗi sự kiện: gặp → nói chuyện → Past Simple" },
+    { q: "The streets were flooded because it ___ (rain) heavily.", options: ["had rained", "rained"], answer: 0, explain: "Mưa (trước) → đường ngập (kết quả sau) → Past Perfect" }
+  ],
+  ex3: [
+    { q: "When I ___ (get) home, my wife ___ (already / cook) dinner.", answer: "got, had already cooked" },
+    { q: "She ___ (be) very nervous because she ___ (never / speak) in public before.", answer: "was, had never spoken" },
+    { q: "After they ___ (finish) the meeting, they ___ (go) to lunch.", answer: "had finished, went" },
+    { q: "He ___ (not recognize) her because she ___ (change) so much.", answer: "did not recognize, had changed", alt: ["didn't recognize, had changed"] },
+    { q: "By the time the ambulance ___ (arrive), the patient ___ (already / die).", answer: "arrived, had already died" },
+    { q: "I ___ (feel) sick because I ___ (eat) too much.", answer: "felt, had eaten" },
+    { q: "She ___ (pass) the exam because she ___ (study) very hard.", answer: "passed, had studied" },
+    { q: "When we ___ (reach) the station, the train ___ (already / leave).", answer: "reached, had already left" },
+    { q: "He ___ (tell) me that he ___ (visit) Paris before.", answer: "told, had visited" },
+    { q: "I ___ (can / not find) my keys because I ___ (leave) them at work.", answer: "could not find, had left", alt: ["couldn't find, had left"] }
+  ],
+  ex4: [
+    { q: "By the time I arrived, the movie already started.", answer: "By the time I arrived, the movie had already started.", explain: "By the time + Past Perfect (had started)" },
+    { q: "She had went to the store before I called.", answer: "She had gone to the store before I called.", explain: "go → gone (V3), không phải went (V2)" },
+    { q: "After he had ate dinner, he watched TV.", answer: "After he had eaten dinner, he watched TV.", explain: "eat → eaten (V3), không phải ate (V2)" },
+    { q: "I didn't know the answer because I hadn't study.", answer: "I didn't know the answer because I hadn't studied.", explain: "had + V3 (studied), không phải V1" },
+    { q: "When she arrived, I already left.", answer: "When she arrived, I had already left.", explain: "Rời đi TRƯỚC khi cô ấy đến → had left" },
+    { q: "He told me he has been to London.", answer: "He told me he had been to London.", explain: "Reported speech trong quá khứ → had been (không phải has been)" },
+    { q: "They had finished the project yesterday.", answer: "They finished the project yesterday.", explain: "\"yesterday\" = thời gian cụ thể, không có hành động thứ 2 → Past Simple" },
+    { q: "Before I had met her, I was lonely.", answer: "Before I met her, I was lonely.", explain: "\"Before\" đã chỉ thứ tự → Past Simple đủ rõ (hoặc: Before I had met her... cũng OK nhưng thừa)" }
+  ],
+  ex5: [
+    { q: "Sự kiện 1: finish homework. Sự kiện 2: go out. (After...)", answer: "After I had finished my homework, I went out.", alt: ["After she had finished her homework, she went out."] },
+    { q: "Sự kiện 1: the rain stop. Sự kiện 2: we leave the house. (When...)", answer: "When the rain had stopped, we left the house." },
+    { q: "Sự kiện 1: he save enough money. Sự kiện 2: he buy a car. (After...)", answer: "After he had saved enough money, he bought a car." },
+    { q: "Sự kiện 1: she study English for 5 years. Sự kiện 2: she move to the US. (Before...)", answer: "She had studied English for 5 years before she moved to the US.", alt: ["Before she moved to the US, she had studied English for 5 years."] },
+    { q: "Sự kiện 1: they eat all the food. Sự kiện 2: I arrive. (By the time...)", answer: "By the time I arrived, they had eaten all the food." }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0 };
+let totals = { ex1: 12, ex2: 12, ex3: 10, ex4: 8, ex5: 5 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false };
+
+function renderFillSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    if (item.q.includes('___')) {
+      const parts = item.q.split('___');
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="${section}-input-${i}" placeholder="...">${parts[1] || ''}</div><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    } else {
+      const isError = section === 'ex4';
+      html += `<div class="exercise-item"><div class="q"><strong>${i+1}.</strong> ${isError ? `<span style="color:var(--accent);">${item.q}</span>` : item.q}</div><input type="text" id="${section}-input-${i}" placeholder="${isError ? 'Viết lại câu đúng...' : 'Viết câu hoàn chỉnh...'}" style="width:100%; margin-top:0.5rem;"><div class="fb" id="${section}-fb-${i}"></div></div>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+function renderMCSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="${section}" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked[section]) return;
+    const q = parseInt(btn.dataset.q);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+  });
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkFill(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      const explain = item.explain ? ` — ${item.explain}` : '';
+      fb.textContent = `✗ Đáp án: ${item.answer}${explain}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkMC(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const selected = document.querySelector(`#${section}Questions .mc-btn[data-q="${i}"].selected`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const btns = document.querySelectorAll(`#${section}Questions .mc-btn[data-q="${i}"]`);
+    btns.forEach(b => b.classList.add('disabled'));
+    if (selected && parseInt(selected.dataset.opt) === item.answer) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + item.explain;
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      if (selected) selected.classList.add('wrong');
+      btns[item.answer].classList.add('correct');
+      fb.textContent = '✗ ' + item.explain;
+      fb.className = 'fb wrong-fb';
+    }
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderFillSection('ex1');
+renderMCSection('ex2');
+renderFillSection('ex3');
+renderFillSection('ex4');
+renderFillSection('ex5');
+  </script>
+</body>
+</html>

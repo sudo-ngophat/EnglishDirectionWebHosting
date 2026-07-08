@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Dashboard — English Teacher Tung</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 700px) { .dashboard { grid-template-columns: 1fr; } }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    .card h3 { font-size: 1rem; color: var(--accent-light); margin-bottom: 1rem; }
+    .card.full { grid-column: 1 / -1; }
+    .schedule-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+    .schedule-row:last-child { border-bottom: none; }
+    .schedule-row label { flex: 1; font-size: 0.85rem; }
+    .schedule-row input[type="time"] { background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-size: 0.85rem; }
+    .schedule-row .toggle { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: background 0.2s; }
+    .schedule-row .toggle.on { background: var(--success); }
+    .schedule-row .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.2s; }
+    .schedule-row .toggle.on::after { transform: translateX(20px); }
+    .today-tasks { list-style: none; padding: 0; }
+    .today-tasks li { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .today-tasks li:last-child { border-bottom: none; }
+    .today-tasks input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--success); }
+    .today-tasks .done { text-decoration: line-through; opacity: 0.5; }
+    .today-tasks .task-link { color: var(--accent-light); text-decoration: none; margin-left: auto; font-size: 0.75rem; }
+    .today-tasks .task-link:hover { text-decoration: underline; }
+    .streak-display { text-align: center; padding: 1rem; }
+    .streak-number { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .streak-label { font-size: 0.85rem; color: var(--text-dim); }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.4rem; margin-top: 1rem; }
+    .week-cell { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; background: var(--input-bg); border: 1px solid var(--border); }
+    .week-cell.today { border-color: var(--accent); }
+    .week-cell.completed { background: rgba(0,210,211,0.2); border-color: var(--success); }
+    .week-cell.missed { background: rgba(233,69,96,0.1); border-color: var(--accent); }
+    .notif-status { font-size: 0.75rem; padding: 0.3rem 0.6rem; border-radius: 4px; }
+    .notif-status.granted { background: rgba(0,210,211,0.1); color: var(--success); }
+    .notif-status.denied { background: rgba(233,69,96,0.1); color: var(--accent); }
+    .btn-notif { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    .progress-week { margin-top: 0.5rem; }
+    .progress-week span { font-size: 0.8rem; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Study Dashboard</h1>
+    <h2>English Teacher Tung — Lịch học & Nhắc nhở</h2>
+
+    <div class="dashboard">
+      <!-- Schedule Card -->
+      <div class="card">
+        <h3>Lịch nhắc nhở</h3>
+        <div id="notifArea" style="margin-bottom:1rem;"></div>
+        <div id="scheduleList"></div>
+        <button class="btn btn-secondary" style="margin-top:1rem; width:100%;" id="btnSave">Lưu lịch</button>
+      </div>
+
+      <!-- Streak Card -->
+      <div class="card">
+        <h3>Streak</h3>
+        <div class="streak-display">
+          <div class="streak-number" id="streakNum">0</div>
+          <div class="streak-label">ngày liên tiếp</div>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div class="progress-week"><span id="weekProgress"></span></div>
+      </div>
+
+      <!-- Today's Tasks -->
+      <div class="card full">
+        <h3>Nhiệm vụ hôm nay — <span id="todayDate"></span></h3>
+        <ul class="today-tasks" id="todayTasks"></ul>
+        <button class="btn btn-play" style="margin-top:1rem;" id="btnComplete">Hoàn thành ngày hôm nay</button>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card full">
+        <h3>Truy cập nhanh</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:0.8rem;">
+          <a href="lessons/buoi-1.html" class="btn btn-secondary">Dictation Buổi 1</a>
+          <a href="lessons/buoi-1-reading.html" class="btn btn-secondary">Reading Buổi 1</a>
+          <a href="lessons/buoi-2.html" class="btn btn-secondary">Dictation Buổi 2</a>
+          <a href="toeic/buoi-1.html" class="btn btn-secondary">TOEIC Buổi 1</a>
+          <a href="toeic/buoi-2.html" class="btn btn-secondary">TOEIC Buổi 2</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const STORAGE_KEY = 'study_dashboard';
+const SCHEDULES_DEFAULT = [
+  { id: 'morning', label: 'Sáng — Ôn câu sai + Dictation', time: '07:30', enabled: true, url: 'lessons/buoi-1.html' },
+  { id: 'noon', label: 'Trưa — Reading Fill-in-the-Blank', time: '12:00', enabled: true, url: 'lessons/buoi-1-reading.html' },
+  { id: 'evening', label: 'Tối — TOEIC + Buổi mới', time: '20:00', enabled: true, url: 'toeic/buoi-1.html' },
+];
+
+function getWeekNumber() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  return Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+}
+
+function getTodayKey() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+class Dashboard {
+  constructor() {
+    this.data = loadData();
+    if (!this.data.schedules) this.data.schedules = SCHEDULES_DEFAULT;
+    if (!this.data.completedDays) this.data.completedDays = [];
+    if (!this.data.tasks) this.data.tasks = {};
+    this.timers = [];
+    this.init();
+  }
+
+  init() {
+    this.renderNotifStatus();
+    this.renderSchedules();
+    this.renderTodayTasks();
+    this.renderStreak();
+    this.renderWeekGrid();
+    this.startTimers();
+    this.bindEvents();
+    document.getElementById('todayDate').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'numeric' });
+  }
+
+  renderNotifStatus() {
+    const area = document.getElementById('notifArea');
+    if (!('Notification' in window)) {
+      area.innerHTML = '<span class="notif-status denied">Trình duyệt không hỗ trợ thông báo</span>';
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      area.innerHTML = '<span class="notif-status granted">Thông báo: BẬT</span>';
+    } else if (Notification.permission === 'denied') {
+      area.innerHTML = '<span class="notif-status denied">Thông báo: TẮT (vào Settings trình duyệt để bật)</span>';
+    } else {
+      area.innerHTML = '<button class="btn btn-play btn-notif" id="btnNotif">Bật thông báo nhắc nhở</button>';
+      document.getElementById('btnNotif').addEventListener('click', async () => {
+        const perm = await Notification.requestPermission();
+        this.renderNotifStatus();
+      });
+    }
+  }
+
+  renderSchedules() {
+    const list = document.getElementById('scheduleList');
+    list.innerHTML = this.data.schedules.map(s => `
+      <div class="schedule-row">
+        <label>${s.label}</label>
+        <input type="time" value="${s.time}" data-id="${s.id}">
+        <div class="toggle ${s.enabled ? 'on' : ''}" data-id="${s.id}"></div>
+      </div>
+    `).join('');
+  }
+
+  renderTodayTasks() {
+    const today = getTodayKey();
+    const tasks = this.getTodayTasks();
+    const completed = this.data.tasks[today] || [];
+
+    const list = document.getElementById('todayTasks');
+    list.innerHTML = tasks.map((t, i) => {
+      const done = completed.includes(i);
+      return `<li>
+        <input type="checkbox" data-idx="${i}" ${done ? 'checked' : ''}>
+        <span class="${done ? 'done' : ''}">${t.label}</span>
+        ${t.url ? `<a href="${t.url}" class="task-link">Mở &rarr;</a>` : ''}
+      </li>`;
+    }).join('');
+  }
+
+  getTodayTasks() {
+    const dayOfWeek = new Date().getDay();
+    const base = [
+      { label: 'Dictation từ vựng (tab Từ vựng, 0.7x)', url: 'lessons/buoi-1.html' },
+      { label: 'Ôn bảng câu sai', url: 'lessons/buoi-1.html' },
+    ];
+
+    if (dayOfWeek % 2 === 0) {
+      base.push({ label: 'Reading Fill-in-the-Blank', url: 'lessons/buoi-1-reading.html' });
+      base.push({ label: 'TOEIC Part 5 (30 câu)', url: 'toeic/buoi-1.html' });
+    } else {
+      base.push({ label: 'Dictation câu ví dụ (tab Câu ví dụ)', url: 'lessons/buoi-1.html' });
+      base.push({ label: 'Dictation đoạn văn (tab Đoạn văn)', url: 'lessons/buoi-1.html' });
+    }
+
+    if (dayOfWeek >= 3) {
+      base.push({ label: 'Buổi 2 — Từ vựng mới', url: 'lessons/buoi-2.html' });
+    }
+
+    return base;
+  }
+
+  renderStreak() {
+    const days = this.data.completedDays.sort();
+    let streak = 0;
+    const today = getTodayKey();
+    let checkDate = new Date();
+
+    for (let i = 0; i < 365; i++) {
+      const key = checkDate.toISOString().split('T')[0];
+      if (days.includes(key)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else if (key === today) {
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    document.getElementById('streakNum').textContent = streak;
+  }
+
+  renderWeekGrid() {
+    const grid = document.getElementById('weekGrid');
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+    const days = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+    let html = '';
+    let completed = 0;
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(startOfWeek);
+      d.setDate(startOfWeek.getDate() + i);
+      const key = d.toISOString().split('T')[0];
+      const isToday = key === getTodayKey();
+      const isDone = this.data.completedDays.includes(key);
+      const isPast = d < today && !isToday;
+      const isMissed = isPast && !isDone;
+
+      let cls = '';
+      if (isToday) cls = 'today';
+      else if (isDone) { cls = 'completed'; completed++; }
+      else if (isMissed) cls = 'missed';
+
+      html += `<div class="week-cell ${cls}">${days[i]}</div>`;
+      if (isDone) completed++;
+    }
+
+    grid.innerHTML = html;
+    document.getElementById('weekProgress').textContent = `Tuần này: ${completed}/7 ngày`;
+  }
+
+  startTimers() {
+    this.timers.forEach(t => clearTimeout(t));
+    this.timers = [];
+
+    this.data.schedules.forEach(s => {
+      if (!s.enabled) return;
+      const [h, m] = s.time.split(':').map(Number);
+      const now = new Date();
+      const target = new Date();
+      target.setHours(h, m, 0, 0);
+
+      if (target <= now) return;
+
+      const ms = target - now;
+      const timer = setTimeout(() => this.notify(s), ms);
+      this.timers.push(timer);
+    });
+  }
+
+  notify(schedule) {
+    if (Notification.permission === 'granted') {
+      const n = new Notification('Study Reminder', {
+        body: schedule.label,
+        icon: '📚',
+        tag: schedule.id,
+        requireInteraction: true
+      });
+      n.onclick = () => {
+        window.focus();
+        if (schedule.url) window.open(schedule.url, '_blank');
+        n.close();
+      };
+    }
+
+    document.title = '🔔 ' + schedule.label;
+    setTimeout(() => { document.title = 'Study Dashboard'; }, 10000);
+  }
+
+  bindEvents() {
+    document.getElementById('btnSave').addEventListener('click', () => this.saveSchedules());
+    document.getElementById('btnComplete').addEventListener('click', () => this.completeToday());
+
+    document.getElementById('scheduleList').addEventListener('click', (e) => {
+      const toggle = e.target.closest('.toggle');
+      if (toggle) {
+        toggle.classList.toggle('on');
+      }
+    });
+
+    document.getElementById('todayTasks').addEventListener('change', (e) => {
+      if (e.target.type === 'checkbox') {
+        const idx = parseInt(e.target.dataset.idx);
+        const today = getTodayKey();
+        if (!this.data.tasks[today]) this.data.tasks[today] = [];
+        if (e.target.checked) {
+          if (!this.data.tasks[today].includes(idx)) this.data.tasks[today].push(idx);
+        } else {
+          this.data.tasks[today] = this.data.tasks[today].filter(i => i !== idx);
+        }
+        saveData(this.data);
+        this.renderTodayTasks();
+      }
+    });
+  }
+
+  saveSchedules() {
+    document.querySelectorAll('.schedule-row').forEach(row => {
+      const input = row.querySelector('input[type="time"]');
+      const toggle = row.querySelector('.toggle');
+      const id = input.dataset.id;
+      const schedule = this.data.schedules.find(s => s.id === id);
+      if (schedule) {
+        schedule.time = input.value;
+        schedule.enabled = toggle.classList.contains('on');
+      }
+    });
+    saveData(this.data);
+    this.startTimers();
+    alert('Đã lưu lịch nhắc nhở!');
+  }
+
+  completeToday() {
+    const today = getTodayKey();
+    if (!this.data.completedDays.includes(today)) {
+      this.data.completedDays.push(today);
+    }
+    saveData(this.data);
+    this.renderStreak();
+    this.renderWeekGrid();
+    alert('Tuyệt vời! Đã đánh dấu hoàn thành ngày hôm nay!');
+  }
+}
+
+const dashboard = new Dashboard();
+  </script>
+</body>
+</html>

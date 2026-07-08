@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 2 — Compound Sentences</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .fanboys-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    .fanboys-table th { background: var(--card); padding: 0.6rem; text-align: left; border: 1px solid var(--border); color: var(--success); }
+    .fanboys-table td { padding: 0.6rem; border: 1px solid var(--border); }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 100%; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; outline: none; margin-top: 0.5rem; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; display:none; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 2 — Compound Sentences</h1>
+    </div>
+
+    <div class="theory-box">
+      <h3>Câu ghép (Compound Sentence) là gì?</h3>
+      <p>Câu ghép = <strong>2 câu đơn (mệnh đề độc lập)</strong> nối với nhau bằng <strong>liên từ đẳng lập</strong> (coordinating conjunction) hoặc <strong>dấu chấm phẩy</strong>.</p>
+
+      <div class="formula">
+        <strong>Mệnh đề 1</strong> + <strong>, FANBOYS</strong> + <strong>Mệnh đề 2</strong><br><br>
+        I like coffee<strong>, but</strong> she prefers tea.<br>
+        He studied hard<strong>, so</strong> he passed the exam.
+      </div>
+
+      <div class="note">
+        <strong>FANBOYS</strong> = 7 liên từ đẳng lập:<br>
+        <strong>F</strong>or, <strong>A</strong>nd, <strong>N</strong>or, <strong>B</strong>ut, <strong>O</strong>r, <strong>Y</strong>et, <strong>S</strong>o
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>7 liên từ FANBOYS — Nghĩa và cách dùng</h3>
+      <table class="fanboys-table">
+        <thead><tr><th>Liên từ</th><th>Nghĩa</th><th>Ví dụ</th></tr></thead>
+        <tbody>
+          <tr><td><strong>For</strong></td><td>vì (= because, formal)</td><td>She stayed home, <strong>for</strong> she was sick.</td></tr>
+          <tr><td><strong>And</strong></td><td>và (thêm thông tin)</td><td>I like coffee, <strong>and</strong> she likes tea.</td></tr>
+          <tr><td><strong>Nor</strong></td><td>cũng không</td><td>He doesn't smoke, <strong>nor</strong> does he drink.</td></tr>
+          <tr><td><strong>But</strong></td><td>nhưng (tương phản)</td><td>I studied hard, <strong>but</strong> I failed.</td></tr>
+          <tr><td><strong>Or</strong></td><td>hoặc (lựa chọn)</td><td>You can stay, <strong>or</strong> you can leave.</td></tr>
+          <tr><td><strong>Yet</strong></td><td>nhưng mà (bất ngờ)</td><td>She is young, <strong>yet</strong> she is very wise.</td></tr>
+          <tr><td><strong>So</strong></td><td>nên (kết quả)</td><td>It was raining, <strong>so</strong> we stayed inside.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Quy tắc dấu phẩy:</strong><br>
+        • Luôn đặt dấu phẩy <strong>TRƯỚC</strong> FANBOYS khi nối 2 mệnh đề độc lập.<br>
+        • KHÔNG dùng dấu phẩy nếu chỉ nối 2 từ/cụm từ: "I like coffee and tea." (không phẩy)<br><br>
+        <strong>Cách khác để nối:</strong><br>
+        • Dấu chấm phẩy (;): I like coffee<strong>;</strong> she prefers tea.<br>
+        • Dấu chấm phẩy + trạng từ nối: I studied hard<strong>; however,</strong> I failed.
+      </div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Chọn liên từ FANBOYS đúng (12 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Nối 2 câu đơn thành câu ghép (10 câu)</h3>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">Dùng liên từ trong ngoặc để nối 2 câu.</p>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Đặt dấu phẩy đúng chỗ (10 câu)</h3>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">Viết lại câu với dấu phẩy đúng vị trí.</p>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4 -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Câu đơn hay câu ghép? (10 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkMC('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <!-- EXERCISE 5 -->
+    <div class="exercise-section" id="ex5">
+      <h3>Bài 5: Viết câu ghép từ gợi ý (6 câu)</h3>
+      <div id="ex5Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkFill('ex5')">Kiểm tra Bài 5</button>
+    </div>
+
+    <div class="score-summary" id="finalScore">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-3-complex-sentences.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 3 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="level-1-simple-sentences.html" class="btn btn-secondary">&larr; Level 1</a>
+      <a href="level-3-complex-sentences.html" class="btn btn-play">Level 3: Complex Sentences &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "I wanted to go out, ___ it was raining heavily.", options: ["and", "but", "so", "for"], answer: 1, explain: "Tương phản (muốn đi nhưng mưa) → but" },
+    { q: "She studied all night, ___ she passed the exam.", options: ["but", "or", "so", "yet"], answer: 2, explain: "Kết quả (học → đậu) → so" },
+    { q: "You can take the bus, ___ you can walk.", options: ["and", "but", "or", "so"], answer: 2, explain: "Lựa chọn → or" },
+    { q: "He is very rich, ___ he is not happy.", options: ["and", "but", "so", "for"], answer: 1, explain: "Tương phản (giàu nhưng không vui) → but (hoặc yet)" },
+    { q: "I like tea, ___ I also like coffee.", options: ["and", "but", "or", "so"], answer: 0, explain: "Thêm thông tin → and" },
+    { q: "She didn't eat breakfast, ___ she was very hungry.", options: ["and", "but", "so", "for"], answer: 2, explain: "Kết quả (không ăn → đói) → so" },
+    { q: "He doesn't like fish, ___ does he eat meat.", options: ["and", "but", "nor", "or"], answer: 2, explain: "Cũng không → nor" },
+    { q: "She is only 20, ___ she runs her own company.", options: ["and", "but", "yet", "so"], answer: 2, explain: "Bất ngờ (trẻ mà đã có công ty) → yet" },
+    { q: "We should leave now, ___ we will be late.", options: ["and", "but", "or", "so"], answer: 2, explain: "Nếu không thì (lựa chọn/hậu quả) → or" },
+    { q: "She stayed home, ___ she was feeling unwell.", options: ["and", "but", "so", "for"], answer: 3, explain: "Lý do (ở nhà vì bệnh) → for" },
+    { q: "He worked hard, ___ he got promoted.", options: ["but", "yet", "so", "or"], answer: 2, explain: "Kết quả → so" },
+    { q: "The movie was long, ___ it was very entertaining.", options: ["and", "but", "so", "for"], answer: 1, explain: "Tương phản (dài nhưng hay) → but" }
+  ],
+  ex2: [
+    { q: "I was tired. I went to bed early. (so)", answer: "I was tired, so I went to bed early." },
+    { q: "She likes dancing. She likes singing. (and)", answer: "She likes dancing, and she likes singing." },
+    { q: "He can cook. He can't bake. (but)", answer: "He can cook, but he can't bake.", alt: ["He can cook, but he cannot bake."] },
+    { q: "We can eat here. We can go to a restaurant. (or)", answer: "We can eat here, or we can go to a restaurant." },
+    { q: "It was cold outside. We stayed home. (so)", answer: "It was cold outside, so we stayed home." },
+    { q: "She is very young. She is very talented. (yet)", answer: "She is very young, yet she is very talented." },
+    { q: "He didn't call me. He didn't text me. (nor)", answer: "He didn't call me, nor did he text me." },
+    { q: "I wanted to help. I didn't know how. (but)", answer: "I wanted to help, but I didn't know how.", alt: ["I wanted to help, but I did not know how."] },
+    { q: "She works hard. She always gets good results. (and)", answer: "She works hard, and she always gets good results." },
+    { q: "Hurry up. You will miss the train. (or)", answer: "Hurry up, or you will miss the train." }
+  ],
+  ex3: [
+    { q: "I like coffee but she prefers tea.", answer: "I like coffee, but she prefers tea.", explain: "Phẩy trước 'but' khi nối 2 mệnh đề" },
+    { q: "He studied hard so he passed.", answer: "He studied hard, so he passed.", explain: "Phẩy trước 'so' khi nối 2 mệnh đề" },
+    { q: "She sings and dances well.", answer: "She sings and dances well.", explain: "KHÔNG phẩy — 'and' chỉ nối 2 động từ, không phải 2 mệnh đề" },
+    { q: "I want to go yet I am too tired.", answer: "I want to go, yet I am too tired.", explain: "Phẩy trước 'yet' khi nối 2 mệnh đề" },
+    { q: "You can stay or you can leave.", answer: "You can stay, or you can leave.", explain: "Phẩy trước 'or' khi nối 2 mệnh đề" },
+    { q: "He likes tea and coffee.", answer: "He likes tea and coffee.", explain: "KHÔNG phẩy — 'and' chỉ nối 2 danh từ" },
+    { q: "She was sick so she stayed home.", answer: "She was sick, so she stayed home.", explain: "Phẩy trước 'so' khi nối 2 mệnh đề" },
+    { q: "I called him but he didn't answer.", answer: "I called him, but he didn't answer.", alt: ["I called him, but he did not answer."], explain: "Phẩy trước 'but' khi nối 2 mệnh đề" },
+    { q: "She is smart and hardworking.", answer: "She is smart and hardworking.", explain: "KHÔNG phẩy — 'and' chỉ nối 2 tính từ" },
+    { q: "We can take a taxi or we can walk.", answer: "We can take a taxi, or we can walk.", explain: "Phẩy trước 'or' khi nối 2 mệnh đề" }
+  ],
+  ex4: [
+    { q: "She likes coffee, and he likes tea.", options: ["Câu đơn", "Câu ghép"], answer: 1, explain: "2 mệnh đề (She likes + he likes) nối bằng 'and' = câu ghép" },
+    { q: "She likes coffee and tea.", options: ["Câu đơn", "Câu ghép"], answer: 0, explain: "'and' chỉ nối 2 danh từ (coffee, tea), 1 mệnh đề = câu đơn" },
+    { q: "I was tired, so I went to bed.", options: ["Câu đơn", "Câu ghép"], answer: 1, explain: "2 mệnh đề nối bằng 'so' = câu ghép" },
+    { q: "My brother and sister play football every day.", options: ["Câu đơn", "Câu ghép"], answer: 0, explain: "Chủ ngữ kép nhưng chỉ 1 động từ = câu đơn" },
+    { q: "He ran fast, but he missed the bus.", options: ["Câu đơn", "Câu ghép"], answer: 1, explain: "2 mệnh đề nối bằng 'but' = câu ghép" },
+    { q: "She sings and dances beautifully.", options: ["Câu đơn", "Câu ghép"], answer: 0, explain: "Động từ kép (sings, dances) nhưng 1 chủ ngữ = câu đơn" },
+    { q: "I don't like horror movies; I prefer comedies.", options: ["Câu đơn", "Câu ghép"], answer: 1, explain: "2 mệnh đề nối bằng dấu chấm phẩy = câu ghép" },
+    { q: "The tall man in the blue shirt quickly finished his coffee.", options: ["Câu đơn", "Câu ghép"], answer: 0, explain: "Dài nhưng chỉ 1 S + 1 V = câu đơn" },
+    { q: "She was hungry, yet she refused to eat.", options: ["Câu đơn", "Câu ghép"], answer: 1, explain: "2 mệnh đề nối bằng 'yet' = câu ghép" },
+    { q: "He studied hard and passed the exam.", options: ["Câu đơn", "Câu ghép"], answer: 0, explain: "'and' nối 2 động từ (studied, passed) cùng 1 chủ ngữ = câu đơn" }
+  ],
+  ex5: [
+    { q: "Viết câu ghép dùng 'but': (I / want to travel) + (I / not have money)", answer: "I want to travel, but I do not have money.", alt: ["I want to travel, but I don't have money."] },
+    { q: "Viết câu ghép dùng 'so': (it / rain) + (we / stay home)", answer: "It rained, so we stayed home.", alt: ["It was raining, so we stayed home.", "It is raining, so we are staying home."] },
+    { q: "Viết câu ghép dùng 'and': (she / cook dinner) + (he / wash the dishes)", answer: "She cooked dinner, and he washed the dishes.", alt: ["She cooks dinner, and he washes the dishes."] },
+    { q: "Viết câu ghép dùng 'or': (study hard) + (you / fail the exam)", answer: "Study hard, or you will fail the exam.", alt: ["Study hard, or you'll fail the exam."] },
+    { q: "Viết câu ghép dùng 'yet': (he / be poor) + (he / be happy)", answer: "He is poor, yet he is happy." },
+    { q: "Viết câu ghép dùng 'for': (she / stay home) + (she / be sick)", answer: "She stayed home, for she was sick.", alt: ["She stays home, for she is sick."] }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0 };
+let totals = { ex1: 12, ex2: 10, ex3: 10, ex4: 10, ex5: 6 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false };
+
+function renderMCSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-section="${section}" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked[section]) return;
+    const q = parseInt(btn.dataset.q);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => { b.classList.remove('selected'); b.style.outline = ''; });
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+  });
+}
+
+function renderFillSection(section) {
+  const container = document.getElementById(`${section}Questions`);
+  let html = '';
+  DATA[section].forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <input type="text" id="${section}-input-${i}" placeholder="Viết câu hoàn chỉnh...">
+      <div class="fb" id="${section}-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+}
+
+function checkMC(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const selected = document.querySelector(`#${section}Questions .mc-btn[data-q="${i}"].selected`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const btns = document.querySelectorAll(`#${section}Questions .mc-btn[data-q="${i}"]`);
+    btns.forEach(b => b.classList.add('disabled'));
+    if (selected && parseInt(selected.dataset.opt) === item.answer) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + item.explain;
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      if (selected) selected.classList.add('wrong');
+      btns[item.answer].classList.add('correct');
+      fb.textContent = '✗ ' + item.explain;
+      fb.className = 'fb wrong-fb';
+    }
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkFill(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+  DATA[section].forEach((item, i) => {
+    const input = document.getElementById(`${section}-input-${i}`);
+    const fb = document.getElementById(`${section}-fb-${i}`);
+    const userVal = normalize(input.value);
+    const correctVal = normalize(item.answer);
+    const alts = (item.alt || []).map(a => normalize(a));
+    if (userVal === correctVal || alts.includes(userVal)) {
+      input.classList.add('correct');
+      fb.textContent = '✓ Đúng!';
+      fb.className = 'fb correct-fb';
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      const explain = item.explain ? ` — ${item.explain}` : '';
+      fb.textContent = `✗ Đáp án: ${item.answer}${explain}`;
+      fb.className = 'fb wrong-fb';
+    }
+    input.disabled = true;
+  });
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderMCSection('ex1');
+renderFillSection('ex2');
+renderFillSection('ex3');
+renderMCSection('ex4');
+renderFillSection('ex5');
+  </script>
+</body>
+</html>

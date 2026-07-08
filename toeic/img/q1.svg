@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#f5f5f5"/>
+  <!-- Shelf -->
+  <rect x="180" y="60" width="200" height="10" fill="#8B4513" rx="2"/>
+  <rect x="180" y="130" width="200" height="10" fill="#8B4513" rx="2"/>
+  <rect x="180" y="200" width="200" height="10" fill="#8B4513" rx="2"/>
+  <!-- Items on shelf -->
+  <rect x="200" y="35" width="25" height="25" fill="#e74c3c" rx="3"/>
+  <rect x="240" y="30" width="20" height="30" fill="#3498db" rx="3"/>
+  <rect x="280" y="38" width="30" height="22" fill="#2ecc71" rx="3"/>
+  <rect x="330" y="32" width="22" height="28" fill="#f39c12" rx="3"/>
+  <rect x="200" y="105" width="28" height="25" fill="#9b59b6" rx="3"/>
+  <rect x="250" y="108" width="25" height="22" fill="#1abc9c" rx="3"/>
+  <rect x="300" y="100" width="20" height="30" fill="#e67e22" rx="3"/>
+  <!-- Woman figure -->
+  <circle cx="100" cy="100" r="25" fill="#fdbcb4"/>
+  <path d="M75 100 Q75 70 100 70 Q125 70 125 100" fill="#2c3e50"/>
+  <rect x="80" y="125" width="40" height="60" fill="#3498db" rx="5"/>
+  <rect x="80" y="185" width="15" height="50" fill="#2c3e50" rx="3"/>
+  <rect x="105" y="185" width="15" height="50" fill="#2c3e50" rx="3"/>
+  <!-- Arm reaching toward shelf -->
+  <path d="M120 140 Q150 130 175 120" stroke="#fdbcb4" stroke-width="8" stroke-linecap="round"/>
+  <!-- Eyes looking at shelf -->
+  <circle cx="108" cy="97" r="3" fill="#2c3e50"/>
+  <circle cx="118" cy="97" r="3" fill="#2c3e50"/>
+</svg>

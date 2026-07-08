@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 11 — Dictation: Risk & Prevention</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html">&larr;</a>
+      <h1>Buổi 11 — Dictation</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="vocabulary">Từ vựng</button>
+      <button class="tab-btn" data-mode="sentences">Câu ví dụ</button>
+      <button class="tab-btn" data-mode="passage">Đoạn văn</button>
+      <button class="tab-btn" data-mode="fillblank">Điền từ</button>
+    </div>
+
+    <div class="dictation-card">
+      <div class="progress-bar">
+        <span id="progressText">1 / 9</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 11%"></div>
+        </div>
+      </div>
+
+      <div class="prompt-text" id="promptText">Nghe từ vựng và gõ lại chính xác</div>
+
+      <div class="controls">
+        <button class="btn btn-play" id="btnPlay">&#9654; Play (3x)</button>
+        <button class="btn btn-secondary" id="btnReplay">&#128260; Replay</button>
+        <button class="btn btn-secondary" id="btnSpell">ABC Spell</button>
+        <button class="btn btn-secondary" id="btnContext">&#128172; Ngữ cảnh</button>
+        <button class="btn btn-play" id="btnCheck">&#10003; Kiểm tra</button>
+        <button class="btn btn-secondary" id="btnShowAnswer">Đáp án</button>
+        <button class="btn btn-secondary" id="btnNext" disabled>Tiếp &rarr;</button>
+      </div>
+
+      <div class="ipa-hint" id="ipaHint" style="display:none;"></div>
+
+      <div class="speed-control">
+        <label>Tốc độ:</label>
+        <select id="speedSelect">
+          <option value="0.6">0.6x</option>
+          <option value="0.7" selected>0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="1">1x</option>
+          <option value="1.2">1.2x</option>
+        </select>
+        <label>Giọng:</label>
+        <select id="voiceSelect"></select>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="dictInput" placeholder="Gõ lại những gì bạn nghe..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <h3>Kết quả</h3>
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div id="scoreDetail"></div>
+        <button class="btn btn-play" style="margin-top:1rem;" onclick="engine.restart()">Làm lại</button>
+      </div>
+    </div>
+
+    <div class="history-panel" id="historyPanel"></div>
+    <div class="mistakes-panel" id="mistakesPanel"></div>
+
+    <div class="listening-tips">
+      <h4>Chủ đề Buổi 11: Risk & Prevention</h4>
+      <ul>
+        <li><strong>risk / mistake:</strong> risk là khả năng có vấn đề; mistake là lỗi đã xảy ra.</li>
+        <li><strong>avoid / prevent:</strong> avoid là tránh điều xấu; prevent là ngăn vấn đề xảy ra.</li>
+        <li><strong>warning / careful:</strong> warning là tín hiệu cảnh báo; careful là cách làm cẩn thận.</li>
+        <li><strong>check / fix / protect:</strong> kiểm tra trước, sửa lỗi khi thấy vấn đề, và bảo vệ tiến bộ lâu dài.</li>
+      </ul>
+    </div>
+
+    <p class="hint">Phím tắt: Enter = kiểm tra &bull; Ctrl+Space = nghe lại &bull; Ctrl+S = đánh vần &bull; Từ sai quay lại cuối hàng đợi</p>
+  </div>
+
+  <script src="../js/kokoro-audio.js"></script>
+  <script src="../js/human-audio.js"></script>
+  <script src="../js/dictation.js?v=human-audio-v1"></script>
+  <script>
+    const LESSON_DATA = {
+      name: "Buổi 11",
+      lessonId: 'buoi-11',
+      vocabulary: [
+        { word: "risk", hint: "khả năng có điều xấu hoặc vấn đề xảy ra", ipa: "/rɪsk/", syllables: 1, context: "There is a risk of making the same mistake if learners ignore feedback." },
+        { word: "mistake", hint: "lỗi hoặc điều làm sai", ipa: "/mɪˈsteɪk/", syllables: 2, context: "A small mistake can become a habit if nobody corrects it." },
+        { word: "avoid", hint: "tránh một hành động hoặc kết quả xấu", ipa: "/əˈvɔɪd/", syllables: 2, context: "Students can avoid confusion by reading the instructions twice." },
+        { word: "prevent", hint: "ngăn điều gì xảy ra trước khi nó thành vấn đề", ipa: "/prɪˈvent/", syllables: 2, context: "Clear examples can prevent repeated errors in class." },
+        { word: "warning", hint: "cảnh báo hoặc dấu hiệu cho thấy cần cẩn thận", ipa: "/ˈwɔːr.nɪŋ/", syllables: 2, context: "A low score can be a warning sign that the method needs to change." },
+        { word: "careful", hint: "cẩn thận, chú ý để tránh lỗi", ipa: "/ˈker.fəl/", syllables: 2, context: "Careful learners check their answers before they submit them." },
+        { word: "check", hint: "kiểm tra lại để chắc chắn đúng", ipa: "/tʃek/", syllables: 1, context: "Always check the details before you send an important email." },
+        { word: "fix", hint: "sửa một lỗi hoặc vấn đề", ipa: "/fɪks/", syllables: 1, context: "A useful teacher helps students fix the cause of a mistake." },
+        { word: "protect", hint: "bảo vệ khỏi mất mát, thiệt hại hoặc gián đoạn", ipa: "/prəˈtekt/", syllables: 2, context: "A good routine can protect a learner’s progress during a busy week." }
+      ],
+      sentences: [
+        "There is a risk of making the same mistake if learners ignore feedback.",
+        "The biggest risk is not one bad score, but repeating the same bad habit.",
+        "A small mistake can become a habit if nobody corrects it.",
+        "Learners should write down each mistake so they can study it later.",
+        "Students can avoid confusion by reading the instructions twice.",
+        "A clear checklist helps learners avoid careless errors.",
+        "Clear examples can prevent repeated errors in class.",
+        "Good planning can prevent unnecessary stress before a test.",
+        "A low score can be a warning sign that the method needs to change.",
+        "The warning message appeared before the file was deleted.",
+        "Careful learners check their answers before they submit them.",
+        "Be careful with small grammar differences because they can change the meaning.",
+        "Always check the details before you send an important email.",
+        "The team checked the schedule before confirming the meeting.",
+        "A useful teacher helps students fix the cause of a mistake.",
+        "The company fixed the problem before customers noticed it.",
+        "A good routine can protect a learner’s progress during a busy week.",
+        "Strong passwords protect private information from simple attacks."
+      ],
+      passage: [
+        "Careful learners do not wait until a problem becomes serious.",
+        "They know there is always a risk of repeating an old mistake.",
+        "Instead of hiding the mistake, they study it and ask why it happened.",
+        "This habit helps them avoid confusion the next time they meet a similar task.",
+        "A clear checklist can prevent many small errors before homework is submitted.",
+        "A low score or repeated delay can be a warning sign that the current method is weak.",
+        "Careful learners check details, fix problems early, and protect their progress.",
+        "They do not become perfect, but they make fewer repeated mistakes over time.",
+        "The goal is not fear, but a safer system for learning."
+      ],
+      fillblank: [
+        { sentence: "There is a risk of repeating old mistakes.", display: "There is a _____ of repeating old mistakes.", answer: "risk" },
+        { sentence: "A small mistake can become a habit.", display: "A small _____ can become a habit.", answer: "mistake" },
+        { sentence: "Students can avoid confusion with clear instructions.", display: "Students can _____ confusion with clear instructions.", answer: "avoid" },
+        { sentence: "A checklist can prevent repeated errors.", display: "A checklist can _____ repeated errors.", answer: "prevent" },
+        { sentence: "A low score can be a warning sign.", display: "A low score can be a _____ sign.", answer: "warning" },
+        { sentence: "Careful learners check their work.", display: "_____ learners check their work.", answer: "Careful" },
+        { sentence: "Please check the details before sending the email.", display: "Please _____ the details before sending the email.", answer: "check" },
+        { sentence: "The teacher helped students fix the problem.", display: "The teacher helped students _____ the problem.", answer: "fix" },
+        { sentence: "A good routine can protect your progress.", display: "A good routine can _____ your progress.", answer: "protect" },
+        { sentence: "The risk of delay increases when the plan is unclear.", display: "The _____ of delay increases when the plan is unclear.", answer: "risk" },
+        { sentence: "Reviewing examples helps avoid mistakes.", display: "Reviewing examples helps _____ mistakes.", answer: "avoid" },
+        { sentence: "Clear rules prevent confusion.", display: "Clear rules _____ confusion.", answer: "prevent" },
+        { sentence: "A warning message appeared on the screen.", display: "A _____ message appeared on the screen.", answer: "warning" },
+        { sentence: "The student fixed the mistake quickly.", display: "The student _____ the mistake quickly.", answer: "fixed" },
+        { sentence: "Passwords protect personal information.", display: "Passwords _____ personal information.", answer: "protect" }
+      ]
+    };
+
+    const engine = new DictationEngine(LESSON_DATA);
+  </script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 1 — Present Simple</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/study.css">
+  <style>
+    .theory-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8; }
+    .theory-box h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1.1rem; }
+    .theory-box .formula { background: var(--card); padding: 0.8rem 1.2rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin: 0.8rem 0; color: var(--success); }
+    .theory-box .example { color: var(--text-dim); font-style: italic; margin: 0.3rem 0 0.3rem 1rem; font-size: 0.9rem; }
+    .theory-box .example strong { color: var(--success); font-style: normal; }
+    .theory-box .note { font-size: 0.85rem; color: var(--accent-light); margin-top: 0.8rem; padding: 0.6rem; background: rgba(233,69,96,0.05); border-radius: 6px; }
+    .exercise-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .exercise-section h3 { color: var(--accent-light); margin-bottom: 1rem; font-size: 1rem; }
+    .exercise-item { padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .exercise-item:last-child { border-bottom: none; }
+    .exercise-item .q { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .exercise-item input[type="text"] { width: 150px; padding: 0.4rem 0.6rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; text-align: center; outline: none; }
+    .exercise-item input.correct { border-color: var(--success); color: var(--success); }
+    .exercise-item input.wrong { border-color: var(--accent); color: var(--accent); }
+    .exercise-item .fb { font-size: 0.8rem; margin-top: 0.3rem; min-height: 1.2rem; }
+    .exercise-item .fb.correct-fb { color: var(--success); }
+    .exercise-item .fb.wrong-fb { color: var(--accent); }
+    .mc-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .mc-btn { padding: 0.4rem 0.8rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .mc-btn:hover { border-color: var(--accent); }
+    .mc-btn.correct { border-color: var(--success); background: rgba(0,210,211,0.1); color: var(--success); }
+    .mc-btn.wrong { border-color: var(--accent); background: rgba(233,69,96,0.1); color: var(--accent); }
+    .mc-btn.disabled { pointer-events: none; opacity: 0.6; }
+    .score-summary { text-align: center; padding: 1.5rem; background: var(--card); border-radius: var(--radius); margin-top: 1.5rem; }
+    .score-summary .score-big { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .check-all-btn { margin-top: 1rem; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html">&larr;</a>
+      <h1>Level 1 — Present Simple</h1>
+    </div>
+
+    <!-- THEORY -->
+    <div class="theory-box">
+      <h3>Present Simple là gì?</h3>
+      <p>Dùng để nói về:</p>
+      <ul style="margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.9rem;">
+        <li><strong>Sự thật luôn đúng:</strong> The sun rises in the east.</li>
+        <li><strong>Thói quen lặp lại:</strong> I drink coffee every morning.</li>
+        <li><strong>Lịch trình cố định:</strong> The train leaves at 7 PM.</li>
+      </ul>
+
+      <div class="formula">
+        (+) S + V(s/es) &nbsp;&nbsp; → &nbsp; She <strong>goes</strong> to school.<br>
+        (-) S + do/does + not + V &nbsp;&nbsp; → &nbsp; She <strong>does not go</strong> to school.<br>
+        (?) Do/Does + S + V? &nbsp;&nbsp; → &nbsp; <strong>Does</strong> she <strong>go</strong> to school?
+      </div>
+
+      <div class="note">
+        <strong>Quy tắc thêm S/ES:</strong><br>
+        • Hầu hết: thêm -s (works, plays, reads)<br>
+        • Kết thúc -s, -sh, -ch, -x, -o: thêm -es (goes, watches, washes)<br>
+        • Kết thúc phụ âm + y: đổi y → ies (studies, carries)<br>
+        • Nguyên âm + y: thêm -s bình thường (plays, stays)
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Dấu hiệu nhận biết</h3>
+      <p style="font-size:0.9rem;">Khi thấy các từ này trong câu → nghĩ ngay Present Simple:</p>
+      <div class="formula">
+        always, usually, often, sometimes, rarely, never, every day/week/month/year, on Mondays, twice a week, in the morning
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: Multiple Choice - Nhận diện -->
+    <div class="exercise-section" id="ex1">
+      <h3>Bài 1: Nhận diện — Câu nào dùng Present Simple? (10 câu)</h3>
+      <div id="ex1Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex1')">Kiểm tra Bài 1</button>
+    </div>
+
+    <!-- EXERCISE 2: Chia động từ -->
+    <div class="exercise-section" id="ex2">
+      <h3>Bài 2: Chia động từ — Điền dạng đúng (15 câu)</h3>
+      <div id="ex2Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex2')">Kiểm tra Bài 2</button>
+    </div>
+
+    <!-- EXERCISE 3: Phủ định & Nghi vấn -->
+    <div class="exercise-section" id="ex3">
+      <h3>Bài 3: Chuyển sang phủ định hoặc nghi vấn (10 câu)</h3>
+      <div id="ex3Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex3')">Kiểm tra Bài 3</button>
+    </div>
+
+    <!-- EXERCISE 4: Sửa lỗi sai -->
+    <div class="exercise-section" id="ex4">
+      <h3>Bài 4: Sửa lỗi sai — Tìm và sửa lỗi trong câu (10 câu)</h3>
+      <div id="ex4Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex4')">Kiểm tra Bài 4</button>
+    </div>
+
+    <!-- EXERCISE 5: Viết câu hoàn chỉnh -->
+    <div class="exercise-section" id="ex5">
+      <h3>Bài 5: Viết câu hoàn chỉnh từ gợi ý (5 câu)</h3>
+      <div id="ex5Questions"></div>
+      <button class="btn btn-play check-all-btn" onclick="checkSection('ex5')">Kiểm tra Bài 5</button>
+    </div>
+
+    <div class="score-summary" id="finalScore" style="display:none;">
+      <div class="score-big" id="totalScore">0%</div>
+      <p style="margin-top:0.5rem; color: var(--text-dim);" id="totalDetail"></p>
+      <button class="btn btn-play" style="margin-top:1rem;" onclick="location.reload()">Làm lại</button>
+      <a href="level-2-present-continuous.html" class="btn btn-secondary" style="margin-top:1rem; margin-left:0.5rem;">Level 2 →</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="index.html" class="btn btn-secondary">&larr; Danh sách Level</a>
+      <a href="level-2-present-continuous.html" class="btn btn-play">Level 2: Present Continuous &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+const DATA = {
+  ex1: [
+    { q: "She goes to school every day.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "\"every day\" = thói quen → Present Simple" },
+    { q: "They are watching TV right now.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 1, explain: "\"right now\" = đang xảy ra → Present Continuous" },
+    { q: "Water boils at 100 degrees Celsius.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "Sự thật khoa học → Present Simple" },
+    { q: "I visited my grandmother last week.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 2, explain: "\"last week\" = quá khứ → Past Simple" },
+    { q: "He never eats breakfast.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "\"never\" = tần suất → Present Simple" },
+    { q: "The movie starts at 8 PM tonight.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "Lịch trình cố định → Present Simple" },
+    { q: "Look! The baby is crying.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 1, explain: "\"Look!\" = đang xảy ra → Present Continuous" },
+    { q: "My father works in a hospital.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "Nghề nghiệp = sự thật lâu dài → Present Simple" },
+    { q: "We played football yesterday.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 2, explain: "\"yesterday\" = quá khứ → Past Simple" },
+    { q: "She usually takes the bus to work.", options: ["Present Simple", "Present Continuous", "Past Simple"], answer: 0, explain: "\"usually\" = thói quen → Present Simple" }
+  ],
+  ex2: [
+    { q: "She ___ (go) to the gym every morning.", answer: "goes", hint: "she → thêm -es" },
+    { q: "They ___ (play) football on Sundays.", answer: "play", hint: "they → giữ nguyên" },
+    { q: "He ___ (watch) TV after dinner.", answer: "watches", hint: "he + watch → thêm -es" },
+    { q: "I ___ (drink) coffee every day.", answer: "drink", hint: "I → giữ nguyên" },
+    { q: "The cat ___ (sleep) on the sofa.", answer: "sleeps", hint: "the cat = it → thêm -s" },
+    { q: "We ___ (study) English twice a week.", answer: "study", hint: "we → giữ nguyên" },
+    { q: "She ___ (study) math every night.", answer: "studies", hint: "she + study → y thành ies" },
+    { q: "My brother ___ (have) a car.", answer: "has", hint: "have → has (bất quy tắc)" },
+    { q: "The bus ___ (leave) at 7 AM.", answer: "leaves", hint: "the bus = it → thêm -s" },
+    { q: "They ___ (not like) spicy food.", answer: "do not like", hint: "they + phủ định → do not + V", alt: ["don't like"] },
+    { q: "She ___ (not work) on weekends.", answer: "does not work", hint: "she + phủ định → does not + V", alt: ["doesn't work"] },
+    { q: "He ___ (teach) English at a university.", answer: "teaches", hint: "he + teach → thêm -es" },
+    { q: "My parents ___ (live) in Ho Chi Minh City.", answer: "live", hint: "my parents = they → giữ nguyên" },
+    { q: "She ___ (wash) her hair every two days.", answer: "washes", hint: "she + wash → thêm -es" },
+    { q: "It ___ (rain) a lot in July.", answer: "rains", hint: "it → thêm -s" }
+  ],
+  ex3: [
+    { q: "He likes coffee. → (phủ định)", answer: "He does not like coffee.", alt: ["He doesn't like coffee."] },
+    { q: "They play tennis. → (phủ định)", answer: "They do not play tennis.", alt: ["They don't play tennis."] },
+    { q: "She works here. → (nghi vấn)", answer: "Does she work here?" },
+    { q: "You speak English. → (nghi vấn)", answer: "Do you speak English?" },
+    { q: "He drives to work. → (phủ định)", answer: "He does not drive to work.", alt: ["He doesn't drive to work."] },
+    { q: "They live in Hanoi. → (nghi vấn)", answer: "Do they live in Hanoi?" },
+    { q: "She eats meat. → (phủ định)", answer: "She does not eat meat.", alt: ["She doesn't eat meat."] },
+    { q: "It costs a lot. → (nghi vấn)", answer: "Does it cost a lot?" },
+    { q: "We need help. → (phủ định)", answer: "We do not need help.", alt: ["We don't need help."] },
+    { q: "He knows the answer. → (nghi vấn)", answer: "Does he know the answer?" }
+  ],
+  ex4: [
+    { q: "She go to school every day.", answer: "She goes to school every day.", explain: "She → goes (thêm -es)" },
+    { q: "He don't like pizza.", answer: "He doesn't like pizza.", explain: "He → doesn't (không phải don't)", alt: ["He does not like pizza."] },
+    { q: "Does they play football?", answer: "Do they play football?", explain: "They → Do (không phải Does)" },
+    { q: "My mother cook dinner every night.", answer: "My mother cooks dinner every night.", explain: "My mother = she → cooks" },
+    { q: "She studys English every day.", answer: "She studies English every day.", explain: "study → studies (y → ies)" },
+    { q: "He watchs TV after work.", answer: "He watches TV after work.", explain: "watch → watches (thêm -es)" },
+    { q: "Do she like music?", answer: "Does she like music?", explain: "She → Does (không phải Do)" },
+    { q: "They doesn't want to go.", answer: "They don't want to go.", explain: "They → don't (không phải doesn't)", alt: ["They do not want to go."] },
+    { q: "The sun rise in the east.", answer: "The sun rises in the east.", explain: "The sun = it → rises" },
+    { q: "She haves two brothers.", answer: "She has two brothers.", explain: "have → has (bất quy tắc, không phải haves)" }
+  ],
+  ex5: [
+    { q: "(she / wake up / 6 AM / every day)", answer: "She wakes up at 6 AM every day.", alt: ["She wakes up at 6 am every day."] },
+    { q: "(they / not / eat / meat)", answer: "They do not eat meat.", alt: ["They don't eat meat."] },
+    { q: "(he / work / in a bank?)", answer: "Does he work in a bank?" },
+    { q: "(the train / leave / at 9 PM)", answer: "The train leaves at 9 PM.", alt: ["The train leaves at 9 pm."] },
+    { q: "(I / always / brush / my teeth / before bed)", answer: "I always brush my teeth before bed." }
+  ]
+};
+
+let scores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0 };
+let totals = { ex1: 10, ex2: 15, ex3: 10, ex4: 10, ex5: 5 };
+let checked = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false };
+
+function renderEx1() {
+  const container = document.getElementById('ex1Questions');
+  let html = '';
+  DATA.ex1.forEach((item, i) => {
+    html += `<div class="exercise-item" data-idx="${i}">
+      <div class="q"><strong>${i+1}.</strong> "${item.q}"</div>
+      <div class="mc-options">
+        ${item.options.map((opt, j) => `<button class="mc-btn" data-q="${i}" data-opt="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="fb" id="ex1-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mc-btn');
+    if (!btn || checked.ex1) return;
+    const q = parseInt(btn.dataset.q);
+    const opt = parseInt(btn.dataset.opt);
+    const siblings = container.querySelectorAll(`.mc-btn[data-q="${q}"]`);
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    btn.style.outline = '2px solid var(--accent)';
+    siblings.forEach(b => { if (b !== btn) b.style.outline = ''; });
+  });
+}
+
+function renderEx2() {
+  const container = document.getElementById('ex2Questions');
+  let html = '';
+  DATA.ex2.forEach((item, i) => {
+    const parts = item.q.split('___');
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${parts[0]}<input type="text" id="ex2-input-${i}" placeholder="...">${parts[1]}</div>
+      <div class="fb" id="ex2-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderEx3() {
+  const container = document.getElementById('ex3Questions');
+  let html = '';
+  DATA.ex3.forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <input type="text" id="ex3-input-${i}" placeholder="Viết lại câu..." style="width:100%; margin-top:0.5rem;">
+      <div class="fb" id="ex3-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderEx4() {
+  const container = document.getElementById('ex4Questions');
+  let html = '';
+  DATA.ex4.forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> <span style="color:var(--accent);">${item.q}</span> (Sửa lại cho đúng)</div>
+      <input type="text" id="ex4-input-${i}" placeholder="Viết lại câu đúng..." style="width:100%; margin-top:0.5rem;">
+      <div class="fb" id="ex4-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderEx5() {
+  const container = document.getElementById('ex5Questions');
+  let html = '';
+  DATA.ex5.forEach((item, i) => {
+    html += `<div class="exercise-item">
+      <div class="q"><strong>${i+1}.</strong> ${item.q}</div>
+      <input type="text" id="ex5-input-${i}" placeholder="Viết câu hoàn chỉnh..." style="width:100%; margin-top:0.5rem;">
+      <div class="fb" id="ex5-fb-${i}"></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim().replace(/\.$/, '').replace(/\?$/, '?');
+}
+
+function checkSection(section) {
+  if (checked[section]) return;
+  checked[section] = true;
+  let correct = 0;
+
+  if (section === 'ex1') {
+    DATA.ex1.forEach((item, i) => {
+      const selected = document.querySelector(`.mc-btn[data-q="${i}"].selected`);
+      const fb = document.getElementById(`ex1-fb-${i}`);
+      const btns = document.querySelectorAll(`.mc-btn[data-q="${i}"]`);
+      btns.forEach(b => b.classList.add('disabled'));
+
+      if (selected && parseInt(selected.dataset.opt) === item.answer) {
+        selected.classList.add('correct');
+        fb.textContent = '✓ ' + item.explain;
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        if (selected) selected.classList.add('wrong');
+        btns[item.answer].classList.add('correct');
+        fb.textContent = '✗ ' + item.explain;
+        fb.className = 'fb wrong-fb';
+      }
+    });
+  }
+
+  if (section === 'ex2') {
+    DATA.ex2.forEach((item, i) => {
+      const input = document.getElementById(`ex2-input-${i}`);
+      const fb = document.getElementById(`ex2-fb-${i}`);
+      const userVal = normalize(input.value);
+      const correctVal = normalize(item.answer);
+      const alts = (item.alt || []).map(a => normalize(a));
+
+      if (userVal === correctVal || alts.includes(userVal)) {
+        input.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        input.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer} — ${item.hint}`;
+        fb.className = 'fb wrong-fb';
+      }
+      input.disabled = true;
+    });
+  }
+
+  if (section === 'ex3') {
+    DATA.ex3.forEach((item, i) => {
+      const input = document.getElementById(`ex3-input-${i}`);
+      const fb = document.getElementById(`ex3-fb-${i}`);
+      const userVal = normalize(input.value);
+      const correctVal = normalize(item.answer);
+      const alts = (item.alt || []).map(a => normalize(a));
+
+      if (userVal === correctVal || alts.includes(userVal)) {
+        input.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        input.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer}`;
+        fb.className = 'fb wrong-fb';
+      }
+      input.disabled = true;
+    });
+  }
+
+  if (section === 'ex4') {
+    DATA.ex4.forEach((item, i) => {
+      const input = document.getElementById(`ex4-input-${i}`);
+      const fb = document.getElementById(`ex4-fb-${i}`);
+      const userVal = normalize(input.value);
+      const correctVal = normalize(item.answer);
+      const alts = (item.alt || []).map(a => normalize(a));
+
+      if (userVal === correctVal || alts.includes(userVal)) {
+        input.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        input.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer} — ${item.explain}`;
+        fb.className = 'fb wrong-fb';
+      }
+      input.disabled = true;
+    });
+  }
+
+  if (section === 'ex5') {
+    DATA.ex5.forEach((item, i) => {
+      const input = document.getElementById(`ex5-input-${i}`);
+      const fb = document.getElementById(`ex5-fb-${i}`);
+      const userVal = normalize(input.value);
+      const correctVal = normalize(item.answer);
+      const alts = (item.alt || []).map(a => normalize(a));
+
+      if (userVal === correctVal || alts.includes(userVal)) {
+        input.classList.add('correct');
+        fb.textContent = '✓ Đúng!';
+        fb.className = 'fb correct-fb';
+        correct++;
+      } else {
+        input.classList.add('wrong');
+        fb.textContent = `✗ Đáp án: ${item.answer}`;
+        fb.className = 'fb wrong-fb';
+      }
+      input.disabled = true;
+    });
+  }
+
+  scores[section] = correct;
+  checkAllDone();
+}
+
+function checkAllDone() {
+  const allDone = Object.values(checked).every(v => v);
+  if (allDone) {
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    const max = Object.values(totals).reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('finalScore').style.display = 'block';
+    document.getElementById('totalScore').textContent = pct + '%';
+    document.getElementById('totalDetail').textContent = `${total} / ${max} câu đúng`;
+  }
+}
+
+renderEx1();
+renderEx2();
+renderEx3();
+renderEx4();
+renderEx5();
+  </script>
+</body>
+</html>
